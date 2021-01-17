@@ -1,0 +1,10 @@
+{
+  "name": "qsaas",
+  "version": "1.0.0",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
+}
