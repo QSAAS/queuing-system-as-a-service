@@ -15,6 +15,7 @@
         "@typescript-eslint/parser": "^4.14.0",
         "eslint": "^7.18.0",
         "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-config-airbnb-typescript": "^12.0.0",
         "eslint-plugin-import": "^2.22.1",
         "jest": "^26.6.3",
         "nodemon": "^2.0.7",
@@ -24,7 +25,7 @@
     },
     "scripts": {
         "start": "nodemon src/index.ts",
-        "lint" : "eslint src/*",
+        "lint": "eslint src/*",
         "test": "npm lint && jest"
     }
 }
