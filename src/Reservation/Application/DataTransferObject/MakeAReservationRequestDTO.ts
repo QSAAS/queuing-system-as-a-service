@@ -5,9 +5,9 @@ export default class MakeAReservationRequestDTO {
     public customerId: string;
     public metaDataDTO: MetadataDTO;
 
-    constructor() {
-        this.queuingNodeId = "";
-        this.customerId = "";
-        this.metaDataDTO = new MetadataDTO();
+    constructor(queuingNodeId: string, customerId: string, metaDataDTO: MetadataDTO) {
+        this.queuingNodeId = queuingNodeId;
+        this.customerId = customerId;
+        this.metaDataDTO = metaDataDTO;
     }
 }

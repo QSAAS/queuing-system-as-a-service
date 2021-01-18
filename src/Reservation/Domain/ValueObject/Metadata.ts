@@ -1,5 +1,5 @@
-export default class MetadataDTO {
-    public data: object;
+export default class Metadata {
+    private data: object;
 
     constructor(data: object) {
         this.data = data;
