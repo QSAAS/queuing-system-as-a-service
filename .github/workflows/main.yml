@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: ESlint
+name: Code quality checks
 
 # Controls when the action will run.
 on:
@@ -25,12 +25,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Eslint check
-        # You may pin to the exact commit or the version.
-        # uses: Krizzu/eslint-check-action@a10fa11628d6ba82cd67c76b5fb7d1549d55039e
-        uses: Krizzu/eslint-check-action@v1.1.0
-        with:
-          # GitHub token
-          ghToken: ${{secrets.GITHUB_TOKEN}}
-          eslintConfig: ./../../.eslintrc.json
+      - name: Install NPM packages
+        run: npm ci
+
+      - name: Run eslint checks
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test
 
