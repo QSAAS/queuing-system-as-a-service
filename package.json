@@ -26,6 +26,6 @@
     "scripts": {
         "start": "nodemon src/index.ts",
         "lint": "eslint .",
-        "test": "npm lint && jest"
+        "test": "jest"
     }
 }
