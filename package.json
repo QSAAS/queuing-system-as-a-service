@@ -2,9 +2,11 @@
     "name": "qsaas",
     "version": "1.0.0",
     "dependencies": {
+        "@types/mongoose": "^5.10.3",
         "@types/uuid": "^8.3.0",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
+        "mongoose": "^5.11.12",
         "uuid": "^8.3.2"
     },
     "devDependencies": {
