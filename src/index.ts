@@ -5,7 +5,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-
-app.listen(process.env.SERVER_PORT, () => {
-    console.log(`Server started, listening on ${process.env.SERVER_PORT}`);
+const port = process.env.SERVER_PORT || 8080;
+app.listen(port, () => {
+    console.log(`Server started, listening on ${port}`);
 });
