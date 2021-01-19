@@ -14,17 +14,3 @@
 
     npm install 
 
-
-* you need `ts-node` package to be installed globally or in your project
-    
-- to install globally 
-    
-  
-
-    npm install -g ts-node
-
-    
-- to install for the project only
-
-
-    npm install ts-node
