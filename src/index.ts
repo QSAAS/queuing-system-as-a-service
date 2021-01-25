@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import clientRouter from "./Client/routes";
+import clientRouter from "./Client/Presentation/routes";
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ if (!dbURL) {
 }
 
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-    .then(() => console.log("Connected to MongoDB"))
+    .then(() => console.log("Connected to MongoDB", dbURL))
     .catch((reason) => console.log(reason));
 
 const app = express();
