@@ -1,6 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 
 const schema: Schema = new Schema({
+    id: { // TODO replace code base id with mongo object id or vice versa
+        type: String,
+        required: true,
+        unique: true,
+    },
     username: {
         type: String,
         required: true,
