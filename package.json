@@ -29,6 +29,7 @@
     "scripts": {
         "start": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register src/index.ts",
         "lint": "eslint .",
-        "test": "jest --passWithNoTests"
+        "test": "jest --passWithNoTests",
+        "cr": "ts-node -r tsconfig-paths/register src/index.ts"
     }
 }
