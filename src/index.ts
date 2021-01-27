@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import ReservationRouter from "@app/Reservation/Presentation/routes";
 import clientRouter from "./Client/Presentation/routes";
 
 dotenv.config();
@@ -25,6 +26,7 @@ const app = express();
 
 app.use(express.json());
 app.use("/api/clients", clientRouter);
+app.use("/api/reservations", ReservationRouter);
 
 app.listen(serverPort, () => {
     console.log(`Server started, listening on ${serverPort}`);
