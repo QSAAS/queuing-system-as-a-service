@@ -3,10 +3,10 @@ import QueuingNodeId from "../ValueObject/QueuingNodeId";
 import ReservationId from "../ValueObject/ReservationId";
 import NumberInQueue from "../ValueObject/NumberInQueue";
 import VerificationCode from "../ValueObject/VerificationCode";
-import {ReservationState} from "../ValueObject/ReservationState";
+import { ReservationState } from "../ValueObject/ReservationState";
 import Metadata from "../ValueObject/Metadata";
 
-export default class Reservation{
+export default class Reservation {
     private _reservationId: ReservationId;
     private _customerId: CustomerId;
     private _queuingNodeId: QueuingNodeId;
@@ -16,7 +16,7 @@ export default class Reservation{
     private _metadata: Metadata;
     private _state: ReservationState;
 
-    constructor(reservationId: ReservationId, customerId: CustomerId, queuingNodeId: QueuingNodeId, time: Date, numberInQueue: NumberInQueue, verificationCode: VerificationCode, metadata: Metadata,state: ReservationState) {
+    constructor(reservationId: ReservationId, customerId: CustomerId, queuingNodeId: QueuingNodeId, time: Date, numberInQueue: NumberInQueue, verificationCode: VerificationCode, metadata: Metadata, state: ReservationState) {
         this._reservationId = reservationId;
         this._customerId = customerId;
         this._queuingNodeId = queuingNodeId;
@@ -27,7 +27,7 @@ export default class Reservation{
         this._state = state;
     }
 
-    setAsFinished(){
+    setAsFinished() {
         this._state = ReservationState.FINISHED;
     }
 

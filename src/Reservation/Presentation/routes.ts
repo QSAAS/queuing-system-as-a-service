@@ -1,12 +1,13 @@
 import express from "express";
 
-// const express = express();
-
 const router = express.Router();
 
-router.post("/", (_) => {
+router.post("/", (request, response) => {
     // const controller = new ReservationController();
     // return controller.makeAReservation(request);
+    // response.contentType("text/html");
+    request;
+    response;
 });
 
 export default router;

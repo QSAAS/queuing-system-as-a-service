@@ -11,7 +11,7 @@ export default class QueuingNode {
 
     isPassingSpecs(_: Metadata): boolean {
         return true;
-    };
+    }
 
     getNext(): NumberInQueue {
         // TODO: Implement GetNextNumberSpecification

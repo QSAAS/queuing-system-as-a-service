@@ -1,7 +1,7 @@
 import QueuingNodeId from "../../../../src/Reservation/Domain/ValueObject/QueuingNodeId";
 import QueuingNode from "../../../../src/Reservation/Domain/Entity/QueuingNode";
 
-export default class QueuingNodeBuilder{
+export default class QueuingNodeBuilder {
     private _id: QueuingNodeId;
 
     constructor() {
@@ -13,7 +13,7 @@ export default class QueuingNodeBuilder{
         return this;
     }
 
-    build(){
+    build() {
         return new QueuingNode(this._id);
     }
 }

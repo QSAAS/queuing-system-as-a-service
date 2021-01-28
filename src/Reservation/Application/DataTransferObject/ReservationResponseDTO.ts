@@ -7,7 +7,6 @@ export default class ReservationResponseDTO {
     public verificationCode: string;
     public state: string;
 
-
     constructor(reservationId: string, customerId: string, queuingNodeId: string, time: string, numberInQueue: string, verificationCode: string, state: string) {
         this.reservationId = reservationId;
         this.customerId = customerId;

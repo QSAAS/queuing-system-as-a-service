@@ -5,15 +5,14 @@ import Metadata from "../ValueObject/Metadata";
 import Reservation from "../Entity/Reservation";
 import ReservationId from "../ValueObject/ReservationId";
 import VerificationCode from "../ValueObject/VerificationCode";
-import {ReservationState} from "../ValueObject/ReservationState";
+import { ReservationState } from "../ValueObject/ReservationState";
 
 export default class ReservationFactory {
-
     newReservationForCustomer(
         reservationRepository: ReservationRepository,
         queuingNode: QueuingNode,
         customerId: CustomerId,
-        metadata: Metadata
+        metadata: Metadata,
     ): Reservation {
         const numberInQueue = queuingNode.getNext();
         const verificationCode = new VerificationCode("123");
@@ -27,7 +26,7 @@ export default class ReservationFactory {
             numberInQueue,
             verificationCode,
             metadata,
-            ReservationState.ACTIVE
+            ReservationState.ACTIVE,
         );
     }
 }

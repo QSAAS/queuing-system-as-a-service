@@ -16,7 +16,7 @@ export default class MockReservationRepository implements ReservationRepository 
                 return reservation;
             }
         }
-        throw new Error("Reservation not found"); //todo to be of type ReservationNotFoundError
+        throw new Error("Reservation not found"); // todo to be of type ReservationNotFoundError
     }
 
     save(reservation: Reservation): void {
@@ -27,5 +27,4 @@ export default class MockReservationRepository implements ReservationRepository 
         }
         this.reservations.push(reservation);
     }
-
 }

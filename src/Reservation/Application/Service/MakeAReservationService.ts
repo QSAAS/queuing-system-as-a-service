@@ -35,10 +35,11 @@ export default class MakeAReservationService {
         const customerId = CustomerId.from(request.customerId);
         const queuingNode = this.queuingNodeRepository.getById(queuingNodeId);
         const metadata = this.metadataTransformer.toMetadata(request.metaDataDTO);
-        if(!queuingNode.isPassingSpecs(metadata)){
+        if (!queuingNode.isPassingSpecs(metadata)) {
             throw new MetadataNotPassingSpecificationError();
         }
-        const reservation = this.reservationFactory.newReservationForCustomer(this.reservationRepository, queuingNode, customerId, metadata);
+        const reservation = this.reservationFactory.newReservationForCustomer(this.reservationRepository,
+            queuingNode, customerId, metadata);
         this.reservationRepository.save(reservation);
         return this.reservationDTOTransformer.toReservationDTO(reservation);
     }
