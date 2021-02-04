@@ -4,4 +4,4 @@ dist/*
 .env
 requests/
 plantuml/
-*/dumb*
+**/dumb*
