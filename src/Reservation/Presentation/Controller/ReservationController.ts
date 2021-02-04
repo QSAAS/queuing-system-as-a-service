@@ -7,7 +7,7 @@ export class ReservationController {
     private makeAReservationService: MakeAReservationService;
 
     constructor(
-        makeAReservationService: MakeAReservationService
+        makeAReservationService: MakeAReservationService,
     ) {
         this.makeAReservationService = makeAReservationService;
     }
