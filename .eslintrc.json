@@ -38,7 +38,10 @@
     "no-plusplus": "off",
     "max-len": [
       "error",
-      120
+      120,
+      {
+        "ignoreUrls": true
+      }
     ]
   },
   "ignorePatterns": [
