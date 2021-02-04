@@ -7,7 +7,7 @@ export default class DateTime {
         this.dateTime = dateTime;
     }
 
-    public from(dateTime: string): DateTime {
+    public static from(dateTime: string): DateTime {
         return new DateTime(new Date(dateTime));
     }
 

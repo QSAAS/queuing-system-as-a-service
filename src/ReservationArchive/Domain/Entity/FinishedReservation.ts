@@ -35,9 +35,9 @@ export default class FinishedReservation {
         this.serverOperatorId = serverOperatorId;
     }
 
-    public from(reservationId: ReservationId, clientId: ClientId, queuingNodeId: QueuingNodeId,
-                reservationTime: DateTime, servingStartTime: DateTime, servingFinishTime: DateTime,
-                queueServerId: QueueServerId, serverOperatorId: OrganizationAccountId): FinishedReservation {
+    public static from(reservationId: ReservationId, clientId: ClientId, queuingNodeId: QueuingNodeId,
+                       reservationTime: DateTime, servingStartTime: DateTime, servingFinishTime: DateTime,
+                       queueServerId: QueueServerId, serverOperatorId: OrganizationAccountId): FinishedReservation {
         return new FinishedReservation(reservationId, clientId, queuingNodeId, reservationTime, servingStartTime,
                                        servingFinishTime, queueServerId, serverOperatorId);
     }
