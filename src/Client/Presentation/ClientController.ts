@@ -1,16 +1,22 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import RegisterDTO from "@app/Client/Application/DataTransferObjects/RegisterDTO";
+import RegisterResponseDTO from "@app/Client/Application/DataTransferObjects/RegisterResponseDTO";
 import RegisterService from "../Application/Services/RegisterService";
 
 class ClientController {
     constructor(private registerService: RegisterService) {}
-    register(request: Request) {
+    public async register(request: Request, response: Response): Promise<void> {
         const dto = new RegisterDTO(
             request.body.username,
             request.body.password,
             request.body.email,
         );
-        return this.registerService.run(dto);
+        try {
+            const responseDTO: RegisterResponseDTO = await this.registerService.run(dto);
+            response.status(200).send(responseDTO);
+        } catch (e) {
+            response.status(400).send(e.message);
+        }
     }
 }
 
