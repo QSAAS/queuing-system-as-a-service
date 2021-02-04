@@ -29,7 +29,10 @@
         },
         "FunctionExpression": {
           "parameters": "first"
-        }
+        },
+        "ObjectExpression": "first",
+        "ImportDeclaration": "first",
+        "VariableDeclarator": 4
       }
     ],
     "no-plusplus": "off",
