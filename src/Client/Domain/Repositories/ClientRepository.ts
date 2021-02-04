@@ -1,7 +1,7 @@
 import Client from "../Entities/Client";
 
 interface ClientRepository {
-    create(client: Client): Promise<any>;
+    save(client: Client): Promise<Client>;
 }
 
 export default ClientRepository;
