@@ -2,6 +2,7 @@ import {
     model, Document, Schema, Model,
 } from "mongoose";
 import ClientId from "@app/Client/Domain/ValueObjects/ClientId";
+import ClientNotFoundError from "@app/Client/Domain/Errors/ClientNotFoundError";
 import ClientRepository from "../Domain/Repositories/ClientRepository";
 import Client from "../Domain/Entities/Client";
 
@@ -48,14 +49,22 @@ const schema: Schema = new Schema({
 const mongooseClient: Model<IClient> = model("Client", schema);
 
 class MongoClientRepository implements ClientRepository {
-    async save(client: Client): Promise<Client> {
-        const mongoClient = await mongooseClient.create({
+    public async save(client: Client): Promise<Client> {
+        const document: IClient = await mongooseClient.create({
             id: client.getId().toString(),
             username: client.getUsername(),
             password: client.getPassword(),
             email: client.getEmail(),
         });
-        return MongoClientRepository.toClient(mongoClient);
+        return MongoClientRepository.toClient(document);
+    }
+
+    public async getByUsername(username: string): Promise<Client> {
+        const document: IClient = await mongooseClient.findOne({ username }).exec();
+        if (document != null) {
+            return MongoClientRepository.toClient(document);
+        }
+        throw new ClientNotFoundError(username);
     }
 
     private static toClient(mongoClient: IClient): Client {
