@@ -8,8 +8,8 @@ const router = Router();
 
 router.post("/", async (request: Request, response: Response) => {
     const registerService = new RegisterService(new MongoClientRepository(), new ClientFactory());
-    const clientController = new ClientController(registerService);
-    await clientController.register(request, response);
+    const clientController = new ClientController();
+    await clientController.register(request, response, registerService);
 });
 
 export default router;
