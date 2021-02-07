@@ -129,10 +129,10 @@ export default class FinishedReservationRepository implements IFinishedReservati
             servingFinishTime: finishedReservation.getServingFinishTime()
                 .toString(),
 
-            queueServerId: finishedReservation.getQueueServerId().getString(),
+            queueServerId: finishedReservation.getQueueServerId().toString(),
 
             serverOperatorId: finishedReservation.getQueueServerId()
-                .getString(),
+                .toString(),
         });
     }
 }
