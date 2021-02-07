@@ -1,42 +1,105 @@
 import IFinishedReservationRepository from "@app/ReservationArchive/Domain/Service/FinishedReservationRepository";
-import ClientId from "@app/ReservationArchive/SharedKernel/ClientId";
+import ClientId from "@app/SharedKernel/ValueObject/ClientId";
 import FinishedReservation from "@app/ReservationArchive/Domain/Entity/FinishedReservation";
-import IFinishedReservation
-    from "@app/ReservationArchive/Infrastructure/Persistence/Mongoose/FinishedReservation/IFinishedReservation";
 import {
-    Connection, Model, Promise, Schema,
+    Connection, Document, Model, Schema,
 } from "mongoose";
-import { finished } from "stream";
-import DateTime from "@app/ReservationArchive/SharedKernel/DateTime";
-import OrganizationAccountId from "@app/ReservationArchive/SharedKernel/OrganizationAccountId";
-import ReservationId from "@app/ReservationArchive/SharedKernel/ReservationId";
-import QueuingNodeId from "@app/ReservationArchive/SharedKernel/QueuingNodeId";
-import QueueServerId from "@app/ReservationArchive/SharedKernel/QueueServerId";
+import DateTime from "@app/SharedKernel/ValueObject/DateTime";
+import OrganizationAccountId from "@app/SharedKernel/ValueObject/OrganizationAccountId";
+import ReservationId from "@app/SharedKernel/ValueObject/ReservationId";
+import QueuingNodeId from "@app/SharedKernel/ValueObject/QueuingNodeId";
+import QueueServerId from "@app/SharedKernel/ValueObject/QueueServerId";
+import ConnectionManager
+    from "@app/SharedKernel/Infrastructure/Persistence/Mongoose/Connection/ConnectionManager";
+import PersistenceError from "@app/ReservationArchive/Domain/Error/Persistence/PersistenceError";
 
+interface IFinishedReservationDoc extends Document {
+    reservationId: string;
+
+    clientId: string;
+
+    queuingNodeId: string;
+
+    reservationTime: string;
+
+    servingStartTime: string;
+
+    servingFinishTime: string;
+
+    queueServerId: string;
+
+    serverOperatorId: string;
+}
+
+const finishedReservationSchema: Schema<IFinishedReservationDoc> = new Schema({
+    reservationId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    clientId: {
+        type: String,
+        required: true,
+    },
+    queuingNodeId: {
+        type: String,
+        required: true,
+    },
+    reservationTime: {
+        type: String,
+        required: true,
+    },
+    servingStartTime: {
+        type: String,
+        required: true,
+    },
+    servingFinishTime: {
+        type: String,
+        required: true,
+    },
+    queueServerId: {
+        type: String,
+        required: true,
+    },
+    serverOperatorId: {
+        type: String,
+        required: true,
+    },
+}, { collection: "FinishedReservations" });
 export default class FinishedReservationRepository implements IFinishedReservationRepository {
-    private readonly connection: Connection;
+    private readonly FinishedReservationModel: Model<IFinishedReservationDoc>;
 
-    private readonly model: Model<IFinishedReservation>;
-
-    constructor(connection: Connection, finishedReservationSchema: Schema<IFinishedReservation>) {
-        this.connection = connection;
-        // probably bad design. but gotta move fast for now.
-        this.model = connection.model<IFinishedReservation>("FinishedReservations", finishedReservationSchema);
+    constructor(connectionManager: ConnectionManager) {
+        const connection: Connection = connectionManager.getConnection();
+        this.FinishedReservationModel = connection.model<IFinishedReservationDoc>("FinishedReservations",
+                                                                                  finishedReservationSchema);
     }
 
-    public getClientReservations(clientId: ClientId): Promise<FinishedReservation[]> {
-        return Promise.resolve([]);
-    }
-
-    public async save(finishedReservation: FinishedReservation): Promise<IFinishedReservation> {
+    public async getClientReservations(clientId: ClientId): Promise<FinishedReservation[]> {
         try {
-            await this.model.save();
+            const finishedReservationDocs: IFinishedReservationDoc[] = await this.FinishedReservationModel.find(
+                { clientId: clientId.toString() },
+            );
+            const finishedReservations: FinishedReservation[] = [];
+            for (let i = 0; i < finishedReservationDocs.length; ++i) {
+                finishedReservations.push(this.toFinishedReservationEntity(finishedReservationDocs[i]));
+            }
+            return finishedReservations;
         } catch (e) {
-            throw e;
+            throw new PersistenceError("Read error");
         }
     }
 
-    private toFinishedReservationEntity(finishedReservation: IFinishedReservation): FinishedReservation {
+    public async save(finishedReservation: FinishedReservation): Promise<void> {
+        const finishedReservationDoc: IFinishedReservationDoc = this.toIFinishedReservationDoc(finishedReservation);
+        try {
+            await finishedReservationDoc.save();
+        } catch (e) {
+            throw new PersistenceError("Save error");
+        }
+    }
+
+    private toFinishedReservationEntity(finishedReservation: IFinishedReservationDoc): FinishedReservation {
         return FinishedReservation.from(ReservationId.from(finishedReservation.reservationId),
                                         ClientId.from(finishedReservation.clientId),
                                         QueuingNodeId.from(finishedReservation.queuingNodeId),
@@ -45,5 +108,24 @@ export default class FinishedReservationRepository implements IFinishedReservati
                                         DateTime.from(finishedReservation.servingFinishTime),
                                         QueueServerId.from(finishedReservation.queueServerId),
                                         OrganizationAccountId.from(finishedReservation.serverOperatorId));
+    }
+
+    private toIFinishedReservationDoc(finishedReservation: FinishedReservation): IFinishedReservationDoc {
+        return new this.FinishedReservationModel({
+            reservationId: finishedReservation.getReservationId().toString(),
+
+            clientId: finishedReservation.getClientId().toString(),
+            queuingNodeId: finishedReservation.getQueuingNodeId().toString(),
+
+            reservationTime: finishedReservation.getReservationTime().toString(),
+
+            servingStartTime: finishedReservation.getServingStartTime().toString(),
+
+            servingFinishTime: finishedReservation.getServingFinishTime().toString(),
+
+            queueServerId: finishedReservation.getQueueServerId().getString(),
+
+            serverOperatorId: finishedReservation.getQueueServerId().getString(),
+        });
     }
 }
