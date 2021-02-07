@@ -31,41 +31,44 @@ interface IFinishedReservationDoc extends Document {
     serverOperatorId: string;
 }
 
-const finishedReservationSchema: Schema<IFinishedReservationDoc> = new Schema({
-    reservationId: {
-        type: String,
-        required: true,
-        unique: true,
+const finishedReservationSchema: Schema<IFinishedReservationDoc> = new Schema(
+    {
+        reservationId: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        clientId: {
+            type: String,
+            required: true,
+        },
+        queuingNodeId: {
+            type: String,
+            required: true,
+        },
+        reservationTime: {
+            type: String,
+            required: true,
+        },
+        servingStartTime: {
+            type: String,
+            required: true,
+        },
+        servingFinishTime: {
+            type: String,
+            required: true,
+        },
+        queueServerId: {
+            type: String,
+            required: true,
+        },
+        serverOperatorId: {
+            type: String,
+            required: true,
+        },
     },
-    clientId: {
-        type: String,
-        required: true,
-    },
-    queuingNodeId: {
-        type: String,
-        required: true,
-    },
-    reservationTime: {
-        type: String,
-        required: true,
-    },
-    servingStartTime: {
-        type: String,
-        required: true,
-    },
-    servingFinishTime: {
-        type: String,
-        required: true,
-    },
-    queueServerId: {
-        type: String,
-        required: true,
-    },
-    serverOperatorId: {
-        type: String,
-        required: true,
-    },
-}, { collection: "FinishedReservations" });
+    { collection: "FinishedReservations" },
+);
 export default class FinishedReservationRepository implements IFinishedReservationRepository {
     private readonly FinishedReservationModel: Model<IFinishedReservationDoc>;
 
@@ -117,15 +120,19 @@ export default class FinishedReservationRepository implements IFinishedReservati
             clientId: finishedReservation.getClientId().toString(),
             queuingNodeId: finishedReservation.getQueuingNodeId().toString(),
 
-            reservationTime: finishedReservation.getReservationTime().toString(),
+            reservationTime: finishedReservation.getReservationTime()
+                .toString(),
 
-            servingStartTime: finishedReservation.getServingStartTime().toString(),
+            servingStartTime: finishedReservation.getServingStartTime()
+                .toString(),
 
-            servingFinishTime: finishedReservation.getServingFinishTime().toString(),
+            servingFinishTime: finishedReservation.getServingFinishTime()
+                .toString(),
 
             queueServerId: finishedReservation.getQueueServerId().getString(),
 
-            serverOperatorId: finishedReservation.getQueueServerId().getString(),
+            serverOperatorId: finishedReservation.getQueueServerId()
+                .getString(),
         });
     }
 }
