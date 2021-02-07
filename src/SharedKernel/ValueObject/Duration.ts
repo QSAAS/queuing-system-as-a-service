@@ -6,4 +6,12 @@ export default class Duration {
     constructor(duration: number) {
         this.duration = duration;
     }
+
+    static from(duration: number): Duration {
+        return new Duration(duration);
+    }
+
+    public toNumber(): number {
+        return this.duration;
+    }
 }
