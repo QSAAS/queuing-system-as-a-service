@@ -11,7 +11,7 @@ export default class DateTime {
         return new DateTime(new Date(dateTime));
     }
 
-    public getDateTimeString(): string {
+    public toString(): string {
         return this.dateTime.toDateString();
     }
 }
