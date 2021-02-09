@@ -29,45 +29,51 @@ export interface FinishedReservationDoc extends Document {
 }
 
 const finishedReservationSchema: Schema<FinishedReservationDoc> = new Schema(
-        {
-            reservationId: {
-                type: String,
-                required: true,
-                unique: true,
-            },
-            clientId: {
-                type: String,
-                required: true,
-            },
-            queuingNodeId: {
-                type: String,
-                required: true,
-            },
-            reservationTime: {
-                type: String,
-                required: true,
-            },
-            servingStartTime: {
-                type: String,
-                required: true,
-            },
-            servingFinishTime: {
-                type: String,
-                required: true,
-            },
-            queueServerId: {
-                type: String,
-                required: true,
-            },
-            serverOperatorId: {
-                type: String,
-                required: true,
-            },
+    {
+        reservationId: {
+            type: String,
+            required: true,
+            unique: true,
         },
-        { collection: "FinishedReservations" },
+        clientId: {
+            type: String,
+            required: true,
+        },
+        queuingNodeId: {
+            type: String,
+            required: true,
+        },
+        reservationTime: {
+            type: String,
+            required: true,
+        },
+        servingStartTime: {
+            type: String,
+            required: true,
+        },
+        servingFinishTime: {
+            type: String,
+            required: true,
+        },
+        queueServerId: {
+            type: String,
+            required: true,
+        },
+        serverOperatorId: {
+            type: String,
+            required: true,
+        },
+    },
+    { collection: "FinishedReservations" },
 );
 
-finishedReservationSchema.statics.toFinishedReservationEntity = function (finishedReservation: FinishedReservationDoc): FinishedReservation {
+export interface FinishedReservationModel extends Model<FinishedReservationDoc> {
+    toFinishedReservationEntity(finishedReservation: FinishedReservationDoc): FinishedReservation;
+
+    toFinishedReservationDoc(finishedReservation: FinishedReservation): FinishedReservationDoc
+}
+
+function toFinishedReservationEntity(finishedReservation: FinishedReservationDoc): FinishedReservation {
     return FinishedReservation.from(ReservationId.from(finishedReservation.reservationId),
                                     ClientId.from(finishedReservation.clientId),
                                     QueuingNodeId.from(finishedReservation.queuingNodeId),
@@ -76,37 +82,38 @@ finishedReservationSchema.statics.toFinishedReservationEntity = function (finish
                                     DateTime.from(finishedReservation.servingFinishTime),
                                     QueueServerId.from(finishedReservation.queueServerId),
                                     OrganizationAccountId.from(finishedReservation.serverOperatorId));
-};
-finishedReservationSchema.statics.toFinishedReservationDoc = function (finishedReservation: FinishedReservation): FinishedReservationDoc {
-    return new this({
-                        reservationId: finishedReservation.getReservationId().toString(),
-
-                        clientId: finishedReservation.getClientId().toString(),
-                        queuingNodeId: finishedReservation.getQueuingNodeId().toString(),
-
-                        reservationTime: finishedReservation.getReservationTime()
-                                                            .toString(),
-
-                        servingStartTime: finishedReservation.getServingStartTime()
-                                                             .toString(),
-
-                        servingFinishTime: finishedReservation.getServingFinishTime()
-                                                              .toString(),
-
-                        queueServerId: finishedReservation.getQueueServerId().toString(),
-
-                        serverOperatorId: finishedReservation.getQueueServerId()
-                                                             .toString(),
-                    });
-};
-
-export interface FinishedReservationModel extends Model<FinishedReservationDoc> {
-    toFinishedReservationEntity(finishedReservation: FinishedReservationDoc): FinishedReservation;
-
-    toFinishedReservationDoc(finishedReservation: FinishedReservation): FinishedReservationDoc
 }
 
-export default function FinishedReservationModelFactory(connectionManager: ConnectionManager): FinishedReservationModel {
+function toFinishedReservationDoc(this: Model<FinishedReservationDoc>,
+    finishedReservation: FinishedReservation): FinishedReservationDoc {
+    return new this({
+        reservationId: finishedReservation.getReservationId().toString(),
+
+        clientId: finishedReservation.getClientId().toString(),
+        queuingNodeId: finishedReservation.getQueuingNodeId().toString(),
+
+        reservationTime: finishedReservation.getReservationTime()
+            .toString(),
+
+        servingStartTime: finishedReservation.getServingStartTime()
+            .toString(),
+
+        servingFinishTime: finishedReservation.getServingFinishTime()
+            .toString(),
+
+        queueServerId: finishedReservation.getQueueServerId().toString(),
+
+        serverOperatorId: finishedReservation.getQueueServerId()
+            .toString(),
+    });
+}
+
+finishedReservationSchema.statics.toFinishedReservationEntity = toFinishedReservationEntity;
+finishedReservationSchema.statics.toFinishedReservationDoc = toFinishedReservationDoc;
+
+export default function FinishedReservationModelFactory(
+    connectionManager: ConnectionManager,
+): FinishedReservationModel {
     const connection: Connection = connectionManager.getConnection();
     return connection.model<FinishedReservationDoc, FinishedReservationModel>("FinishedReservationModel",
                                                                               finishedReservationSchema);
