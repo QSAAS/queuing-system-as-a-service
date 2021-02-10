@@ -7,11 +7,15 @@ export default class DateTime {
         this.dateTime = dateTime;
     }
 
-    public static from(dateTime: string): DateTime {
+    public static from(dateTime: number): DateTime {
         return new DateTime(new Date(dateTime));
     }
 
     public toString(): string {
         return this.dateTime.toDateString();
+    }
+
+    public toUnixTimeStamp(): number {
+        return this.dateTime.getTime() / 1000;
     }
 }

@@ -16,7 +16,7 @@ export interface CancelledReservationDoc extends Document {
 
     queuingNodeId: string;
 
-    reservationTime: string;
+    reservationTime: number;
 
     serverWastedTime: number;
 }
@@ -37,7 +37,7 @@ const cancelledReservationSchema: Schema<CancelledReservationDoc> = new Schema(
             required: true,
         },
         reservationTime: {
-            type: String,
+            type: Number,
             required: true,
         },
         serverWastedTime: {
@@ -71,7 +71,7 @@ function toCancelledReservationDoc(this: Model<CancelledReservationDoc>,
         queuingNodeId: cancelledReservation.getQueuingNodeId().toString(),
 
         reservationTime: cancelledReservation.getReservationTime()
-            .toString(),
+            .toUnixTimeStamp(),
 
         serverWastedTime: cancelledReservation.getServerWastedTime()
             .toNumber(),
