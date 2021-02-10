@@ -82,7 +82,7 @@ cancelledReservationSchema.statics.toCancelledReservationDoc = toCancelledReserv
 
 cancelledReservationSchema.statics.toCancelledReservationEntity = toCancelledReservationEntity;
 
-export default function CancelledReservationModelFactory(
+export default function cancelledReservationModelFactory(
     connectionManager: ConnectionManager,
 ): CancelledReservationModel {
     const connection: Connection = connectionManager.getConnection();
