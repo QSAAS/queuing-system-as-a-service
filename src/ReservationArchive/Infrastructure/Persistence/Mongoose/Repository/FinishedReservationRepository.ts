@@ -1,4 +1,4 @@
-import IFinishedReservationRepository from "@app/ReservationArchive/Domain/Service/FinishedReservationRepository";
+import IFinishedReservationRepository from "@app/ReservationArchive/Domain/Service/IFinishedReservationRepository";
 import ClientId from "@app/SharedKernel/ValueObject/ClientId";
 import FinishedReservation from "@app/ReservationArchive/Domain/Entity/FinishedReservation";
 import PersistenceError from "@app/ReservationArchive/Domain/Error/Persistence/PersistenceError";
