@@ -103,7 +103,7 @@ function toFinishedReservationDoc(this: Model<FinishedReservationDoc>,
 
         queueServerId: finishedReservation.getQueueServerId().toString(),
 
-        serverOperatorId: finishedReservation.getQueueServerId()
+        serverOperatorId: finishedReservation.getServerOperatorId()
             .toString(),
     });
 }
@@ -111,7 +111,7 @@ function toFinishedReservationDoc(this: Model<FinishedReservationDoc>,
 finishedReservationSchema.statics.toFinishedReservationEntity = toFinishedReservationEntity;
 finishedReservationSchema.statics.toFinishedReservationDoc = toFinishedReservationDoc;
 
-export default function FinishedReservationModelFactory(
+export default function finishedReservationModelFactory(
     connectionManager: ConnectionManager,
 ): FinishedReservationModel {
     const connection: Connection = connectionManager.getConnection();
