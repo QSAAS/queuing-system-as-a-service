@@ -1,5 +1,5 @@
-// Didn't give modeling a duration much thought, this is probably why we should use a library that does these design
-// decisions for us
+// TODO discuss: we should use a library that handles durations e.g. "https://www.npmjs.com/package/duration"
+// TODO make Duration an interface
 export default class Duration {
     private readonly duration: number;
 
