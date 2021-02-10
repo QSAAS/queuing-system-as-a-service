@@ -1,11 +1,12 @@
 import express from "express";
-import dotenv from "dotenv";
-
-dotenv.config();
+import ConfigReader from "@app/SharedKernel/Services/ConfigReader";
+import archiveRouter from "@app/ReservationArchive/Presentation/routes";
 
 const app = express();
 app.use(express.json());
-const port = process.env.SERVER_PORT || 8080;
+app.use("/api/archive", archiveRouter);
+
+const port = ConfigReader.read("SERVER_PORT");
 app.listen(port, () => {
     console.log(`Server started, listening on ${port}`);
 });
