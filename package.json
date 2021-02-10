@@ -6,6 +6,7 @@
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "mongoose": "^5.11.15",
+        "tsconfig-paths": "^3.9.0",
         "uuid": "^8.3.2"
     },
     "devDependencies": {
@@ -29,6 +30,8 @@
         "start": "nodemon src/index.ts",
         "lint": "eslint .",
         "test": "jest --passWithNoTests",
-        "test-persistence": "ts-jest --runInBand ./tests"
+        "test-persistence": "ts-jest --runInBand ./tests",
+        "compile-and-run": "tsc && ts-node -r tsconfig-paths/register src/index.ts",
+        "dumb": "tsc && ts-node -r tsconfig-paths/register src/dumb.ts"
     }
 }
