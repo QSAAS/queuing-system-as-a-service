@@ -27,7 +27,7 @@
         "typescript": "^4.1.3"
     },
     "scripts": {
-        "start": "nodemon src/index.ts",
+        "start": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register src/index.ts",
         "lint": "eslint .",
         "test": "jest --passWithNoTests",
         "test-persistence": "ts-jest --runInBand ./tests",
