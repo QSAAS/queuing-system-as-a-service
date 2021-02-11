@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
 import ReservationArchiveController from "@app/ReservationArchive/Presentation/ArchiveController";
 import ConnectionManager from "@app/SharedKernel/Infrastructure/Persistence/Mongoose/Connection/ConnectionManager";
-import SingletonConnectionManager
-    from "@app/SharedKernel/Infrastructure/Persistence/Mongoose/Connection/SingletonConnectionManager";
+import SimpleConnectionManager
+    from "@app/SharedKernel/Infrastructure/Persistence/Mongoose/Connection/SimpleConnectionManager";
 import cancelledReservationModelFactory
     from "@app/ReservationArchive/Infrastructure/Persistence/Mongoose/Model/CancelledReservationModel";
 import ArchiveCancelledReservationService
@@ -25,7 +25,7 @@ const router = Router();
 
 // TODO discuss with Mostafa: I have moved connection manager code here till it's needed inside a function
 const dbURL: string = ConfigReader.read("DB_URL");
-const connectionManager: ConnectionManager = new SingletonConnectionManager(dbURL);
+const connectionManager: ConnectionManager = new SimpleConnectionManager(dbURL);
 
 const controller: ReservationArchiveController = new ReservationArchiveController();
 
