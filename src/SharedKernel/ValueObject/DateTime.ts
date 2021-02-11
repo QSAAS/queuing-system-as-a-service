@@ -1,13 +1,13 @@
-// TODO discuss: we should use a library that handles DateTime e.g. "https://www.npmjs.com/package/unix-timestamp"
-// TODO make DateTime an interface
 export default class DateTime {
+    // TODO: Make DateTime interface since it can have multiple implementations
+    // This is a placeholder implementation using typescript's date time until we decide on a library or something.
     private readonly dateTime: Date;
 
     constructor(dateTime: Date) {
         this.dateTime = dateTime;
     }
 
-    public static from(dateTime: string): DateTime {
+    public static from(dateTime: number): DateTime {
         return new DateTime(new Date(dateTime));
     }
 
@@ -15,7 +15,7 @@ export default class DateTime {
         return this.dateTime.toDateString();
     }
 
-    public toUnixTime(): number {
-        return -1;
+    public toUnixTimeStamp(): number {
+        return this.dateTime.getTime() / 1000;
     }
 }

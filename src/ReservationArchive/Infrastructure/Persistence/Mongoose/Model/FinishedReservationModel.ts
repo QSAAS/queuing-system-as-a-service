@@ -17,11 +17,11 @@ export interface FinishedReservationDoc extends Document {
 
     queuingNodeId: string;
 
-    reservationTime: string;
+    reservationTime: number;
 
-    servingStartTime: string;
+    servingStartTime: number;
 
-    servingFinishTime: string;
+    servingFinishTime: number;
 
     queueServerId: string;
 
@@ -44,15 +44,15 @@ const finishedReservationSchema: Schema<FinishedReservationDoc> = new Schema(
             required: true,
         },
         reservationTime: {
-            type: String,
+            type: Number,
             required: true,
         },
         servingStartTime: {
-            type: String,
+            type: Number,
             required: true,
         },
         servingFinishTime: {
-            type: String,
+            type: Number,
             required: true,
         },
         queueServerId: {
@@ -93,13 +93,13 @@ function toFinishedReservationDoc(this: Model<FinishedReservationDoc>,
         queuingNodeId: finishedReservation.getQueuingNodeId().toString(),
 
         reservationTime: finishedReservation.getReservationTime()
-            .toString(),
+            .toUnixTimeStamp(),
 
         servingStartTime: finishedReservation.getServingStartTime()
-            .toString(),
+            .toUnixTimeStamp(),
 
         servingFinishTime: finishedReservation.getServingFinishTime()
-            .toString(),
+            .toUnixTimeStamp(),
 
         queueServerId: finishedReservation.getQueueServerId().toString(),
 
