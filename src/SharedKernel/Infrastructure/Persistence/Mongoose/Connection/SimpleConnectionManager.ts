@@ -6,7 +6,10 @@ export default class SimpleConnectionManager implements ConnectionManager {
     private connection: Connection;
 
     constructor(db_url: string) {
-        this.connection = createConnection(db_url);
+        this.connection = createConnection(db_url, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
     }
 
     getConnection(): Connection {
