@@ -16,13 +16,18 @@ import finishedReservationModelFactory
     from "@app/ReservationArchive/Infrastructure/Persistence/Mongoose/Model/FinishedReservationModel";
 import ArchiveFinishedReservationService
     from "@app/ReservationArchive/Application/Services/ArchiveFinishedReservationService";
+import GetCancelledReservationsService
+    from "@app/ReservationArchive/Application/Services/GetCancelledReservationsService";
 
 const router = Router();
+
+// TODO discuss with Mostafa: I have moved connection manager code here till it's needed inside a function
 const dbURL: string = ConfigReader.read("DB_URL");
+const connectionManager: ConnectionManager = new SingletonConnectionManager(dbURL);
+
 const controller: ReservationArchiveController = new ReservationArchiveController();
 
 router.post("/cancelled_reservations", async (request: Request, response: Response) => {
-    const connectionManager: ConnectionManager = new SingletonConnectionManager(dbURL);
     const cancelledReservationModel = cancelledReservationModelFactory(connectionManager);
     const service = new ArchiveCancelledReservationService(
         new MongooseCancelledReservationRepo(cancelledReservationModel),
@@ -31,12 +36,19 @@ router.post("/cancelled_reservations", async (request: Request, response: Respon
 });
 
 router.post("/finished_reservations", async (request: Request, response: Response) => {
-    const connectionManager: ConnectionManager = new SingletonConnectionManager(dbURL);
     const finishedReservationModel = finishedReservationModelFactory(connectionManager);
     const service = new ArchiveFinishedReservationService(
         new MongooseFinishedReservationRepo(finishedReservationModel),
     );
     await controller.archiveFinishedReservation(request, response, service);
+});
+
+router.get("/cancelled_reservations", async (request: Request, response: Response) => {
+    const cancelledReservationModel = cancelledReservationModelFactory(connectionManager);
+    const service = new GetCancelledReservationsService(
+        new MongooseCancelledReservationRepo(cancelledReservationModel),
+    );
+    await controller.getCancelledReservations(request, response, service);
 });
 
 export default router;
