@@ -1,7 +1,6 @@
 import ICancelledReservationRepository from "@app/ReservationArchive/Domain/Service/ICancelledReservationRepository";
 import ClientId from "@app/SharedKernel/ValueObject/ClientId";
 import CancelledReservation from "@app/ReservationArchive/Domain/Entity/CancelledReservation";
-import PersistenceError from "@app/ReservationArchive/Domain/Error/Persistence/PersistenceError";
 import {
     CancelledReservationModel,
     CancelledReservationDoc,
@@ -15,30 +14,22 @@ export default class CancelledReservationRepository implements ICancelledReserva
     }
 
     public async getClientReservations(clientId: ClientId): Promise<CancelledReservation[]> {
-        try {
-            const cancelledReservationDocs: CancelledReservationDoc[] = await this.CancelledReservationModel.find(
-                { clientId: clientId.toString() },
+        const cancelledReservationDocs: CancelledReservationDoc[] = await this.CancelledReservationModel.find(
+            { clientId: clientId.toString() },
+        );
+        const cancelledReservations: CancelledReservation[] = [];
+        for (let i = 0; i < cancelledReservationDocs.length; ++i) {
+            cancelledReservations.push(
+                this.CancelledReservationModel.toCancelledReservationEntity(cancelledReservationDocs[i]),
             );
-            const cancelledReservations: CancelledReservation[] = [];
-            for (let i = 0; i < cancelledReservationDocs.length; ++i) {
-                cancelledReservations.push(
-                    this.CancelledReservationModel.toCancelledReservationEntity(cancelledReservationDocs[i]),
-                );
-            }
-            return cancelledReservations;
-        } catch (e) {
-            throw new PersistenceError("Read error");
         }
+        return cancelledReservations;
     }
 
     public async save(cancelledReservation: CancelledReservation): Promise<void> {
         const cancelledReservationDoc = this.CancelledReservationModel.toCancelledReservationDoc(
             cancelledReservation,
         );
-        try {
-            await cancelledReservationDoc.save();
-        } catch (e) {
-            throw new PersistenceError("Save error");
-        }
+        await cancelledReservationDoc.save();
     }
 }

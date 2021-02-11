@@ -4,7 +4,7 @@ import {
 import FinishedReservation from "@app/ReservationArchive/Domain/Entity/FinishedReservation";
 import ReservationId from "@app/SharedKernel/ValueObject/ReservationId";
 import ClientId from "@app/SharedKernel/ValueObject/ClientId";
-import QueuingNodeId from "@app/SharedKernel/ValueObject/QueuingNodeId";
+import QueueingNodeId from "@app/SharedKernel/ValueObject/QueueingNodeId";
 import DateTime from "@app/SharedKernel/ValueObject/DateTime";
 import QueueServerId from "@app/SharedKernel/ValueObject/QueueServerId";
 import OrganizationAccountId from "@app/SharedKernel/ValueObject/OrganizationAccountId";
@@ -15,7 +15,7 @@ export interface FinishedReservationDoc extends Document {
 
     clientId: string;
 
-    queuingNodeId: string;
+    queueingNodeId: string;
 
     reservationTime: number;
 
@@ -39,7 +39,7 @@ const finishedReservationSchema: Schema<FinishedReservationDoc> = new Schema(
             type: String,
             required: true,
         },
-        queuingNodeId: {
+        queueingNodeId: {
             type: String,
             required: true,
         },
@@ -76,7 +76,7 @@ export interface FinishedReservationModel extends Model<FinishedReservationDoc> 
 function toFinishedReservationEntity(finishedReservation: FinishedReservationDoc): FinishedReservation {
     return FinishedReservation.from(ReservationId.from(finishedReservation.reservationId),
                                     ClientId.from(finishedReservation.clientId),
-                                    QueuingNodeId.from(finishedReservation.queuingNodeId),
+                                    QueueingNodeId.from(finishedReservation.queueingNodeId),
                                     DateTime.from(finishedReservation.reservationTime),
                                     DateTime.from(finishedReservation.servingStartTime),
                                     DateTime.from(finishedReservation.servingFinishTime),
@@ -90,7 +90,7 @@ function toFinishedReservationDoc(this: Model<FinishedReservationDoc>,
         reservationId: finishedReservation.getReservationId().toString(),
 
         clientId: finishedReservation.getClientId().toString(),
-        queuingNodeId: finishedReservation.getQueuingNodeId().toString(),
+        queueingNodeId: finishedReservation.getqueueingNodeId().toString(),
 
         reservationTime: finishedReservation.getReservationTime()
             .toUnixTime(),

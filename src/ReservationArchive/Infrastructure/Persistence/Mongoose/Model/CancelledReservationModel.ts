@@ -5,7 +5,7 @@ import ConnectionManager from "@app/SharedKernel/Infrastructure/Persistence/Mong
 import CancelledReservation from "@app/ReservationArchive/Domain/Entity/CancelledReservation";
 import ReservationId from "@app/SharedKernel/ValueObject/ReservationId";
 import ClientId from "@app/SharedKernel/ValueObject/ClientId";
-import QueuingNodeId from "@app/SharedKernel/ValueObject/QueuingNodeId";
+import QueueingNodeId from "@app/SharedKernel/ValueObject/QueueingNodeId";
 import DateTime from "@app/SharedKernel/ValueObject/DateTime";
 import Duration from "@app/SharedKernel/ValueObject/Duration";
 
@@ -14,7 +14,7 @@ export interface CancelledReservationDoc extends Document {
 
     clientId: string;
 
-    queuingNodeId: string;
+    queueingNodeId: string;
 
     reservationTime: number;
 
@@ -32,7 +32,7 @@ const cancelledReservationSchema: Schema<CancelledReservationDoc> = new Schema(
             type: String,
             required: true,
         },
-        queuingNodeId: {
+        queueingNodeId: {
             type: String,
             required: true,
         },
@@ -57,7 +57,7 @@ export interface CancelledReservationModel extends Model<CancelledReservationDoc
 function toCancelledReservationEntity(cancelledReservation: CancelledReservationDoc): CancelledReservation {
     return CancelledReservation.from(ReservationId.from(cancelledReservation.reservationId),
                                      ClientId.from(cancelledReservation.clientId),
-                                     QueuingNodeId.from(cancelledReservation.queuingNodeId),
+                                     QueueingNodeId.from(cancelledReservation.queueingNodeId),
                                      DateTime.from(cancelledReservation.reservationTime),
                                      Duration.from(cancelledReservation.serverWastedTime));
 }
@@ -68,7 +68,7 @@ function toCancelledReservationDoc(this: Model<CancelledReservationDoc>,
         reservationId: cancelledReservation.getReservationId().toString(),
 
         clientId: cancelledReservation.getClientId().toString(),
-        queuingNodeId: cancelledReservation.getQueuingNodeId().toString(),
+        queueingNodeId: cancelledReservation.getqueueingNodeId().toString(),
 
         reservationTime: cancelledReservation.getReservationTime()
             .toUnixTime(),

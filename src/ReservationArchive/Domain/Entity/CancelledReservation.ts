@@ -1,5 +1,5 @@
 import ReservationId from "@app/SharedKernel/ValueObject/ReservationId";
-import QueuingNodeId from "@app/SharedKernel/ValueObject/QueuingNodeId";
+import QueueingNodeId from "@app/SharedKernel/ValueObject/QueueingNodeId";
 import DateTime from "@app/SharedKernel/ValueObject/DateTime";
 import Duration from "@app/SharedKernel/ValueObject/Duration";
 import ClientId from "@app/SharedKernel/ValueObject/ClientId";
@@ -9,24 +9,24 @@ export default class CancelledReservation {
 
     private readonly clientId: ClientId;
 
-    private readonly queuingNodeId: QueuingNodeId;
+    private readonly queueingNodeId: QueueingNodeId;
 
     private readonly reservationTime: DateTime;
 
     private readonly serverWastedTime: Duration;
 
-    constructor(reservationId: ReservationId, clientId: ClientId, queuingNodeId: QueuingNodeId,
+    constructor(reservationId: ReservationId, clientId: ClientId, queueingNodeId: QueueingNodeId,
                 reservationTime: DateTime, serverWastedTime: Duration) {
         this.reservationId = reservationId;
         this.clientId = clientId;
-        this.queuingNodeId = queuingNodeId;
+        this.queueingNodeId = queueingNodeId;
         this.reservationTime = reservationTime;
         this.serverWastedTime = serverWastedTime;
     }
 
-    public static from(reservationId: ReservationId, clientId: ClientId, queuingNodeId: QueuingNodeId,
+    public static from(reservationId: ReservationId, clientId: ClientId, queueingNodeId: QueueingNodeId,
                        reservationTime: DateTime, serverWastedTime: Duration) {
-        return new CancelledReservation(reservationId, clientId, queuingNodeId, reservationTime, serverWastedTime);
+        return new CancelledReservation(reservationId, clientId, queueingNodeId, reservationTime, serverWastedTime);
     }
 
     getReservationId(): ReservationId {
@@ -37,8 +37,8 @@ export default class CancelledReservation {
         return this.clientId;
     }
 
-    getQueuingNodeId(): QueuingNodeId {
-        return this.queuingNodeId;
+    getqueueingNodeId(): QueueingNodeId {
+        return this.queueingNodeId;
     }
 
     getReservationTime(): DateTime {

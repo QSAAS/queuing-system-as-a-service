@@ -1,6 +1,6 @@
 import ReservationId from "@app/SharedKernel/ValueObject/ReservationId";
 import ClientId from "@app/SharedKernel/ValueObject/ClientId";
-import QueuingNodeId from "@app/SharedKernel/ValueObject/QueuingNodeId";
+import QueueingNodeId from "@app/SharedKernel/ValueObject/QueueingNodeId";
 import DateTime from "@app/SharedKernel/ValueObject/DateTime";
 import QueueServerId from "@app/SharedKernel/ValueObject/QueueServerId";
 import OrganizationAccountId from "@app/SharedKernel/ValueObject/OrganizationAccountId";
@@ -10,7 +10,7 @@ export default class FinishedReservation {
 
     private readonly clientId: ClientId;
 
-    private readonly queuingNodeId: QueuingNodeId;
+    private readonly queueingNodeId: QueueingNodeId;
 
     private readonly reservationTime: DateTime;
 
@@ -22,12 +22,12 @@ export default class FinishedReservation {
 
     private readonly serverOperatorId: OrganizationAccountId;
 
-    constructor(reservationId: ReservationId, clientId: ClientId, queuingNodeId: QueuingNodeId,
+    constructor(reservationId: ReservationId, clientId: ClientId, queueingNodeId: QueueingNodeId,
                 reservationTime: DateTime, servingStartTime: DateTime, servingFinishTime: DateTime,
                 queueServerId: QueueServerId, serverOperatorId: OrganizationAccountId) {
         this.reservationId = reservationId;
         this.clientId = clientId;
-        this.queuingNodeId = queuingNodeId;
+        this.queueingNodeId = queueingNodeId;
         this.reservationTime = reservationTime;
         this.servingStartTime = servingStartTime;
         this.servingFinishTime = servingFinishTime;
@@ -35,10 +35,10 @@ export default class FinishedReservation {
         this.serverOperatorId = serverOperatorId;
     }
 
-    public static from(reservationId: ReservationId, clientId: ClientId, queuingNodeId: QueuingNodeId,
+    public static from(reservationId: ReservationId, clientId: ClientId, queueingNodeId: QueueingNodeId,
                        reservationTime: DateTime, servingStartTime: DateTime, servingFinishTime: DateTime,
                        queueServerId: QueueServerId, serverOperatorId: OrganizationAccountId): FinishedReservation {
-        return new FinishedReservation(reservationId, clientId, queuingNodeId, reservationTime, servingStartTime,
+        return new FinishedReservation(reservationId, clientId, queueingNodeId, reservationTime, servingStartTime,
                                        servingFinishTime, queueServerId, serverOperatorId);
     }
 
@@ -50,8 +50,8 @@ export default class FinishedReservation {
         return this.clientId;
     }
 
-    getQueuingNodeId(): QueuingNodeId {
-        return this.queuingNodeId;
+    getqueueingNodeId(): QueueingNodeId {
+        return this.queueingNodeId;
     }
 
     getReservationTime(): DateTime {
