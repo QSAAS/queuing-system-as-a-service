@@ -7,6 +7,8 @@ app.use(express.json());
 app.use("/api/archive", archiveRouter);
 
 const port = ConfigReader.read("SERVER_PORT");
-app.listen(port, () => {
+const httpServer = app.listen(port, () => {
     console.log(`Server started, listening on ${port}`);
 });
+
+export default httpServer;
