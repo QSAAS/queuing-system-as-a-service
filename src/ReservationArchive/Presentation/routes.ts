@@ -18,6 +18,8 @@ import ArchiveFinishedReservationService
     from "@app/ReservationArchive/Application/Services/ArchiveFinishedReservationService";
 import GetCancelledReservationsService
     from "@app/ReservationArchive/Application/Services/GetCancelledReservationsService";
+import GetFinishedReservationsService
+    from "@app/ReservationArchive/Application/Services/GetFinishedReservationsService";
 
 const router = Router();
 
@@ -27,7 +29,10 @@ const connectionManager: ConnectionManager = new SingletonConnectionManager(dbUR
 
 const controller: ReservationArchiveController = new ReservationArchiveController();
 
-router.post("/cancelled_reservations", async (request: Request, response: Response) => {
+const finishedReservationsURL = "/finished_reservations";
+const cancelledReservationsURL = "/cancelled_reservations";
+
+router.post(cancelledReservationsURL, async (request: Request, response: Response) => {
     const cancelledReservationModel = cancelledReservationModelFactory(connectionManager);
     const service = new ArchiveCancelledReservationService(
         new MongooseCancelledReservationRepo(cancelledReservationModel),
@@ -35,7 +40,7 @@ router.post("/cancelled_reservations", async (request: Request, response: Respon
     await controller.archiveCancelledReservation(request, response, service);
 });
 
-router.post("/finished_reservations", async (request: Request, response: Response) => {
+router.post(finishedReservationsURL, async (request: Request, response: Response) => {
     const finishedReservationModel = finishedReservationModelFactory(connectionManager);
     const service = new ArchiveFinishedReservationService(
         new MongooseFinishedReservationRepo(finishedReservationModel),
@@ -43,12 +48,20 @@ router.post("/finished_reservations", async (request: Request, response: Respons
     await controller.archiveFinishedReservation(request, response, service);
 });
 
-router.get("/cancelled_reservations", async (request: Request, response: Response) => {
+router.get(cancelledReservationsURL, async (request: Request, response: Response) => {
     const cancelledReservationModel = cancelledReservationModelFactory(connectionManager);
     const service = new GetCancelledReservationsService(
         new MongooseCancelledReservationRepo(cancelledReservationModel),
     );
     await controller.getCancelledReservations(request, response, service);
+});
+
+router.get(finishedReservationsURL, async (request: Request, response: Response) => {
+    const finishedReservationModel = finishedReservationModelFactory(connectionManager);
+    const service = new GetFinishedReservationsService(
+        new MongooseFinishedReservationRepo(finishedReservationModel),
+    );
+    await controller.getFinishedReservations(request, response, service);
 });
 
 export default router;

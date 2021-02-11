@@ -8,6 +8,8 @@ import FinishedReservationDTO from "@app/ReservationArchive/Application/DataTran
 import GetCancelledReservationsService
     from "@app/ReservationArchive/Application/Services/GetCancelledReservationsService";
 import ClientIdDTO from "@app/ReservationArchive/Application/DataTransferObjects/ClientIdDTO";
+import GetFinishedReservationsService
+    from "@app/ReservationArchive/Application/Services/GetFinishedReservationsService";
 
 export default class ReservationArchiveController {
     public async archiveCancelledReservation(request: Request, response: Response,
@@ -46,6 +48,19 @@ export default class ReservationArchiveController {
         // TODO discuss: query.clientId returns string | string[] | ParsedQs | ParsedQs[]
         const dto = new ClientIdDTO(query.clientId.toString());
         const ret: CancelledReservationDTO[] = await service.run(dto);
+        response.status(200).send(ret);
+    }
+
+    public async getFinishedReservations(request: Request, response: Response,
+                                         service: GetFinishedReservationsService): Promise<void> {
+        const { query } = request;
+        if (!query.clientId) {
+            response.status(400).send();
+            return;
+        }
+
+        const dto = new ClientIdDTO(query.clientId.toString());
+        const ret: FinishedReservationDTO[] = await service.run(dto);
         response.status(200).send(ret);
     }
 }
