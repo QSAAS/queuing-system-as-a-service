@@ -8,6 +8,17 @@ import QueueServerId from "@app/SharedKernel/ValueObject/QueueServerId";
 import OrganizationAccountId from "@app/SharedKernel/ValueObject/OrganizationAccountId";
 
 export default class FinishedReservationTransformer {
+    public static toDTO(entity: FinishedReservation): FinishedReservationDTO {
+        return new FinishedReservationDTO(entity.getReservationId().toString(),
+                                          entity.getClientId().toString(),
+                                          entity.getQueuingNodeId().toString(),
+                                          entity.getReservationTime().toUnixTime(),
+                                          entity.getServingStartTime().toUnixTime(),
+                                          entity.getServingFinishTime().toUnixTime(),
+                                          entity.getQueueServerId().toString(),
+                                          entity.getServerOperatorId().toString());
+    }
+
     public static toEntity(dto: FinishedReservationDTO): FinishedReservation {
         return FinishedReservation.from(ReservationId.from(dto.reservationId),
                                         ClientId.from(dto.clientId),
