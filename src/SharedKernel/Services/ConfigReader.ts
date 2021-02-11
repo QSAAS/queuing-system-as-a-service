@@ -7,6 +7,7 @@ export default class ConfigReader {
     public static read(key: string): string {
         if (!ConfigReader.isInitialized) {
             dotenv.config();
+            this.isInitialized = true;
         }
 
         const value = process.env[key];
