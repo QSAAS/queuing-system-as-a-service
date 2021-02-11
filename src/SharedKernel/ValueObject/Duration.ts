@@ -11,7 +11,7 @@ export default class Duration {
         return new Duration(duration);
     }
 
-    public toNumber(): number {
+    public toUnixSeconds(): number {
         return this.duration;
     }
 }

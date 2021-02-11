@@ -23,9 +23,9 @@ export default class FinishedReservationTransformer {
         return FinishedReservation.from(ReservationId.from(dto.reservationId),
                                         ClientId.from(dto.clientId),
                                         QueuingNodeId.from(dto.queueingNodeId),
-                                        DateTime.from(dto.reservationTime.toString()),
-                                        DateTime.from(dto.servingStartTime.toString()),
-                                        DateTime.from(dto.servingFinishTime.toString()),
+                                        DateTime.from(dto.reservationTime),
+                                        DateTime.from(dto.servingStartTime),
+                                        DateTime.from(dto.servingFinishTime),
                                         QueueServerId.from(dto.queueServerId),
                                         OrganizationAccountId.from(dto.serverOperatorId));
     }

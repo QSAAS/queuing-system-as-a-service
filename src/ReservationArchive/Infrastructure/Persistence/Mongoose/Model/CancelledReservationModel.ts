@@ -71,10 +71,10 @@ function toCancelledReservationDoc(this: Model<CancelledReservationDoc>,
         queuingNodeId: cancelledReservation.getQueuingNodeId().toString(),
 
         reservationTime: cancelledReservation.getReservationTime()
-            .toUnixTimeStamp(),
+            .toUnixTime(),
 
         serverWastedTime: cancelledReservation.getServerWastedTime()
-            .toNumber(),
+            .toUnixSeconds(),
     });
 }
 

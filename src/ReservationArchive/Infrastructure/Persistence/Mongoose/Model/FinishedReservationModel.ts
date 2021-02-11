@@ -93,13 +93,13 @@ function toFinishedReservationDoc(this: Model<FinishedReservationDoc>,
         queuingNodeId: finishedReservation.getQueuingNodeId().toString(),
 
         reservationTime: finishedReservation.getReservationTime()
-            .toUnixTimeStamp(),
+            .toUnixTime(),
 
         servingStartTime: finishedReservation.getServingStartTime()
-            .toUnixTimeStamp(),
+            .toUnixTime(),
 
         servingFinishTime: finishedReservation.getServingFinishTime()
-            .toUnixTimeStamp(),
+            .toUnixTime(),
 
         queueServerId: finishedReservation.getQueueServerId().toString(),
 

@@ -12,7 +12,7 @@ export default class CancelledReservationTransformer {
                                            cancelledReservation.getClientId().toString(),
                                            cancelledReservation.getQueuingNodeId().toString(),
                                            cancelledReservation.getReservationTime().toUnixTime(),
-                                           cancelledReservation.getServerWastedTime().toNumber());
+                                           cancelledReservation.getServerWastedTime().toUnixSeconds());
     }
 
     public static toEntity(dto: CancelledReservationDTO): CancelledReservation {
@@ -20,7 +20,7 @@ export default class CancelledReservationTransformer {
             ReservationId.from(dto.reservationId),
             ClientId.from(dto.clientId),
             QueuingNodeId.from(dto.queueingNodeId),
-            DateTime.from(dto.reservationTime.toString()),
+            DateTime.from(dto.reservationTime),
             Duration.from(dto.serverWastedTime),
         );
     }

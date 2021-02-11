@@ -7,15 +7,16 @@ export default class DateTime {
         this.dateTime = dateTime;
     }
 
-    public static from(dateTime: number): DateTime {
-        return new DateTime(new Date(dateTime));
+    public static from(unixTimeStamp: number): DateTime {
+        return new DateTime(new Date(unixTimeStamp * 1000));
     }
 
     public toString(): string {
         return this.dateTime.toDateString();
     }
 
-    public toUnixTimeStamp(): number {
-        return this.dateTime.getTime() / 1000;
+    public toUnixTime(): number {
+        // eslint-disable-next-line radix
+        return parseInt((this.dateTime.getTime() / 1000).toFixed(0));
     }
 }
