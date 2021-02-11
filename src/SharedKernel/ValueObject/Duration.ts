@@ -1,5 +1,3 @@
-// TODO discuss: we should use a library that handles durations e.g. "https://www.npmjs.com/package/duration"
-// TODO make Duration an interface
 export default class Duration {
     private readonly duration: number;
 

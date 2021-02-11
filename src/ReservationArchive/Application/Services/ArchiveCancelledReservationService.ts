@@ -7,12 +7,6 @@ import CancelledReservationTransformer
 export default class ArchiveCancelledReservationService {
     constructor(private repository: ICancelledReservationRepository) {}
 
-    /**
-     * TODO notify: in the class diagram, this function returns CancelledReservationDTO
-     * but this is not needed since the return the input parameter 'requestDTO'
-     * unless we create a separate entity that holds different data
-     * e.g. responseDTO holds mongo ObjectID
-     */
     public async run(requestDTO: CancelledReservationDTO): Promise<void> {
         const cancelledReservation: CancelledReservation = CancelledReservationTransformer.toEntity(requestDTO);
         await this.repository.save(cancelledReservation);
