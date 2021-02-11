@@ -17,8 +17,13 @@ export default class ReservationArchiveController {
         const { body } = request;
         const dto = new CancelledReservationDTO(body.reservationId, body.clientId, body.queueingNodeId,
                                                 body.reservationTime, body.serverWastedTime);
-        await service.run(dto);
-        response.status(200).send();
+        try {
+            await service.run(dto);
+            response.status(200).send();
+        } catch (e) {
+            // TODO: Log these exceptions (Maybe only in debug mode?)
+            response.status(400).send();
+        }
     }
 
     public async archiveFinishedReservation(request: Request, response: Response,
@@ -47,8 +52,13 @@ export default class ReservationArchiveController {
 
         // TODO discuss: query.clientId returns string | string[] | ParsedQs | ParsedQs[]
         const dto = new ClientIdDTO(query.clientId.toString());
-        const ret: CancelledReservationDTO[] = await service.run(dto);
-        response.status(200).send(ret);
+        try {
+            const ret: CancelledReservationDTO[] = await service.run(dto);
+            response.status(200).send(ret);
+        } catch (e) {
+            // TODO: Log these exceptions (Maybe only in debug mode?)
+            response.send(400);
+        }
     }
 
     public async getFinishedReservations(request: Request, response: Response,
