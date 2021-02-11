@@ -12,12 +12,12 @@ export default class GetCancelledReservationsService {
     public async run(requestDTO: ClientIdDTO): Promise<CancelledReservationDTO[]> {
         const clientId: ClientId = ClientId.from(requestDTO.clientId);
         const cancelledReservations: CancelledReservation[] = await this.repository.getClientReservations(clientId);
-        const cancelledReservationsDTO: CancelledReservationDTO[] = [];
+        const cancelledReservationDTOs: CancelledReservationDTO[] = [];
         for (let i = 0; i < cancelledReservations.length; ++i) {
-            cancelledReservationsDTO.push(
+            cancelledReservationDTOs.push(
                 CancelledReservationTransformer.toDTO(cancelledReservations[i]),
             );
         }
-        return cancelledReservationsDTO;
+        return cancelledReservationDTOs;
     }
 }
