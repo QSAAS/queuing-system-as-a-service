@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, validate as isValidUUID } from "uuid";
 
 export default class UUID {
     private readonly id: string;
@@ -8,6 +8,7 @@ export default class UUID {
     }
 
     static from(id: string): UUID {
+        if (!isValidUUID(id)) throw new Error(`'${id}' is not a valid UUID`);
         return new UUID(id);
     }
 
