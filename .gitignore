@@ -1,7 +1,7 @@
 node_modules/*
 dist/*
 .idea/*
-.env
+*.env
 requests/
 plantuml/
 **/dumb*
