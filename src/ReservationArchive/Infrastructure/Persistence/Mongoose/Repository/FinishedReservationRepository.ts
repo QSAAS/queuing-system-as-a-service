@@ -1,7 +1,6 @@
 import IFinishedReservationRepository from "@app/ReservationArchive/Domain/Service/IFinishedReservationRepository";
 import ClientId from "@app/SharedKernel/ValueObject/ClientId";
 import FinishedReservation from "@app/ReservationArchive/Domain/Entity/FinishedReservation";
-import PersistenceError from "@app/ReservationArchive/Domain/Error/Persistence/PersistenceError";
 import {
     FinishedReservationDoc,
     FinishedReservationModel,
@@ -15,30 +14,22 @@ export default class FinishedReservationRepository implements IFinishedReservati
     }
 
     public async getClientReservations(clientId: ClientId): Promise<FinishedReservation[]> {
-        try {
-            const finishedReservationDocs: FinishedReservationDoc[] = await this.FinishedReservationModel.find(
-                    { clientId: clientId.toString() },
+        const finishedReservationDocs: FinishedReservationDoc[] = await this.FinishedReservationModel.find(
+            { clientId: clientId.toString() },
+        );
+        const finishedReservations: FinishedReservation[] = [];
+        for (let i = 0; i < finishedReservationDocs.length; ++i) {
+            finishedReservations.push(
+                this.FinishedReservationModel.toFinishedReservationEntity(finishedReservationDocs[i]),
             );
-            const finishedReservations: FinishedReservation[] = [];
-            for (let i = 0; i < finishedReservationDocs.length; ++i) {
-                finishedReservations.push(
-                        this.FinishedReservationModel.toFinishedReservationEntity(finishedReservationDocs[i]),
-                );
-            }
-            return finishedReservations;
-        } catch (e) {
-            throw new PersistenceError("Read error");
         }
+        return finishedReservations;
     }
 
     public async save(finishedReservation: FinishedReservation): Promise<void> {
         const finishedReservationDoc: FinishedReservationDoc = this.FinishedReservationModel.toFinishedReservationDoc(
-                finishedReservation,
+            finishedReservation,
         );
-        try {
-            await finishedReservationDoc.save();
-        } catch (e) {
-            throw new PersistenceError("Save error");
-        }
+        await finishedReservationDoc.save();
     }
 }
