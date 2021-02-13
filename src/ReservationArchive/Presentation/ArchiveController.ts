@@ -22,7 +22,7 @@ export default class ReservationArchiveController {
             response.status(200).send();
         } catch (e) {
             // TODO: Log these exceptions (Maybe only in debug mode?)
-            response.status(400).send();
+            response.status(400).send(e.message);
         }
     }
 
@@ -35,10 +35,10 @@ export default class ReservationArchiveController {
                                                body.queueServerId, body.serverOperatorId);
         try {
             await service.run(dto);
+            response.status(200).send();
         } catch (e) {
-            response.status(400).send();
+            response.status(400).send(e.message);
         }
-        response.status(200).send();
     }
 
     public async getCancelledReservations(request: Request, response: Response,
@@ -57,7 +57,7 @@ export default class ReservationArchiveController {
             response.status(200).send(ret);
         } catch (e) {
             // TODO: Log these exceptions (Maybe only in debug mode?)
-            response.send(400);
+            response.status(400).send(e.message);
         }
     }
 
@@ -70,7 +70,11 @@ export default class ReservationArchiveController {
         }
 
         const dto = new ClientIdDTO(query.clientId.toString());
-        const ret: FinishedReservationDTO[] = await service.run(dto);
-        response.status(200).send(ret);
+        try {
+            const ret: FinishedReservationDTO[] = await service.run(dto);
+            response.status(200).send(ret);
+        } catch (e) {
+            response.status(400).send(e.message);
+        }
     }
 }
