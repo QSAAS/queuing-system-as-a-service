@@ -25,6 +25,7 @@
     },
     "scripts": {
         "start": "nodemon src/index.ts",
+        "dev": "nodemon src/index.ts",
         "lint": "eslint .",
         "test": "jest --passWithNoTests"
     }
