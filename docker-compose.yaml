@@ -12,9 +12,25 @@ services:
     container_name: ts-node-docker
     environment:
       SERVER_PORT: 4040
+      DB_URL: mongo-db
+      DB_PORT: 27017
+      DB_NAME: QSAAS
+    depends_on:
+      - mongo-db
 
     expose:
       - '4040'
     ports:
       - '4040:4040'
     command: npm run dev
+  mongo-db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: examplepassword
+    volumes:
+    - "mongodb:/data/db"
+#      this image listens to port 27017 by default we need to connect only
+volumes:
+  mongodb:
