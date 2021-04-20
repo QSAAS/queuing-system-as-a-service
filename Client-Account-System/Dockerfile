@@ -1,11 +1,11 @@
 FROM node:14 as base
 
 WORKDIR /home/node/app
-#RUN  mkdir src
+
 COPY package*.json ./
-VOLUME ./src /home/node/app/src
 
-RUN npm install
+COPY tsconfig.json ./
 
-COPY . .
+RUN npm ci
 
+VOLUME /home/node/app/src

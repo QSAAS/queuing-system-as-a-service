@@ -1,0 +1,50 @@
+version: "3.7"
+
+services:
+  web:
+    build:
+      context: .
+      target: base
+
+    volumes:
+      - "./src:/home/node/app/src"
+
+    environment:
+      DB_URL: mongo-db
+      DB_PORT: 27017
+      DB_NAME: "qsaas"
+
+    depends_on:
+      - mongo-db
+
+    ports:
+      - "${SERVER_PORT}:80"
+
+    networks:
+      - rabbitmq-net
+
+    command: "npm run dev"
+
+  mongo-db:
+    image: mongo
+
+    restart: always
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: examplepassword
+
+    volumes:
+      - "mongodb:/data/db"
+
+    logging:
+      driver: none
+
+volumes:
+  mongodb:
+
+
+networks:
+  rabbitmq-net:
+    driver: bridge
+    name: rabbitmq-net

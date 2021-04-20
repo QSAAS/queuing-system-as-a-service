@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+    ports:
+      - 5672:5672
+      - 15672:15672 # HTTP management port
+
+    volumes:
+      - "rabbitmq-data:/var/lib/rabbitmq"
+
+    networks:
+      - rabbitmq-net
+
+volumes:
+  rabbitmq-data:
+
+networks:
+  rabbitmq-net:
+    driver: bridge
+    name: rabbitmq-net
