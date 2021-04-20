@@ -11,7 +11,6 @@
     "project": "./tsconfig.json"
   },
   "rules": {
-    // Double quotes, break the rule when the string itself contains double quotes
     "@typescript-eslint/quotes": [
       "error",
       "double",
