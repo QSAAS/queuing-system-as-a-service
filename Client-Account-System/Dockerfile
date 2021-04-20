@@ -1,9 +1,11 @@
 FROM node:14 as base
 
 WORKDIR /home/node/app
-
+#RUN  mkdir src
 COPY package*.json ./
+VOLUME ./src /home/node/app/src
 
-RUN npm i
+RUN npm install
 
 COPY . .
+

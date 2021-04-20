@@ -18,8 +18,8 @@ app.get("/database-health", (request, response) => {
                 console.log(`connected to ${dbUrl} successfully`);
                 response.send(`connected to ${dbUrl} successfully`);
             }).catch((e) => {
-                console.log(`we faced an error in connecting to db ${e}`);
-            });
+            console.log(`we faced an error in connecting to db ${e}`);
+        });
     } else {
         // fixme handle the case of failure in env variables
 
