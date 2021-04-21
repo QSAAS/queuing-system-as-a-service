@@ -1,0 +1,11 @@
+name: Build Client Account system docker image CI
+on:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build docker image
+        run: docker build ./Client-Account-System/ --file ./Client-Account-System/Dockerfile --tag client-account-system:$(date +%s)
+
