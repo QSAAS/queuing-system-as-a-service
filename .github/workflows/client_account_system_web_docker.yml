@@ -12,6 +12,8 @@ jobs:
         name: Build the Docker image
 #        run : docker build ./Client-Account-System/ --file Dockerfile --tag client-account-system_web:$(date +%s)
         with:
-          context: ./Client-Account-System
           push : false
+          dockerfile: ./Client-Account-System/Dockerfile
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
           tags : qsaas/client_account_system:latest
