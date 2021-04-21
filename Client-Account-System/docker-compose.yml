@@ -2,6 +2,8 @@ version: "3.7"
 
 services:
   web:
+    container_name: "client-account-system-api"
+
     build:
       context: .
       target: base
