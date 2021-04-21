@@ -8,3 +8,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build the Docker image
         run : docker build ./Client-Account-System/ --file Dockerfile --tag client-account-system_web:$(date +%s)
+      - with:
+          context: ./Client-Account-System
+          push : false
+          tags : qsaas/client_account_system:latest
