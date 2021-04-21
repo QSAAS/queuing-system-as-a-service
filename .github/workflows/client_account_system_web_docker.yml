@@ -5,15 +5,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      -
-        uses: docker/build-push-action@v2
-        name: Build the Docker image
-#        run : docker build ./Client-Account-System/ --file Dockerfile --tag client-account-system_web:$(date +%s)
-        with:
-          push : false
-          dockerfile: ./Client-Account-System/Dockerfile
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-          tags : qsaas/client_account_system:latest
+      - uses: actions/checkout@v2
+      - name: Build docker image
+        run: docker build ./Client-Account-System/ --file ./Client-Account-System/Dockerfile --tag client-account-system:$(date +%s)
+
