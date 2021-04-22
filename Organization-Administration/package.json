@@ -1,14 +1,12 @@
 {
-  "name": "client-account-system",
+  "name": "organization-administration",
   "version": "1.0.0",
   "dependencies": {
-    "bcrypt": "^5.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.11.13"
   },
   "devDependencies": {
-    "@types/bcrypt": "^3.0.1",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.22",
