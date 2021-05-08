@@ -6,7 +6,6 @@ import Geolocation from "@app/Command/Domain/ValueObject/Geolocation";
 
 export default class AdministratedOrganizationEndpoint extends OrganizationEndpoint {
   private administrator: OrganizationEmployee;
-  // TODO: added by me 3ashan la2etha fel constructor, not sure what this is
   private organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService;
 
   constructor(administrator: OrganizationEmployee, organizationEndpoint: OrganizationEndpoint,
