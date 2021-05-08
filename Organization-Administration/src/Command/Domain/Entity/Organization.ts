@@ -2,8 +2,8 @@ import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
 import AggregateRoot from "@app/Command/Domain/Entity/AggregateRoot";
 
 export default class Organization extends AggregateRoot {
-  private organizationId: OrganizationId;
-  private name: string;
+  protected organizationId: OrganizationId;
+  protected name: string;
 
   constructor(organizationId: OrganizationId, name: string) {
     super();

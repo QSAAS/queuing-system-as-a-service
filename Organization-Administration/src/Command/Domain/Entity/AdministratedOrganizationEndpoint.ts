@@ -2,6 +2,7 @@ import OrganizationEndpoint from "@app/Command/Domain/Entity/OrganizationEndpoin
 import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
 import OrganizationEndpointAuthorizationService
   from "@app/Command/Application/Service/OrganizationEndpointAuthorizationService";
+import Geolocation from "@app/Command/Domain/ValueObject/Geolocation";
 
 export default class AdministratedOrganizationEndpoint extends OrganizationEndpoint {
   private administrator: OrganizationEmployee;
@@ -24,5 +25,13 @@ export default class AdministratedOrganizationEndpoint extends OrganizationEndpo
 
   public getOrganizationEndpointAuthorizationService(): OrganizationEndpointAuthorizationService {
     return this.organizationEndpointAuthorizationService;
+  }
+
+  public setName(value: string) {
+    this.name = value;
+  }
+
+  public setGeolocation(geolocation: Geolocation) {
+    this.geolocation = geolocation;
   }
 }
