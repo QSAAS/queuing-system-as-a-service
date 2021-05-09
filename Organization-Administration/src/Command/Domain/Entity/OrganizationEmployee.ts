@@ -5,25 +5,16 @@ import PasswordHash from "@app/Command/Domain/ValueObject/PasswordHash";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
 import OrganizationEmployeeId from "../ValueObject/OrganizationEmployeeId";
 
-interface ConstructorParams {
-  organizationEmployeeId: OrganizationEmployeeId;
-  organizationId: OrganizationId;
-  name: String;
-  passwordHash: PasswordHash;
-  username: EmployeeUsername;
-}
-
+/// todo why this has protected when we don't extend it, we aggregate use it
 export default class OrganizationEmployee extends AggregateRoot {
   private organizationEmployeeId: OrganizationEmployeeId;
   private organizationId : OrganizationId;
-  private name:String;
+  private name:string;
   private passwordHash : PasswordHash;
   private username: EmployeeUsername;
 
-  constructor({
-    organizationEmployeeId, organizationId, name, passwordHash,
-    username,
-  }: ConstructorParams) {
+  constructor(organizationEmployeeId: OrganizationEmployeeId,
+    organizationId: OrganizationId, name:string, passwordHash: PasswordHash, username:EmployeeUsername) {
     super();
     this.name = name;
     this.organizationEmployeeId = organizationEmployeeId;
@@ -44,7 +35,7 @@ export default class OrganizationEmployee extends AggregateRoot {
     return this.organizationId;
   }
 
-  public getName(): String {
+  public getName(): string {
     return this.name;
   }
 
@@ -56,7 +47,7 @@ export default class OrganizationEmployee extends AggregateRoot {
     this.organizationId = value;
   }
 
-  public setName(value: String) {
+  public setName(value: string) {
     this.name = value;
   }
 
@@ -72,7 +63,7 @@ export default class OrganizationEmployee extends AggregateRoot {
     return this.username;
   }
 
-  public setUsername(username: EmployeeUsername){
+  public setUsername(username: EmployeeUsername) {
     this.username = username;
   }
 }
