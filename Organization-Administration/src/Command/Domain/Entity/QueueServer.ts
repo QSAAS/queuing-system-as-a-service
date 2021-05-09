@@ -6,11 +6,15 @@ import OrganizationEndpointId from "@app/Command/Domain/ValueObject/Organization
 export default class QueueServer extends AggregateRoot {
   protected queueServerId: QueueServerId;
   protected organizationSEndpointId: OrganizationEndpointId;
-  protected serves : QueueNodeId;
-  constructor(queueServerId: QueueServerId, organizationSEndpointId: OrganizationEndpointId, serves : QueueNodeId) {
+  protected serves : QueueNodeId[];
+  constructor(queueServerId: QueueServerId, organizationSEndpointId: OrganizationEndpointId, serves : QueueNodeId[]) {
     super();
     this.queueServerId = queueServerId;
     this.organizationSEndpointId = organizationSEndpointId;
+    this.serves = serves;
+  }
+
+  public setServes(serves: QueueNodeId[]): void {
     this.serves = serves;
   }
 }
