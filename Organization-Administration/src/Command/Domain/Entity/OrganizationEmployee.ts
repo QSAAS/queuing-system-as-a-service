@@ -67,4 +67,12 @@ export default class OrganizationEmployee extends AggregateRoot {
   public getPasswordHash():PasswordHash {
     return this.passwordHash;
   }
+
+  public getUsername():EmployeeUsername {
+    return this.username;
+  }
+
+  public setUsername(username: EmployeeUsername){
+    this.username = username;
+  }
 }
