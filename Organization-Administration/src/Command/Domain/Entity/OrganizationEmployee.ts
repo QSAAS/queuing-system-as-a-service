@@ -12,7 +12,7 @@ interface ConstructorParams {
   passwordHash: PasswordHash;
   username: EmployeeUsername;
 }
-/// todo why this has protected when we don't extend it, we aggregate use it
+
 export default class OrganizationEmployee extends AggregateRoot {
   private organizationEmployeeId: OrganizationEmployeeId;
   private organizationId : OrganizationId;
