@@ -1,8 +1,8 @@
-export default class PasswordHash {
+export default abstract class PasswordHash {
   // todo i think this should be value instead
-  public passwordHash: string;
+  private readonly passwordHash: string;
 
-  constructor(passwordHash:string) {
+  protected constructor(passwordHash:string) {
     this.passwordHash = passwordHash;
   }
 
