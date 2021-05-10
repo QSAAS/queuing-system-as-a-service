@@ -7,11 +7,11 @@ import OrganizationEmployeeId from "../ValueObject/OrganizationEmployeeId";
 
 /// todo why this has protected when we don't extend it, we aggregate use it
 export default class OrganizationEmployee extends AggregateRoot {
-  private organizationEmployeeId: OrganizationEmployeeId;
-  private organizationId : OrganizationId;
-  private name:string;
-  private passwordHash : PasswordHash;
-  private username: EmployeeUsername;
+  protected organizationEmployeeId: OrganizationEmployeeId;
+  protected organizationId : OrganizationId;
+  protected name:string;
+  protected passwordHash : PasswordHash;
+  protected username: EmployeeUsername;
 
   constructor(organizationEmployeeId: OrganizationEmployeeId,
     organizationId: OrganizationId, name:string, passwordHash: PasswordHash, username:EmployeeUsername) {
@@ -39,31 +39,11 @@ export default class OrganizationEmployee extends AggregateRoot {
     return this.name;
   }
 
-  public setOrganizationEmployeeId(value: OrganizationEmployeeId) {
-    this.organizationEmployeeId = value;
-  }
-
-  public setOrganizationId(value: OrganizationId) {
-    this.organizationId = value;
-  }
-
-  public setName(value: string) {
-    this.name = value;
-  }
-
-  public setPasswordHash(passwordHash: PasswordHash) {
-    this.passwordHash = passwordHash;
-  }
-
   public getPasswordHash():PasswordHash {
     return this.passwordHash;
   }
 
   public getUsername():EmployeeUsername {
     return this.username;
-  }
-
-  public setUsername(username: EmployeeUsername) {
-    this.username = username;
   }
 }
