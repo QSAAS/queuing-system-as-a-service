@@ -3,6 +3,7 @@ import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmploye
 import OrganizationEndpointAuthorizationService
   from "@app/Command/Application/Service/OrganizationEndpointAuthorizationService";
 import Geolocation from "@app/Command/Domain/ValueObject/Geolocation";
+import OrganizationEndpointUpdated from "@app/Command/Domain/Event/OrganizationEndpointUpdated";
 
 export default class AdministratedOrganizationEndpoint extends OrganizationEndpoint {
   private administrator: OrganizationEmployee;
@@ -27,10 +28,14 @@ export default class AdministratedOrganizationEndpoint extends OrganizationEndpo
   }
 
   public setName(value: string) {
+    this.organizationEndpointAuthorizationService.ensureCanEdit(this.administrator, this);
     this.name = value;
+    this.raiseEvent(new OrganizationEndpointUpdated(this));
   }
 
   public setGeolocation(geolocation: Geolocation) {
+    this.organizationEndpointAuthorizationService.ensureCanEdit(this.administrator, this);
     this.geolocation = geolocation;
+    this.raiseEvent(new OrganizationEndpointUpdated(this));
   }
 }
