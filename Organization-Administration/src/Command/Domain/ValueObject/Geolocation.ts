@@ -10,6 +10,10 @@ export default class Geolocation extends ValueObject {
     this.longitude = longitude;
   }
 
+  static create(latitude: number, longitude: number) {
+    return new Geolocation(latitude, longitude);
+  }
+
   public getLatitude(): number {
     return this.latitude;
   }

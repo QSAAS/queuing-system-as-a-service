@@ -28,6 +28,10 @@ export default class Permission extends ValueObject {
     this.action = action;
   }
 
+  static create(resourceId: EntityId|null, resourceType: ResourceType, action: AuthorizedAction) {
+    return new Permission(resourceId, resourceType, action);
+  }
+
   public getResourceId(): EntityId | null {
     return this.resourceId;
   }
