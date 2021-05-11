@@ -1,23 +1,66 @@
-import Geolocation from "@app/Command/Domain/ValueObject/Geolocation";
+import GeolocationBuilder from "@tests/Command/Domain/ValueObject/GeolocationBuilder";
+import GeolocationMother from "@tests/Command/Domain/ValueObject/GeolocationMother";
 
 describe("Geolocation", () => {
+  const geolocationBuilder: GeolocationBuilder = GeolocationMother.complete();
+
   it("Accepts valid lat long", () => {
-    expect(() => { Geolocation.create(0, 0); }).not.toThrow();
-    expect(() => { Geolocation.create(0, 180); }).not.toThrow();
-    expect(() => { Geolocation.create(0, -180); }).not.toThrow();
-    expect(() => { Geolocation.create(90, 0); }).not.toThrow();
-    expect(() => { Geolocation.create(-90, 0); }).not.toThrow();
+    expect(() => { geolocationBuilder.build(); }).not.toThrow();
+    expect(() => {
+      geolocationBuilder
+        .withLatitude(-90)
+        .build();
+    }).not.toThrow();
+    expect(() => {
+      geolocationBuilder
+        .withLatitude(90)
+        .build();
+    }).not.toThrow();
+    expect(() => {
+      geolocationBuilder
+        .withLongitude(180)
+        .build();
+    }).not.toThrow();
+    expect(() => {
+      geolocationBuilder
+        .withLongitude(-180)
+        .build();
+    }).not.toThrow();
   });
 
   it("Rejects invalid lat", () => {
-    expect(() => { Geolocation.create(91, 0); }).toThrow();
-    expect(() => { Geolocation.create(-91, 0); }).toThrow();
-    expect(() => { Geolocation.create(NaN, 0); }).toThrow();
+    expect(() => {
+      geolocationBuilder
+        .withLatitude(91)
+        .build();
+    }).toThrow();
+    expect(() => {
+      geolocationBuilder
+        .withLatitude(-91)
+        .build();
+    }).toThrow();
+    expect(() => {
+      geolocationBuilder
+        .withLatitude(NaN)
+        .build();
+    }).toThrow();
   });
 
   it("Rejects invalid long", () => {
-    expect(() => { Geolocation.create(0, 181); }).toThrow();
-    expect(() => { Geolocation.create(0, -181); }).toThrow();
-    expect(() => { Geolocation.create(0, NaN); }).toThrow();
+    expect(() => {
+      geolocationBuilder
+        .withLongitude(181)
+        .build();
+    }).toThrow();
+    expect(() => {
+      geolocationBuilder
+        .withLongitude(-181)
+        .build();
+    }).toThrow();
+    expect(() => {
+      geolocationBuilder
+        .withLongitude(NaN)
+        .build();
+    }).toThrow();
   });
 });
