@@ -2,18 +2,20 @@ import OrganizationEndpointUpdated from "@app/Command/Domain/Event/OrganizationE
 import AdministratedOrganizationEndpointMother
   from "@tests/Command/Domain/Entity/AdministratedOrganizationEndpointMother";
 import GeolocationMother from "@tests/Command/Domain/ValueObject/GeolocationMother";
+import FailingOrganizationEndpointAuthorizationService
+  from "@tests/Command/Infrastructure/FailingOrganizationEndpointAuthorizationService";
 
 describe("AdministratedOrganizationEndpoint", () => {
   describe("Can update name", () => {
+    const administratedOrganizationEndpointBuilder = AdministratedOrganizationEndpointMother.withPassingAuth();
+
     it("Updates name", () => {
-      const administratedOrganizationEndpointBuilder = AdministratedOrganizationEndpointMother.withPassingAuth();
       const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder.build();
       administratedOrganizationEndpoint.setName("::name::");
       expect(administratedOrganizationEndpoint.getName()).toEqual("::name::");
     });
 
     it("Raises update event", () => {
-      const administratedOrganizationEndpointBuilder = AdministratedOrganizationEndpointMother.withPassingAuth();
       const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder.build();
       administratedOrganizationEndpoint.setName("::name::");
       expect(administratedOrganizationEndpoint.getRaisedEvents()).toHaveLength(1);
@@ -21,15 +23,17 @@ describe("AdministratedOrganizationEndpoint", () => {
     });
 
     it("Rejects unauthorized administrator", () => {
-      const administratedOrganizationEndpointBuilder = AdministratedOrganizationEndpointMother.withFailingAuth();
-      const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder.build();
+      const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder
+        .withOrganizationEndpointAuthorizationService(new FailingOrganizationEndpointAuthorizationService())
+        .build();
       expect(() => { administratedOrganizationEndpoint.setName("::name::"); }).toThrow();
     });
   });
 
   describe("Can update geolocation", () => {
+    const administratedOrganizationEndpointBuilder = AdministratedOrganizationEndpointMother.withPassingAuth();
+
     it("Updates geolocation", () => {
-      const administratedOrganizationEndpointBuilder = AdministratedOrganizationEndpointMother.withPassingAuth();
       const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder.build();
       const geolocation = GeolocationMother.complete().build();
       administratedOrganizationEndpoint.setGeolocation(geolocation);
@@ -37,7 +41,6 @@ describe("AdministratedOrganizationEndpoint", () => {
     });
 
     it("Raises update event", () => {
-      const administratedOrganizationEndpointBuilder = AdministratedOrganizationEndpointMother.withPassingAuth();
       const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder.build();
       const geolocation = GeolocationMother.complete().build();
       administratedOrganizationEndpoint.setGeolocation(geolocation);
@@ -46,8 +49,9 @@ describe("AdministratedOrganizationEndpoint", () => {
     });
 
     it("Rejects unauthorized administrator", () => {
-      const administratedOrganizationEndpointBuilder = AdministratedOrganizationEndpointMother.withFailingAuth();
-      const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder.build();
+      const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder
+        .withOrganizationEndpointAuthorizationService(new FailingOrganizationEndpointAuthorizationService())
+        .build();
       const geolocation = GeolocationMother.complete().build();
       expect(() => { administratedOrganizationEndpoint.setGeolocation(geolocation); }).toThrow();
     });
