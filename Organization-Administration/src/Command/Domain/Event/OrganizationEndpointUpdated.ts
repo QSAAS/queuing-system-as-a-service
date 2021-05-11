@@ -1,10 +1,11 @@
 import OrganizationEndpoint from "@app/Command/Domain/Entity/OrganizationEndpoint";
+import DomainEvent from "@app/Command/Domain/Event/DomainEvent";
 
-export default class OrganizationEndpointUpdated extends Event {
+export default class OrganizationEndpointUpdated extends DomainEvent {
   private organizationEndpoint: OrganizationEndpoint;
 
-  constructor(type: string, eventInitDict: EventInit, organizationEndpoint: OrganizationEndpoint) {
-    super(type, eventInitDict);
+  constructor(organizationEndpoint: OrganizationEndpoint) {
+    super();
     this.organizationEndpoint = organizationEndpoint;
   }
 
