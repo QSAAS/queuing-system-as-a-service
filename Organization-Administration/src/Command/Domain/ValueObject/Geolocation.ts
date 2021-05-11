@@ -6,6 +6,12 @@ export default class Geolocation extends ValueObject {
 
   constructor(latitude: number, longitude: number) {
     super();
+    if (latitude < -90 || latitude > 90) {
+      throw new RangeError(`value ${latitude} outside of latitude range [-90, 90]`);
+    }
+    if (longitude < -180 || longitude > 180) {
+      throw new RangeError(`value ${latitude} outside of latitude range [-180, 180]`);
+    }
     this.latitude = latitude;
     this.longitude = longitude;
   }
