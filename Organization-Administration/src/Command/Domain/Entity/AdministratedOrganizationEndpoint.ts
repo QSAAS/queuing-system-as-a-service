@@ -23,10 +23,6 @@ export default class AdministratedOrganizationEndpoint extends OrganizationEndpo
     return this.administrator;
   }
 
-  public getOrganizationEndpointAuthorizationService(): OrganizationEndpointAuthorizationService {
-    return this.organizationEndpointAuthorizationService;
-  }
-
   public setName(value: string) {
     this.organizationEndpointAuthorizationService.ensureCanEdit(this.administrator, this);
     this.name = value;
