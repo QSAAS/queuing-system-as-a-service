@@ -3,5 +3,5 @@ import AdministratedOrganizationEndpoint from "@app/Command/Domain/Entity/Admini
 
 export default interface OrganizationEndpointAuthorizationService {
   ensureCanEdit(organizationEmployee: OrganizationEmployee,
-    AdministratedOrganizationEndpoint: AdministratedOrganizationEndpoint): void;
+    administratedOrganizationEndpoint: AdministratedOrganizationEndpoint): void;
 }
