@@ -1,9 +1,10 @@
 import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
+import DomainEvent from "@app/Command/Domain/Event/DomainEvent";
 
-export default class OrganizationEmployeeUpdated extends Event {
+export default class OrganizationEmployeeUpdated extends DomainEvent {
   private organizationEmployee : OrganizationEmployee;
-  constructor(type: string, eventInitDict: EventInit, organizationEmployee : OrganizationEmployee) {
-    super(type, eventInitDict);
+  constructor(organizationEmployee : OrganizationEmployee) {
+    super();
     this.organizationEmployee = organizationEmployee;
   }
 
