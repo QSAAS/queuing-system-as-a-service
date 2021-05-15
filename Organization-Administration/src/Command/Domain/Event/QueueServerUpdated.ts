@@ -1,9 +1,10 @@
 import QueueServer from "@app/Command/Domain/Entity/QueueServer";
+import DomainEvent from "@app/Command/Domain/Event/DomainEvent";
 
-export default class QueueServerUpdated extends Event {
+export default class QueueServerUpdated extends DomainEvent {
   private readonly queueServer : QueueServer;
-  constructor(type: string, eventInitDict: EventInit, queueServer : QueueServer) {
-    super(type, eventInitDict);
+  constructor(queueServer : QueueServer) {
+    super();
     this.queueServer = queueServer;
   }
 
