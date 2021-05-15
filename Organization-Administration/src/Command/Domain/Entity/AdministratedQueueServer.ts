@@ -3,6 +3,7 @@ import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmploye
 import QueueServerId from "@app/Command/Domain/ValueObject/QueueServerId";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
+import QueueServerUpdated from "@app/Command/Domain/Event/QueueServerUpdated";
 
 export default class AdministratedQueueServer extends QueueServer {
   private administrator : OrganizationEmployee;
@@ -13,6 +14,7 @@ export default class AdministratedQueueServer extends QueueServer {
   }
 
   public setServedQueueNodes(queueNodeIds: QueueNodeId[]) {
+    this.raiseEvent(new QueueServerUpdated(this));
     this.setServes(queueNodeIds);
   }
 }
