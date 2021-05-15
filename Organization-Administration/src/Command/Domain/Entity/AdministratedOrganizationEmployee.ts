@@ -11,7 +11,7 @@ import OrganizationEmployeeUpdated from "@app/Command/Domain/Event/OrganizationE
 
 export default class AdministratedOrganizationEmployee extends OrganizationEmployee {
   private admin :OrganizationEmployee;
-  private organizationEmployeeAuthorizationService : OrganizationEndpointAuthorizationService;
+  private organizationEmployeeAuthorizationService : OrganizationEmployeeAuthorizationService;
 
   constructor(admin :OrganizationEmployee, administrated: OrganizationEmployee,
     organizationEmployeeAuthorizationService :OrganizationEmployeeAuthorizationService) {
