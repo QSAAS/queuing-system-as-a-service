@@ -1,6 +1,4 @@
 import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
-import OrganizationEndpointAuthorizationService
-  from "@app/Command/Application/Service/OrganizationEndpointAuthorizationService";
 import OrganizationEmployeeAuthorizationService
   from "@app/Command/Application/Service/OrganizationEmployeeAuthorizationService";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
@@ -27,6 +25,7 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
   }
 
   public setName(name:string) {
+    this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.name = name;
   }
 
