@@ -50,19 +50,19 @@ describe("Comparison", () => {
   });
 
   it("Should return true on greater hours and false on less hours", () => {
-    const other = new TimeBuilder().hours(base.hours! - 1).build();
+    const other = new TimeBuilder().hours(base.getHours()! - 1).build();
     expect(base.greaterThan(other)).toBeTruthy();
     expect(other.greaterThan(base)).toBeFalsy();
   });
 
   it("Should return true on equal hours and greater minutes", () => {
-    const other = new TimeBuilder().minutes(base.minutes! - 1).build();
+    const other = new TimeBuilder().minutes(base.getMinutes()! - 1).build();
     expect(base.greaterThan(other)).toBeTruthy();
     expect(other.greaterThan(base)).toBeFalsy();
   });
 
   it("Should return true on equal hours, equal minutes, and greater seconds", () => {
-    const other = new TimeBuilder().seconds(base.seconds! - 1).build();
+    const other = new TimeBuilder().seconds(base.getSeconds()! - 1).build();
     expect(base.greaterThan(other)).toBeTruthy();
     expect(other.greaterThan(base)).toBeFalsy();
   });
