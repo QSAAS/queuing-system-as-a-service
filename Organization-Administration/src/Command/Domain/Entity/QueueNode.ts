@@ -5,10 +5,28 @@ import MetadataSpecification from "@app/Command/Domain/ValueObject/MetadataSpeci
 import TimeSpan from "@app/Command/Domain/ValueObject/TimeSpan";
 
 export default class QueueNode extends AggregateRoot {
-  constructor(public readonly id: QueueNodeId,
-    public readonly endpointId: OrganizationEndpointId,
-    public metaSpecs: MetadataSpecification,
-    public timeSpan: TimeSpan) {
+  constructor(
+    private id: QueueNodeId,
+    protected endpointId: OrganizationEndpointId,
+    protected metaSpecs: MetadataSpecification,
+    protected timeSpan: TimeSpan,
+  ) {
     super();
+  }
+
+  getId() {
+    return this.id;
+  }
+
+  getEndPointId() {
+    return this.endpointId;
+  }
+
+  getMetaSpecs() {
+    return this.metaSpecs;
+  }
+
+  getTimeSpan() {
+    return this.timeSpan;
   }
 }
