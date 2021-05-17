@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import AdministratedQueueNode from "@app/Command/Domain/Entity/AdminsistratedQueueNode";
+import AdministratedQueueNode, { OrganizationEmployee } from "@app/Command/Domain/Entity/AdminsistratedQueueNode";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
 import QueueNodeAuthorizationService from "@app/Command/Domain/Service/QueueNodeAuthorizationService";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
@@ -13,12 +13,11 @@ import TimeSpanBuilder from "@tests/Builders/TimeSpanBuilder";
 class AlwaysAuthorizing implements QueueNodeAuthorizationService {
   ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId): void {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ensureEmployeeCanDelete(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ensureEmployeeCanUpdate(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void {}
 }
+
 class AlwaysNotAuthorizing implements QueueNodeAuthorizationService {
   ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId): void {
     throw new EmployeeNotAuthorizedError();
@@ -33,6 +32,14 @@ class AlwaysNotAuthorizing implements QueueNodeAuthorizationService {
   }
 }
 
+class Admin implements OrganizationEmployee {
+  constructor(private id: OrganizationEmployeeId) {}
+
+  getId(): OrganizationEmployeeId {
+    return this.id;
+  }
+} // TODO remove after merging
+
 const queueNode = new QueueNode(
   QueueNodeId.create(),
   OrganizationEndpointId.create(),
@@ -40,9 +47,11 @@ const queueNode = new QueueNode(
   new TimeSpanBuilder().build(),
 );
 
+const admin = new Admin(OrganizationEmployeeId.create());
+
 describe("Authorizing", () => {
   const node = new AdministratedQueueNode(
-    { id: OrganizationEmployeeId.create() },
+    admin,
     queueNode,
     new AlwaysAuthorizing(),
   );
@@ -60,7 +69,7 @@ describe("Authorizing", () => {
 
 describe("Not Authorizing", () => {
   const node = new AdministratedQueueNode(
-    { id: OrganizationEmployeeId.create() },
+    admin,
     queueNode,
     new AlwaysNotAuthorizing(),
   );
