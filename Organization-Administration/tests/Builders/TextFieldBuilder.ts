@@ -1,43 +1,46 @@
 import MetadataSpecificationTextField from "@app/Command/Domain/ValueObject/MetadataSpecificationTextField";
 
+const name = "name";
+const isRequired = true;
+const maxLength = 16;
+const minLength = 4;
+const regex = "w+";
+const placeholder = "placeholder";
+
 export default class TextFieldBuilder {
-  private readonly textField: MetadataSpecificationTextField;
+  private textField: MetadataSpecificationTextField;
+
   constructor() {
-    this.textField = new MetadataSpecificationTextField("name",
-      true,
-      16,
-      4,
-      "w+",
-      "placeholder");
+    this.textField = new MetadataSpecificationTextField(name, isRequired, maxLength, minLength, regex, placeholder);
   }
 
-  name(name: string) {
-    this.textField.setName(name);
+  name(val: string) {
+    this.textField = new MetadataSpecificationTextField(val, isRequired, maxLength, minLength, regex, placeholder);
     return this;
   }
 
-  isRequired(isRequired: boolean) {
-    this.textField.setIsRequired(isRequired);
+  isRequired(val: boolean) {
+    this.textField = new MetadataSpecificationTextField(name, val, maxLength, minLength, regex, placeholder);
     return this;
   }
 
-  maxLength(value: number) {
-    this.textField.setMaxLength(value);
+  maxLength(val: number) {
+    this.textField = new MetadataSpecificationTextField(name, isRequired, val, minLength, regex, placeholder);
     return this;
   }
 
-  minLength(value: number) {
-    this.textField.setMinLength(value);
+  minLength(val: number) {
+    this.textField = new MetadataSpecificationTextField(name, isRequired, maxLength, val, regex, placeholder);
     return this;
   }
 
-  regex(value: string) {
-    this.textField.setRegex(value);
+  regex(val: string) {
+    this.textField = new MetadataSpecificationTextField(name, isRequired, maxLength, minLength, val, placeholder);
     return this;
   }
 
-  placeholder(value: string) {
-    this.textField.setPlaceHolder(value);
+  placeholder(val: string) {
+    this.textField = new MetadataSpecificationTextField(name, isRequired, maxLength, minLength, regex, val);
     return this;
   }
 

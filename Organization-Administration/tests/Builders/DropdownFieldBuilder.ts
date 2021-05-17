@@ -1,26 +1,28 @@
 import MetadataSpecificationDropdownField from "@app/Command/Domain/ValueObject/MetadataSpecificationDropdownField";
 
+const isRequired = true;
+const options = ["option_1", "option_2"];
+const name = "name";
+
 export default class DropdownFieldBuilder {
-  private readonly dropdown: MetadataSpecificationDropdownField;
+  private dropdown: MetadataSpecificationDropdownField;
 
   constructor() {
-    this.dropdown = new MetadataSpecificationDropdownField("name",
-      true,
-      ["option_1", "option_2"]);
+    this.dropdown = new MetadataSpecificationDropdownField(name, isRequired, options);
   }
 
-  name(name: string) {
-    this.dropdown.setName(name);
+  name(val: string) {
+    this.dropdown = new MetadataSpecificationDropdownField(val, isRequired, options);
     return this;
   }
 
-  isRequired(isRequired: boolean) {
-    this.dropdown.setIsRequired(isRequired);
+  isRequired(val: boolean) {
+    this.dropdown = new MetadataSpecificationDropdownField(name, val, options);
     return this;
   }
 
-  options(options: string[]) {
-    this.dropdown.setOptions(options);
+  options(val: string[]) {
+    this.dropdown = new MetadataSpecificationDropdownField(name, isRequired, val);
     return this;
   }
 
