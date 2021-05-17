@@ -10,7 +10,7 @@ export default class MetadataSpecification extends ValueObject {
     if (this.fields === other.fields) {
       return true;
     }
-    if ((!this.fields || !other.fields) || (this.fields.length !== other.fields.length)) {
+    if (this.fields.length !== other.fields.length) {
       return false;
     }
 
