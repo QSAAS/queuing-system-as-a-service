@@ -14,32 +14,16 @@ export default class MetadataSpecificationTextField extends MetadataSpecificatio
     return this.maxLength;
   }
 
-  setMaxLength(value: number): void {
-    this.maxLength = value;
-  }
-
   getMinLength(): number {
     return this.minLength;
-  }
-
-  setMinLength(value: number): void {
-    this.minLength = value;
   }
 
   getRegex(): string {
     return this.regex;
   }
 
-  setRegex(value: string): void {
-    this.regex = value;
-  }
-
   getPlaceholder(): string {
     return this.placeholder;
-  }
-
-  setPlaceHolder(value: string): void {
-    this.placeholder = value;
   }
 
   equals(other: this): boolean {

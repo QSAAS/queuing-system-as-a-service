@@ -17,8 +17,4 @@ export default class MetadataSpecificationDropdownField extends MetadataSpecific
           (element, index) => element === other.options[index],
         );
   }
-
-  setOptions(options: string[]) {
-    this.options = options;
-  }
 }

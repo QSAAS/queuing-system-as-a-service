@@ -6,76 +6,75 @@ import InvalidTimeComparisonError from "@app/Command/Domain/Error/InvalidTimeCom
 
 // TODO TypeScript has no Integer type, should we use a package?
 export default class Time extends ValueObject { // changed class name from 'Clock' to 'Time'
-  private _hours: number | undefined;
-  private _minutes: number | undefined;
-  private _seconds: number | undefined;
+  private hours: number | undefined;
+  private minutes: number | undefined;
+  private seconds: number | undefined;
 
   constructor(hours: number, minutes: number, seconds: number) {
     super();
-
-    this.hours = hours;
-    this.minutes = minutes;
-    this.seconds = seconds;
+    this.setHours(hours);
+    this.setMinutes(minutes);
+    this.setSeconds(seconds);
   }
 
-  get hours(): number | undefined {
-    return this._hours;
+  getHours(): number | undefined {
+    return this.hours;
   }
 
-  get minutes(): number | undefined {
-    return this._minutes;
+  getMinutes(): number | undefined {
+    return this.minutes;
   }
 
-  get seconds(): number | undefined {
-    return this._seconds;
+  getSeconds(): number | undefined {
+    return this.seconds;
   }
 
-  set hours(value: number | undefined) {
-    if (value === undefined || value < 0 || value >= 24) {
+  private setHours(value: number) {
+    if (value < 0 || value >= 24) {
       throw new InvalidTimeError(`Invalid value for hours: ${value}`);
     }
-    this._hours = value;
+    this.hours = value;
   }
 
-  set minutes(value: number | undefined) {
-    if (value === undefined || value < 0 || value >= 60) {
+  private setMinutes(value: number) {
+    if (value < 0 || value >= 60) {
       throw new InvalidTimeError(`Invalid value for minutes: ${value}`);
     }
-    this._minutes = value;
+    this.minutes = value;
   }
 
-  set seconds(value: number | undefined) {
-    if (value === undefined || value < 0 || value >= 60) {
+  private setSeconds(value: number) {
+    if (value < 0 || value >= 60) {
       throw new InvalidTimeError(`Invalid value for seconds: ${value}`);
     }
-    this._seconds = value;
+    this.seconds = value;
   }
 
   equals(other: this): boolean {
-    return this._hours === other._hours
-            && this._minutes === other._minutes
-            && this._seconds === other._seconds;
+    return this.hours === other.hours
+            && this.minutes === other.minutes
+            && this.seconds === other.seconds;
   }
 
   greaterThan(other: this): boolean {
-    if (this._seconds === undefined
-        || this._minutes === undefined
-        || this._hours === undefined
-        || other._hours === undefined
-        || other._minutes === undefined
-        || other._seconds === undefined) {
+    if (this.seconds === undefined
+        || this.minutes === undefined
+        || this.hours === undefined
+        || other.hours === undefined
+        || other.minutes === undefined
+        || other.seconds === undefined) {
       throw new InvalidTimeComparisonError();
     }
 
-    const equalHours: boolean = this._hours === other._hours;
-    const equalMinutes: boolean = this._minutes === other._minutes;
-    if (this._hours > other._hours) {
+    const equalHours: boolean = this.hours === other.hours;
+    const equalMinutes: boolean = this.minutes === other.minutes;
+    if (this.hours > other.hours) {
       return true;
     }
-    if (equalHours && this._minutes > other._minutes) {
+    if (equalHours && this.minutes > other.minutes) {
       return true;
     }
-    return equalHours && equalMinutes && this._seconds > other._seconds;
+    return equalHours && equalMinutes && this.seconds > other.seconds;
   }
 
   lessThanOrEqual(other: this): boolean {

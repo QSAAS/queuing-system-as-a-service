@@ -12,12 +12,4 @@ export default abstract class MetadataSpecificationField extends ValueObject {
   getIsRequired(): boolean {
     return this.isRequired;
   }
-
-  setName(name: string) {
-    this.name = name;
-  }
-
-  setIsRequired(isRequired: boolean) {
-    this.isRequired = isRequired;
-  }
 }
