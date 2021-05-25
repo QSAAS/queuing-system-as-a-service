@@ -50,7 +50,8 @@ describe("Events", () => {
     node.setOperatingTimes(new TimeSpanBuilder().build());
     const events = node.getRaisedEvents();
 
-    expect(events.length && events[events.length - 1] instanceof QueueNodeUpdated).toBeTruthy();
+    expect(events.length).toBeTruthy();
+    expect(events[events.length - 1]).toBeInstanceOf(QueueNodeUpdated);
   });
 
   it("Should raise QueueNodeUpdated event on setMetaDataSpecification", () => {
@@ -58,6 +59,7 @@ describe("Events", () => {
     node.setMetaDataSpecification(new MetadataSpecification([]));
     const events = node.getRaisedEvents();
 
-    expect(events.length && events[events.length - 1] instanceof QueueNodeUpdated).toBeTruthy();
+    expect(events.length).toBeTruthy();
+    expect(events[events.length - 1]).toBeInstanceOf(QueueNodeUpdated);
   });
 });
