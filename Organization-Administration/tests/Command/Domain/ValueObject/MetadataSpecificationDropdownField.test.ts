@@ -4,22 +4,22 @@ const base = new DropdownFieldBuilder().build();
 
 describe("Unequal attributes", () => {
   it("Should return false on unequal names", () => {
-    const other = new DropdownFieldBuilder().name("other").build();
+    const other = new DropdownFieldBuilder().withName("other").build();
     expect(base.equals(other)).toBeFalsy();
   });
 
   it("Should return false on unequal required", () => {
-    const other = new DropdownFieldBuilder().isRequired(false).build();
+    const other = new DropdownFieldBuilder().withIsRequired(false).build();
     expect(base.equals(other)).toBeFalsy();
   });
 
   it("Should return false on unequal options length", () => {
-    const other = new DropdownFieldBuilder().options(["option_1"]).build();
+    const other = new DropdownFieldBuilder().withOptions(["option_1"]).build();
     expect(base.equals(other)).toBeFalsy();
   });
 
   it("Should return false on different options", () => {
-    const other = new DropdownFieldBuilder().options(["option_1", "different_option_2"]).build();
+    const other = new DropdownFieldBuilder().withOptions(["option_1", "different_option_2"]).build();
     expect(base.equals(other)).toBeFalsy();
   });
 });

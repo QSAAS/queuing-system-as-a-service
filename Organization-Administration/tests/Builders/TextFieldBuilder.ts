@@ -1,50 +1,54 @@
 import MetadataSpecificationTextField from "@app/Command/Domain/ValueObject/MetadataSpecificationTextField";
 
-const name = "name";
-const isRequired = true;
-const maxLength = 16;
-const minLength = 4;
-const regex = "w+";
-const placeholder = "placeholder";
-
 export default class TextFieldBuilder {
-  private textField: MetadataSpecificationTextField;
+  private name;
+  private isRequired;
+  private maxLength;
+  private minLength;
+  private regex;
+  private placeholder;
 
   constructor() {
-    this.textField = new MetadataSpecificationTextField(name, isRequired, maxLength, minLength, regex, placeholder);
+    this.name = "name";
+    this.isRequired = true;
+    this.maxLength = 16;
+    this.minLength = 4;
+    this.regex = "w+";
+    this.placeholder = "placeholder";
   }
 
-  name(val: string) {
-    this.textField = new MetadataSpecificationTextField(val, isRequired, maxLength, minLength, regex, placeholder);
+  withName(val: string) {
+    this.name = val;
     return this;
   }
 
-  isRequired(val: boolean) {
-    this.textField = new MetadataSpecificationTextField(name, val, maxLength, minLength, regex, placeholder);
+  withIsRequired(val: boolean) {
+    this.isRequired = val;
     return this;
   }
 
-  maxLength(val: number) {
-    this.textField = new MetadataSpecificationTextField(name, isRequired, val, minLength, regex, placeholder);
+  withMaxLength(val: number) {
+    this.maxLength = val;
     return this;
   }
 
-  minLength(val: number) {
-    this.textField = new MetadataSpecificationTextField(name, isRequired, maxLength, val, regex, placeholder);
+  withMinLength(val: number) {
+    this.minLength = val;
     return this;
   }
 
-  regex(val: string) {
-    this.textField = new MetadataSpecificationTextField(name, isRequired, maxLength, minLength, val, placeholder);
+  withRegex(val: string) {
+    this.regex = val;
     return this;
   }
 
-  placeholder(val: string) {
-    this.textField = new MetadataSpecificationTextField(name, isRequired, maxLength, minLength, regex, val);
+  withPlaceholder(val: string) {
+    this.placeholder = val;
     return this;
   }
 
   build() {
-    return this.textField;
+    return new MetadataSpecificationTextField(this.name, this.isRequired, this.maxLength,
+      this.minLength, this.regex, this.placeholder);
   }
 }

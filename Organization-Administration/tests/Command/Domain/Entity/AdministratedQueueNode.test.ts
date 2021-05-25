@@ -1,60 +1,14 @@
 /* eslint-disable max-classes-per-file */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import AdministratedQueueNode, { OrganizationEmployee } from "@app/Command/Domain/Entity/AdminsistratedQueueNode";
+/* eslint-disable max-len */
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
-import QueueNodeAuthorizationService from "@app/Command/Domain/Service/QueueNodeAuthorizationService";
-import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
-import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
-import QueueNode from "@app/Command/Domain/Entity/QueueNode";
-import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
 import MetadataSpecification from "@app/Command/Domain/ValueObject/MetadataSpecification";
 import TimeSpanBuilder from "@tests/Builders/TimeSpanBuilder";
+import AdministratedQueueNodeMother from "@tests/Builders/AdministratedQueueNodeMother";
+import AdministratedQueueNodeBuilder from "@tests/Builders/AdministratedQueueNodeBuilder";
+import QueueNodeUpdated from "@app/Command/Domain/Event/QueueNodeUpdated";
 
-class AlwaysAuthorizing implements QueueNodeAuthorizationService {
-  ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId): void {}
-
-  ensureEmployeeCanDelete(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void {}
-
-  ensureEmployeeCanUpdate(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void {}
-}
-
-class AlwaysNotAuthorizing implements QueueNodeAuthorizationService {
-  ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId): void {
-    throw new EmployeeNotAuthorizedError();
-  }
-
-  ensureEmployeeCanDelete(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void {
-    throw new EmployeeNotAuthorizedError();
-  }
-
-  ensureEmployeeCanUpdate(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void {
-    throw new EmployeeNotAuthorizedError();
-  }
-}
-
-class Admin implements OrganizationEmployee {
-  constructor(private id: OrganizationEmployeeId) {}
-
-  getId(): OrganizationEmployeeId {
-    return this.id;
-  }
-} // TODO remove after merging
-
-const queueNode = new QueueNode(
-  QueueNodeId.create(),
-  OrganizationEndpointId.create(),
-  new MetadataSpecification([]),
-  new TimeSpanBuilder().build(),
-);
-
-const admin = new Admin(OrganizationEmployeeId.create());
-
-describe("Authorizing", () => {
-  const node = new AdministratedQueueNode(
-    admin,
-    queueNode,
-    new AlwaysAuthorizing(),
-  );
+describe("Valid Authorization", () => {
+  const node = AdministratedQueueNodeMother.withPassingAuth().build();
 
   it("Should not throw EmployeeNotAuthorizedError on valid authorization service", () => {
     expect(() => {
@@ -67,12 +21,8 @@ describe("Authorizing", () => {
   });
 });
 
-describe("Not Authorizing", () => {
-  const node = new AdministratedQueueNode(
-    admin,
-    queueNode,
-    new AlwaysNotAuthorizing(),
-  );
+describe("Invalid Authorization", () => {
+  const node = AdministratedQueueNodeMother.withFailingAuth().build();
 
   it("Should throw EmployeeNotAuthorizedError on invalid authorization service", () => {
     expect(() => {
@@ -82,5 +32,32 @@ describe("Not Authorizing", () => {
     expect(() => {
       node.setMetaDataSpecification(new MetadataSpecification([]));
     }).toThrow(EmployeeNotAuthorizedError);
+  });
+});
+
+describe("Events", () => {
+  /* TODO imo this is not the best way to test this;
+  *   because it assumes that the last event added is added because of the setter methods,
+  *   indeed the last event could be an instance of QueueNodeUpdated, but we can't be sure that it was added because of the setters
+  *   to test this function correctly we must achieve the following:
+  *   1- Make sure an event has been raised (perhaps be comparing the size of the events array before and after setters are called?)
+  *   2- Make sure that an event of the correct type has been raised
+  *   3- Make sure that this event was atomically raised (no other events were raised while said event was being raised)
+   */
+
+  it("Should raise QueueNodeUpdated event on setOperatingTimes", () => {
+    const node = new AdministratedQueueNodeBuilder().build();
+    node.setOperatingTimes(new TimeSpanBuilder().build());
+    const events = node.getRaisedEvents();
+
+    expect(events.length && events[events.length - 1] instanceof QueueNodeUpdated).toBeTruthy();
+  });
+
+  it("Should raise QueueNodeUpdated event on setMetaDataSpecification", () => {
+    const node = new AdministratedQueueNodeBuilder().build();
+    node.setMetaDataSpecification(new MetadataSpecification([]));
+    const events = node.getRaisedEvents();
+
+    expect(events.length && events[events.length - 1] instanceof QueueNodeUpdated).toBeTruthy();
   });
 });
