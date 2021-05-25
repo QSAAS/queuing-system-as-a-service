@@ -1,8 +1,8 @@
 import ValueObject from "@app/Command/Domain/ValueObject/ValueObject";
-import Time from "@app/Command/Domain/ValueObject/Time";
+import Clock from "@app/Command/Domain/ValueObject/Clock";
 
 export default class TimeSpan extends ValueObject {
-  constructor(private start: Time, private end: Time) {
+  constructor(private start: Clock, private end: Clock) {
     super();
   }
 
@@ -18,7 +18,7 @@ export default class TimeSpan extends ValueObject {
     return this.end;
   }
 
-  contains(time: Time): boolean {
+  contains(time: Clock): boolean {
     // TODO should we handle cases where start time is greater than end time (night shift)
     //  e.g. start = 21:00:00, end = 03:00:00
     return time.greaterThanOrEqual(this.start) && time.lessThanOrEqual(this.end);

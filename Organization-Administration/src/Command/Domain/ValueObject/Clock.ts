@@ -2,10 +2,7 @@ import ValueObject from "@app/Command/Domain/ValueObject/ValueObject";
 import InvalidTimeError from "@app/Command/Domain/Error/InvalidTimeError";
 import InvalidTimeComparisonError from "@app/Command/Domain/Error/InvalidTimeComparisonError";
 
-/* eslint-disable no-underscore-dangle */
-
-// TODO TypeScript has no Integer type, should we use a package?
-export default class Time extends ValueObject { // changed class name from 'Clock' to 'Time'
+export default class Clock extends ValueObject {
   private hours: number | undefined;
   private minutes: number | undefined;
   private seconds: number | undefined;
