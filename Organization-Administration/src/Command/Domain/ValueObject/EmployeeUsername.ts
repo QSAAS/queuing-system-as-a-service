@@ -23,4 +23,8 @@ export default class EmployeeUsername extends ValueObject {
   equals(other: this): boolean {
     return this.username === other.username;
   }
+
+  public static create(username: string): EmployeeUsername {
+    return new EmployeeUsername(username);
+  }
 }

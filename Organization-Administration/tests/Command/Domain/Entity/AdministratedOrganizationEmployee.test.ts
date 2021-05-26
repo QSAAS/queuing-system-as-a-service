@@ -7,14 +7,15 @@ import TrialPaswordHash from "@tests/Command/Domain/ValueObject/TrialPaswordHash
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
 // eslint-disable-next-line max-len
 import { PassingOrganizationEmployeeAuthorizationService } from "@tests/Command/Infrastructure/PassingOrganizationEmployeeAuthorizationService";
+import EmployeeUsernameMother from "@tests/Command/Domain/ValueObject/EmployeeUsernameMother";
 
 describe("test AdministratedOrganization Employee", () => {
   const adminEID: OrganizationEmployeeId = new OrganizationEmployeeId("123");
   const anotherEmployeeEID: OrganizationEmployeeId = new OrganizationEmployeeId("2");
   const adminOID: OrganizationId = new OrganizationId("1");
   const adminPasswordHash : PasswordHash = new TrialPaswordHash("passwordHash");
-  const adminUsername : EmployeeUsername = new EmployeeUsername("adminusername");
-  const anotherEmployeeUsername : EmployeeUsername = new EmployeeUsername("anotherUsername");
+  const adminUsername : EmployeeUsername = EmployeeUsernameMother.complete().build();
+  const anotherEmployeeUsername : EmployeeUsername = EmployeeUsernameMother.complete().build();
   // const adminPass = new adminPasswordHash();
   const admin: OrganizationEmployee = new OrganizationEmployee(adminEID, adminOID,
     "admin", adminPasswordHash, adminUsername);
