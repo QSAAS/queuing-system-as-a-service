@@ -36,30 +36,25 @@ describe("Invalid Authorization", () => {
 });
 
 describe("Events", () => {
-  /* TODO imo this is not the best way to test this;
-  *   because it assumes that the last event added is added because of the setter methods,
-  *   indeed the last event could be an instance of QueueNodeUpdated, but we can't be sure that it was added because of the setters
-  *   to test this function correctly we must achieve the following:
-  *   1- Make sure an event has been raised (perhaps be comparing the size of the events array before and after setters are called?)
-  *   2- Make sure that an event of the correct type has been raised
-  *   3- Make sure that this event was atomically raised (no other events were raised while said event was being raised)
-   */
-
   it("Should raise QueueNodeUpdated event on setOperatingTimes", () => {
     const node = new AdministratedQueueNodeBuilder().build();
-    node.setOperatingTimes(new TimeSpanBuilder().build());
+    const span = new TimeSpanBuilder().build();
+    node.setOperatingTimes(span);
     const events = node.getRaisedEvents();
 
-    expect(events.length).toBeTruthy();
-    expect(events[events.length - 1]).toBeInstanceOf(QueueNodeUpdated);
+    const hasEvent = events.reduce((acc, curr) => (curr instanceof QueueNodeUpdated && curr.getQueueNode().getTimeSpan() === span) || acc, false);
+
+    expect(hasEvent).toBeTruthy();
   });
 
   it("Should raise QueueNodeUpdated event on setMetaDataSpecification", () => {
     const node = new AdministratedQueueNodeBuilder().build();
-    node.setMetaDataSpecification(new MetadataSpecification([]));
+    const meta = new MetadataSpecification([]);
+    node.setMetaDataSpecification(meta);
     const events = node.getRaisedEvents();
 
-    expect(events.length).toBeTruthy();
-    expect(events[events.length - 1]).toBeInstanceOf(QueueNodeUpdated);
+    const hasEvent = events.reduce((acc, curr) => (curr instanceof QueueNodeUpdated && curr.getQueueNode().getMetaSpecs() === meta) || acc, false);
+
+    expect(hasEvent).toBeTruthy();
   });
 });
