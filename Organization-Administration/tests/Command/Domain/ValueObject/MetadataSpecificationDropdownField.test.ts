@@ -1,4 +1,4 @@
-import DropdownFieldBuilder from "@tests/Command/Domain/ValueObject/DropdownFieldBuilder";
+import DropdownFieldBuilder from "@tests/Command/Domain/ValueObject/MetadataSpecificationDropdownFieldBuilder";
 
 const base = new DropdownFieldBuilder().build();
 

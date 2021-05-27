@@ -1,6 +1,6 @@
 import MetadataSpecificationTextField from "@app/Command/Domain/ValueObject/MetadataSpecificationTextField";
 
-export default class TextFieldBuilder {
+export default class MetadataSpecificationTextFieldBuilder {
   private name;
   private isRequired;
   private maxLength;

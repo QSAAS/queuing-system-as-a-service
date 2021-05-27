@@ -1,6 +1,6 @@
 import MetadataSpecificationDropdownField from "@app/Command/Domain/ValueObject/MetadataSpecificationDropdownField";
 
-export default class DropdownFieldBuilder {
+export default class MetadataSpecificationDropdownFieldBuilder {
   private isRequired: boolean;
   private options: string[];
   private name: string;
