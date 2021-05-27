@@ -1,14 +1,16 @@
 import ValueObject from "@app/Command/Domain/ValueObject/ValueObject";
 import InvalidTimeError from "@app/Command/Domain/Error/InvalidTimeError";
-import InvalidTimeComparisonError from "@app/Command/Domain/Error/InvalidTimeComparisonError";
 
 export default class Clock extends ValueObject {
-  private hours: number | undefined;
-  private minutes: number | undefined;
-  private seconds: number | undefined;
+  private hours: number;
+  private minutes: number;
+  private seconds: number;
 
   constructor(hours: number, minutes: number, seconds: number) {
     super();
+    this.hours = hours;
+    this.minutes = minutes;
+    this.seconds = seconds;
     this.setHours(hours);
     this.setMinutes(minutes);
     this.setSeconds(seconds);
@@ -54,15 +56,6 @@ export default class Clock extends ValueObject {
   }
 
   greaterThan(other: this): boolean {
-    if (this.seconds === undefined
-        || this.minutes === undefined
-        || this.hours === undefined
-        || other.hours === undefined
-        || other.minutes === undefined
-        || other.seconds === undefined) {
-      throw new InvalidTimeComparisonError();
-    }
-
     const equalHours: boolean = this.hours === other.hours;
     const equalMinutes: boolean = this.minutes === other.minutes;
     if (this.hours > other.hours) {
