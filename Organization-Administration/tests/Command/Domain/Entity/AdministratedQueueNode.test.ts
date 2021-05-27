@@ -6,6 +6,7 @@ import TimeSpanBuilder from "@tests/Builders/TimeSpanBuilder";
 import AdministratedQueueNodeMother from "@tests/Builders/AdministratedQueueNodeMother";
 import AdministratedQueueNodeBuilder from "@tests/Builders/AdministratedQueueNodeBuilder";
 import QueueNodeUpdated from "@app/Command/Domain/Event/QueueNodeUpdated";
+import eventsArrayContains from "@tests/Utils/eventsArrayContains";
 
 describe("Valid Authorization", () => {
   const node = AdministratedQueueNodeMother.withPassingAuth().build();
@@ -41,10 +42,7 @@ describe("Events", () => {
     const span = new TimeSpanBuilder().build();
     node.setOperatingTimes(span);
     const events = node.getRaisedEvents();
-
-    const hasEvent = events.reduce((acc, curr) => (curr instanceof QueueNodeUpdated && curr.getQueueNode().getTimeSpan() === span) || acc, false);
-
-    expect(hasEvent).toBeTruthy();
+    expect(eventsArrayContains(events, QueueNodeUpdated, (event) => event.getQueueNode().getTimeSpan() === span)).toBe(true);
   });
 
   it("Should raise QueueNodeUpdated event on setMetaDataSpecification", () => {
@@ -52,9 +50,6 @@ describe("Events", () => {
     const meta = new MetadataSpecification([]);
     node.setMetaDataSpecification(meta);
     const events = node.getRaisedEvents();
-
-    const hasEvent = events.reduce((acc, curr) => (curr instanceof QueueNodeUpdated && curr.getQueueNode().getMetaSpecs() === meta) || acc, false);
-
-    expect(hasEvent).toBeTruthy();
+    expect(eventsArrayContains(events, QueueNodeUpdated, (event) => event.getQueueNode().getMetaSpecs() === meta)).toBe(true);
   });
 });
