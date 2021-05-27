@@ -1,4 +1,4 @@
-import DropdownFieldBuilder from "@tests/Builders/DropdownFieldBuilder";
+import DropdownFieldBuilder from "@tests/Command/Domain/ValueObject/DropdownFieldBuilder";
 
 const base = new DropdownFieldBuilder().build();
 

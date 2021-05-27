@@ -1,4 +1,4 @@
-import AdministratedQueueNodeBuilder from "@tests/Builders/AdministratedQueueNodeBuilder";
+import AdministratedQueueNodeBuilder from "@tests/Command/Domain/Entity/AdministratedQueueNodeBuilder";
 import PassingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/PassingQueueNodeAuthorizationService";
 import FailingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/FailingQueueNodeAuthorizationService";
 

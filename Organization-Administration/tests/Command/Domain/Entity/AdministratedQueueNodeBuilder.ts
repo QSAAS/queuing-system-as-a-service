@@ -4,7 +4,7 @@ import AdministratedQueueNode, { OrganizationEmployee } from "@app/Command/Domai
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 import MetadataSpecification from "@app/Command/Domain/ValueObject/MetadataSpecification";
-import TimeSpanBuilder from "@tests/Builders/TimeSpanBuilder";
+import TimeSpanBuilder from "@tests/Command/Domain/ValueObject/TimeSpanBuilder";
 import PassingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/PassingQueueNodeAuthorizationService";
 
 export default class AdministratedQueueNodeBuilder {

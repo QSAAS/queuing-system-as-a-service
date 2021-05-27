@@ -1,6 +1,6 @@
 import TimeSpan from "@app/Command/Domain/ValueObject/TimeSpan";
 import Clock from "@app/Command/Domain/ValueObject/Clock";
-import TimeSpanBuilder from "@tests/Builders/TimeSpanBuilder";
+import TimeSpanBuilder from "@tests/Command/Domain/ValueObject/TimeSpanBuilder";
 
 const base = new TimeSpanBuilder().build();
 

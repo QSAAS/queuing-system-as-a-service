@@ -1,5 +1,5 @@
 import InvalidTimeError from "@app/Command/Domain/Error/InvalidTimeError";
-import ClockBuilder from "@tests/Builders/ClockBuilder";
+import ClockBuilder from "@tests/Command/Domain/ValueObject/ClockBuilder";
 
 /* eslint-disable no-new */
 

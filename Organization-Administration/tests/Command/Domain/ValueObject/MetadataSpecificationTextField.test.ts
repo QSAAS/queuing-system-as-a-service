@@ -1,4 +1,4 @@
-import TextFieldBuilder from "@tests/Builders/TextFieldBuilder";
+import TextFieldBuilder from "@tests/Command/Domain/ValueObject/TextFieldBuilder";
 
 const base = new TextFieldBuilder().build();
 

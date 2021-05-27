@@ -2,9 +2,9 @@
 /* eslint-disable max-len */
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
 import MetadataSpecification from "@app/Command/Domain/ValueObject/MetadataSpecification";
-import TimeSpanBuilder from "@tests/Builders/TimeSpanBuilder";
-import AdministratedQueueNodeMother from "@tests/Builders/AdministratedQueueNodeMother";
-import AdministratedQueueNodeBuilder from "@tests/Builders/AdministratedQueueNodeBuilder";
+import TimeSpanBuilder from "@tests/Command/Domain/ValueObject/TimeSpanBuilder";
+import AdministratedQueueNodeMother from "@tests/Command/Domain/Entity/AdministratedQueueNodeMother";
+import AdministratedQueueNodeBuilder from "@tests/Command/Domain/Entity/AdministratedQueueNodeBuilder";
 import QueueNodeUpdated from "@app/Command/Domain/Event/QueueNodeUpdated";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
 

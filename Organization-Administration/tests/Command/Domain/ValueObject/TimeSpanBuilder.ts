@@ -1,6 +1,6 @@
 import TimeSpan from "@app/Command/Domain/ValueObject/TimeSpan";
 import Clock from "@app/Command/Domain/ValueObject/Clock";
-import ClockBuilder from "@tests/Builders/ClockBuilder";
+import ClockBuilder from "@tests/Command/Domain/ValueObject/ClockBuilder";
 
 export default class TimeSpanBuilder {
   private start: Clock;
