@@ -3,19 +3,26 @@ import AdministratedOrganizationEmployeeBuilder
   from "@tests/Command/Domain/Entity/AdministratedOrganizationEmployeeBuilder";
 
 describe("test AdministratedOrganization Employee", () => {
-  const administratedEmployee: AdministratedOrganizationEmployee = new
-  AdministratedOrganizationEmployeeBuilder().build();
   describe("Events", () => {
-    administratedEmployee.setUsername(administratedEmployee.getUsername());
     it("raise event when update username", () => {
+      const administratedEmployee: AdministratedOrganizationEmployee = new
+      AdministratedOrganizationEmployeeBuilder().build();
+      administratedEmployee.setUsername(administratedEmployee.getUsername());
+
       expect(administratedEmployee.getRaisedEvents().length).toEqual(1);
     });
-    administratedEmployee.setName(administratedEmployee.getName());
     it("raise event when update name", () => {
+      const administratedEmployee: AdministratedOrganizationEmployee = new
+      AdministratedOrganizationEmployeeBuilder().build();
+      administratedEmployee.setName(administratedEmployee.getName());
+
       expect(administratedEmployee.getRaisedEvents().length).toEqual(1);
     });
-    administratedEmployee.setPasswordHash(administratedEmployee.getPasswordHash());
+
     it("should raise event when set passwordHash", () => {
+      const administratedEmployee: AdministratedOrganizationEmployee = new
+      AdministratedOrganizationEmployeeBuilder().build();
+      administratedEmployee.setPasswordHash(administratedEmployee.getPasswordHash());
       expect(administratedEmployee.getRaisedEvents().length).toEqual(1);
     });
   });
