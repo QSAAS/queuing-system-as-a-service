@@ -1,6 +1,6 @@
 import PasswordHash from "@app/Command/Domain/ValueObject/PasswordHash";
 
-export default class TrialPaswordHash extends PasswordHash {
+export default class TrialPasswordHash extends PasswordHash {
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(passwordHash: string) {
     super(passwordHash);
@@ -10,5 +10,9 @@ export default class TrialPaswordHash extends PasswordHash {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   equals(other: this): boolean {
     return false;
+  }
+
+  public static create(): TrialPasswordHash {
+    return new TrialPasswordHash("hash");
   }
 }
