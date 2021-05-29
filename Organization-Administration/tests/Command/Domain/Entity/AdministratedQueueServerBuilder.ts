@@ -5,11 +5,14 @@ import AdministratedQueueServer from "@app/Command/Domain/Entity/AdministratedQu
 import QueueServerAuthorizationService from "@app/Command/Application/Service/QueueServerAuthorizationService";
 import PassingQueueServerAuthorizationService
   from "@tests/Command/Infrastructure/PassingQueueServerAuthorizationService";
+import QueueServer from "@app/Command/Domain/Entity/QueueServer";
 
 export default class AdministratedQueueServerBuilder extends QueueServerBuilder {
   private admin: OrganizationEmployee = OrganizationEmployeeMother.admin().build();
   private queueServerAuthorizationService:QueueServerAuthorizationService = new
   PassingQueueServerAuthorizationService();
+
+  private queueServer: QueueServer = new QueueServerBuilder().build();
 
   withAdmin(admin: OrganizationEmployee) : this {
     this.admin = admin;
@@ -17,6 +20,6 @@ export default class AdministratedQueueServerBuilder extends QueueServerBuilder 
   }
 
   build(): AdministratedQueueServer {
-    return new AdministratedQueueServer(this.admin, super.queueServerId, super.organizationEndpointId, this.serves);
+    return new AdministratedQueueServer(this.admin, this.queueServer, this.queueServerAuthorizationService);
   }
 }

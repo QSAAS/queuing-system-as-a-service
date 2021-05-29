@@ -14,10 +14,6 @@ export default class QueueServer extends AggregateRoot {
     this.serves = serves;
   }
 
-  public setServes(serves: QueueNodeId[]): void {
-    this.serves = serves;
-  }
-
   public getServes(): QueueNodeId[] {
     return this.serves;
   }

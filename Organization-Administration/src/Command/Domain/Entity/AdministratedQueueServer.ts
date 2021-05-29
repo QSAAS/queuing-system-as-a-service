@@ -16,6 +16,6 @@ export default class AdministratedQueueServer extends QueueServer {
 
   public setServedQueueNodes(queueNodeIds: QueueNodeId[]) {
     this.raiseEvent(new QueueServerUpdated(this));
-    this.setServes(queueNodeIds);
+    this.serves = queueNodeIds;
   }
 }
