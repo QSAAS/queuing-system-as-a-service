@@ -6,6 +6,10 @@ export default class MetadataSpecification extends ValueObject {
     super();
   }
 
+  getFields() {
+    return this.fields;
+  }
+
   equals(other: this): boolean {
     if (this.fields === other.fields) {
       return true;

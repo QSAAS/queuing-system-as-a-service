@@ -17,4 +17,12 @@ export default class MetadataSpecificationDropdownField extends MetadataSpecific
           (element, index) => element === other.options[index],
         );
   }
+
+  toPlainObject() { // TODO move this function to parent and spread on super().toPlainObject()
+    return {
+      name: this.name,
+      isRequired: this.isRequired,
+      options: this.options,
+    };
+  }
 }
