@@ -5,7 +5,6 @@ import PasswordHash from "@app/Command/Domain/ValueObject/PasswordHash";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
 import OrganizationEmployeeId from "../ValueObject/OrganizationEmployeeId";
 
-/// todo why this has protected when we don't extend it, we aggregate use it
 export default class OrganizationEmployee extends AggregateRoot {
   protected organizationEmployeeId: OrganizationEmployeeId;
   protected organizationId : OrganizationId;
@@ -45,5 +44,11 @@ export default class OrganizationEmployee extends AggregateRoot {
 
   public getUsername():EmployeeUsername {
     return this.username;
+  }
+
+  public static create(organizationEmployeeId: OrganizationEmployeeId,
+    organizationId: OrganizationId, name:string,
+    passwordHash: PasswordHash, username:EmployeeUsername) : OrganizationEmployee {
+    return new OrganizationEmployee(organizationEmployeeId, organizationId, name, passwordHash, username);
   }
 }
