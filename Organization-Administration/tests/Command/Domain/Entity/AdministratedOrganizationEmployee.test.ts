@@ -1,51 +1,22 @@
 import AdministratedOrganizationEmployee from "@app/Command/Domain/Entity/AdministratedOrganizationEmployee";
-import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
-import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
-import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
-import PasswordHash from "@app/Command/Domain/ValueObject/PasswordHash";
-import TrialPaswordHash from "@tests/Command/Domain/ValueObject/TrialPaswordHash";
-import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
-// eslint-disable-next-line max-len
-import { PassingOrganizationEmployeeAuthorizationService } from "@tests/Command/Infrastructure/PassingOrganizationEmployeeAuthorizationService";
-import EmployeeUsernameMother from "@tests/Command/Domain/ValueObject/EmployeeUsernameMother";
+import AdministratedOrganizationEmployeeBuilder
+  from "@tests/Command/Domain/Entity/AdministratedOrganizationEmployeeBuilder";
 
 describe("test AdministratedOrganization Employee", () => {
-  const adminEID: OrganizationEmployeeId = new OrganizationEmployeeId("123");
-  const anotherEmployeeEID: OrganizationEmployeeId = new OrganizationEmployeeId("2");
-  const adminOID: OrganizationId = new OrganizationId("1");
-  const adminPasswordHash : PasswordHash = new TrialPaswordHash("passwordHash");
-  const adminUsername : EmployeeUsername = EmployeeUsernameMother.complete().build();
-  const anotherEmployeeUsername : EmployeeUsername = EmployeeUsernameMother.complete().build();
-  // const adminPass = new adminPasswordHash();
-  const admin: OrganizationEmployee = new OrganizationEmployee(adminEID, adminOID,
-    "admin", adminPasswordHash, adminUsername);
-  // eslint-disable-next-line max-len
-  const passingOrganizationEmployeeAuthorizationService: PassingOrganizationEmployeeAuthorizationService = new PassingOrganizationEmployeeAuthorizationService();
-  const anotherEmployee: OrganizationEmployee = new OrganizationEmployee(anotherEmployeeEID,
-    adminOID, "another employee", adminPasswordHash, anotherEmployeeUsername);
-
-  describe("set Name", () => {
-    // eslint-disable-next-line max-len
-    const administratedEmployee: AdministratedOrganizationEmployee = new AdministratedOrganizationEmployee(admin, anotherEmployee, passingOrganizationEmployeeAuthorizationService);
-    const newName = "ahmed";
-    administratedEmployee.setName(newName);
-    it("raise event when update name", () => {
-      expect(administratedEmployee.getRaisedEvents().length).toEqual(1);
-    });
-    it("update name", () => {
-      expect(administratedEmployee.getName()).toEqual(newName);
-    });
-  });
-  describe("set userName", () => {
-    // eslint-disable-next-line max-len
-    const administratedEmployee: AdministratedOrganizationEmployee = new AdministratedOrganizationEmployee(admin, anotherEmployee, passingOrganizationEmployeeAuthorizationService);
-    const newUsername: EmployeeUsername = new EmployeeUsername("newUsername");
-    administratedEmployee.setUsername(newUsername);
+  const administratedEmployee: AdministratedOrganizationEmployee = new
+  AdministratedOrganizationEmployeeBuilder().build();
+  describe("Events", () => {
+    administratedEmployee.setUsername(administratedEmployee.getUsername());
     it("raise event when update username", () => {
       expect(administratedEmployee.getRaisedEvents().length).toEqual(1);
     });
-    it("update username", () => {
-      expect(administratedEmployee.getName()).toEqual(newUsername);
+    administratedEmployee.setName(administratedEmployee.getName());
+    it("raise event when update name", () => {
+      expect(administratedEmployee.getRaisedEvents().length).toEqual(1);
+    });
+    administratedEmployee.setPasswordHash(administratedEmployee.getPasswordHash());
+    it("should raise event when set passwordHash", () => {
+      expect(administratedEmployee.getRaisedEvents().length).toEqual(1);
     });
   });
 });
