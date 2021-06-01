@@ -14,10 +14,14 @@ import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
 import TimeSpan from "@app/Command/Domain/ValueObject/TimeSpan";
 import Clock from "@app/Command/Domain/ValueObject/Clock";
+import QueueNodeSchema from "@app/Command/Infrastructure/Mongoose/Schema/QueueNodeSchema";
 
 // TODO implement interface from Domain layer
 export default class QueueNodeRepository {
-  constructor(private readonly QueueNodeModel: mongoose.Model<IQueueNode & mongoose.Document>) {
+  private readonly QueueNodeModel: mongoose.Model<IQueueNode & mongoose.Document>;
+
+  constructor(connection: mongoose.Connection) {
+    this.QueueNodeModel = connection.model<IQueueNode&mongoose.Document>("QueueNode", QueueNodeSchema);
   }
 
   async save(node: QueueNode) {
