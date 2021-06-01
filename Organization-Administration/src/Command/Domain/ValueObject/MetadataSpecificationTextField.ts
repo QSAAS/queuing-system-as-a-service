@@ -34,15 +34,4 @@ export default class MetadataSpecificationTextField extends MetadataSpecificatio
         && this.regex === other.regex
         && this.placeholder === other.placeholder;
   }
-
-  toPlainObject() { // TODO move this function to parent and spread on super().toPlainObject()
-    return {
-      name: this.name,
-      isRequired: this.isRequired,
-      maxLength: this.maxLength,
-      minLength: this.minLength,
-      regex: this.regex,
-      placeholder: this.placeholder,
-    };
-  }
 }

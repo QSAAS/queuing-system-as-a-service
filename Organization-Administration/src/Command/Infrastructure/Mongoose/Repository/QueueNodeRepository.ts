@@ -17,7 +17,8 @@ import Clock from "@app/Command/Domain/ValueObject/Clock";
 
 // TODO implement interface from Domain layer
 export default class QueueNodeRepository {
-  constructor(private readonly QueueNodeModel: mongoose.Model<IQueueNode&mongoose.Document>) {}
+  constructor(private readonly QueueNodeModel: mongoose.Model<IQueueNode & mongoose.Document>) {
+  }
 
   async save(node: QueueNode) {
     const instance = new this.QueueNodeModel(this.typedObjectFrom(node));
@@ -66,18 +67,25 @@ export default class QueueNodeRepository {
   }
 
   private typedObjectFrom(node: QueueNode): IQueueNode {
-    const fields: (IMetadataSpecificationDropdownField|IMetadataSpecificationTextField)[] = [];
+    const fields: (IMetadataSpecificationDropdownField | IMetadataSpecificationTextField)[] = [];
     node.getMetaSpecs().getFields().forEach((field) => {
       if (field instanceof MetadataSpecificationTextField) {
         const textField: IMetadataSpecificationTextField = {
-          ...(field.toPlainObject()),
+          name: field.getName(),
+          isRequired: field.getIsRequired(),
+          maxLength: field.getMaxLength(),
+          minLength: field.getMinLength(),
+          regex: field.getRegex(),
+          placeholder: field.getPlaceholder(),
           kind: FieldType.Text,
         };
         fields.push(textField);
       }
       if (field instanceof MetadataSpecificationDropdownField) {
         const dropdownField: IMetadataSpecificationDropdownField = {
-          ...(field.toPlainObject()),
+          name: field.getName(),
+          isRequired: field.getIsRequired(),
+          options: field.getOptions(),
           kind: FieldType.Dropdown,
         };
         fields.push(dropdownField);
