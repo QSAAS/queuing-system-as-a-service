@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 
-const metaSpecsSchema = new Schema({
+const MetaSpecsSchema = new Schema({
   fields: [Schema.Types.Mixed],
 });
 
-export default metaSpecsSchema;
+export default MetaSpecsSchema;
