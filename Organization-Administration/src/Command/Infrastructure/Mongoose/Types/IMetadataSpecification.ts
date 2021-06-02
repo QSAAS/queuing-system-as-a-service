@@ -1,8 +1,5 @@
-import IMetadataSpecificationTextField
-  from "@app/Command/Infrastructure/Mongoose/Types/IMetadataSpecificationTextField";
-import IMetadataSpecificationDropdownField
-  from "@app/Command/Infrastructure/Mongoose/Types/IMetadataSpecificationDropdownField";
+import IMetadataSpecificationField from "@app/Command/Infrastructure/Mongoose/Types/IMetadataSpecificationField";
 
 export default interface IMetadataSpecification{
-  fields: (IMetadataSpecificationDropdownField|IMetadataSpecificationTextField)[]
+  fields: IMetadataSpecificationField[]
 }
