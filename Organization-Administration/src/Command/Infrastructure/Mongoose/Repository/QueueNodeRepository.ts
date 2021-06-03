@@ -17,7 +17,7 @@ export default class QueueNodeRepository implements IQueueNodeRepository {
   }
 
   async save(node: QueueNode): Promise<void> {
-    const instance = new this.QueueNodeModel(this.queueNodeTransformer.toMongooseType(node));
+    const instance = new this.QueueNodeModel(this.queueNodeTransformer.mongooseObjectFrom(node));
     await instance.save();
   }
 }

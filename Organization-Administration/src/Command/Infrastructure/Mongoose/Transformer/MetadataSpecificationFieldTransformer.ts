@@ -7,24 +7,26 @@ import FieldType from "@app/Command/Infrastructure/Mongoose/Types/FieldType";
 import MetadataSpecificationDropdownField from "@app/Command/Domain/ValueObject/MetadataSpecificationDropdownField";
 import IMetadataSpecificationDropdownField
   from "@app/Command/Infrastructure/Mongoose/Types/IMetadataSpecificationDropdownField";
+import GenericTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/Interface/GenericTransformer";
 
-export default class MetadataSpecificationFieldTransformer {
-  toMongooseType(field: MetadataSpecificationField): IMetadataSpecificationField {
-    if (field instanceof MetadataSpecificationTextField) {
-      return this.textFieldToMongooseType(field);
+export default class MetadataSpecificationFieldTransformer implements
+    GenericTransformer<IMetadataSpecificationField, MetadataSpecificationField> {
+  mongooseObjectFrom(fieldInstance: MetadataSpecificationField): IMetadataSpecificationField {
+    if (fieldInstance instanceof MetadataSpecificationTextField) {
+      return this.textFieldToMongooseType(fieldInstance);
     }
-    if (field instanceof MetadataSpecificationDropdownField) {
-      return this.dropdownFieldToMongooseType(field);
+    if (fieldInstance instanceof MetadataSpecificationDropdownField) {
+      return this.dropdownFieldToMongooseType(fieldInstance);
     }
     throw new Error("Unsupported field type");
   }
 
-  toDomainObject(field: IMetadataSpecificationField): MetadataSpecificationField {
-    if (field.kind === FieldType.Text) {
-      return this.mongooseTypeToTextField(field as IMetadataSpecificationTextField);
+  domainInstanceFrom(fieldObject: IMetadataSpecificationField): MetadataSpecificationField {
+    if (fieldObject.kind === FieldType.Text) {
+      return this.mongooseTypeToTextField(fieldObject as IMetadataSpecificationTextField);
     }
-    if (field.kind === FieldType.Dropdown) {
-      return this.mongooseTypeToDropdownField(field as IMetadataSpecificationDropdownField);
+    if (fieldObject.kind === FieldType.Dropdown) {
+      return this.mongooseTypeToDropdownField(fieldObject as IMetadataSpecificationDropdownField);
     }
     throw new Error("Unsupported field type");
   }
