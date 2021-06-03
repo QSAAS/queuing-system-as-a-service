@@ -7,6 +7,7 @@ export default class ClockTransformer {
       hours: clock.getHours()!,
       minutes: clock.getMinutes()!,
       seconds: clock.getSeconds()!,
+      // TODO remove not null assertion operator after merge
     };
   }
 
