@@ -5,10 +5,9 @@ import GenericTransformer from "@app/Command/Infrastructure/Mongoose/Transformer
 export default class ClockTransformer implements GenericTransformer<IClock, Clock> {
   mongooseObjectFrom(clockInstance: Clock): IClock {
     return {
-      hours: clockInstance.getHours()!,
-      minutes: clockInstance.getMinutes()!,
-      seconds: clockInstance.getSeconds()!,
-      // TODO remove not null assertion operator after merge
+      hours: clockInstance.getHours(),
+      minutes: clockInstance.getMinutes(),
+      seconds: clockInstance.getSeconds(),
     };
   }
 

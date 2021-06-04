@@ -16,15 +16,15 @@ export default class Clock extends ValueObject {
     this.setSeconds(seconds);
   }
 
-  getHours(): number | undefined {
+  getHours(): number {
     return this.hours;
   }
 
-  getMinutes(): number | undefined {
+  getMinutes(): number {
     return this.minutes;
   }
 
-  getSeconds(): number | undefined {
+  getSeconds(): number {
     return this.seconds;
   }
 
