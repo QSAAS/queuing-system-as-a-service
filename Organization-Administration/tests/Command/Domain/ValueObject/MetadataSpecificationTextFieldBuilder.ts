@@ -9,7 +9,7 @@ export default class MetadataSpecificationTextFieldBuilder {
   private placeholder;
 
   constructor() {
-    this.name = "name";
+    this.name = "text_name";
     this.isRequired = true;
     this.maxLength = 16;
     this.minLength = 4;

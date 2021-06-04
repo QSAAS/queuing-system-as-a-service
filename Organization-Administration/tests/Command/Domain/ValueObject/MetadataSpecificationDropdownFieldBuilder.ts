@@ -8,7 +8,7 @@ export default class MetadataSpecificationDropdownFieldBuilder {
   constructor() {
     this.isRequired = true;
     this.options = ["option_1", "option_2"];
-    this.name = "name";
+    this.name = "dropdown_name";
   }
 
   withName(val: string) {

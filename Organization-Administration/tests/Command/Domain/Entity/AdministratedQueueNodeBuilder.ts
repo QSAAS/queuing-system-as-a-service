@@ -3,9 +3,9 @@ import QueueNodeAuthorizationService from "@app/Command/Domain/Service/QueueNode
 import AdministratedQueueNode, { OrganizationEmployee } from "@app/Command/Domain/Entity/AdministratedQueueNode";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
-import MetadataSpecification from "@app/Command/Domain/ValueObject/MetadataSpecification";
 import TimeSpanBuilder from "@tests/Command/Domain/ValueObject/TimeSpanBuilder";
 import PassingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/PassingQueueNodeAuthorizationService";
+import MetadataSpecificationBuilder from "@tests/Command/Domain/ValueObject/MetadataSpecificationBuilder";
 
 export default class AdministratedQueueNodeBuilder {
   private admin: OrganizationEmployee;
@@ -14,8 +14,10 @@ export default class AdministratedQueueNodeBuilder {
 
   constructor() {
     this.admin = new OrganizationEmployee(OrganizationEmployeeId.create());
-    this.queueNode = new QueueNode(QueueNodeId.create(), OrganizationEmployeeId.create(),
-      new MetadataSpecification([]), new TimeSpanBuilder().build());
+    this.queueNode = new QueueNode(QueueNodeId.create(),
+      OrganizationEmployeeId.create(),
+      new MetadataSpecificationBuilder().build(),
+      new TimeSpanBuilder().build());
     this.authService = new PassingQueueNodeAuthorizationService();
   }
 
