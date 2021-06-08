@@ -17,11 +17,9 @@ export enum AuthorizedAction {
 }
 
 export default class Permission extends ValueObject {
-  private resourceId: EntityId|null;
-  private resourceType: ResourceType;
-  private action: AuthorizedAction;
-
-  constructor(resourceId: EntityId | null, resourceType: ResourceType, action: AuthorizedAction) {
+  constructor(private resourceId: EntityId | null,
+    private resourceType: ResourceType,
+    private action: AuthorizedAction) {
     super();
     this.resourceId = resourceId;
     this.resourceType = resourceType;

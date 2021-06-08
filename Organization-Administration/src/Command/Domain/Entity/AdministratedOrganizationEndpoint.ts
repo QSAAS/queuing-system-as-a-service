@@ -6,17 +6,13 @@ import Geolocation from "@app/Command/Domain/ValueObject/Geolocation";
 import OrganizationEndpointUpdated from "@app/Command/Domain/Event/OrganizationEndpointUpdated";
 
 export default class AdministratedOrganizationEndpoint extends OrganizationEndpoint {
-  private administrator: OrganizationEmployee;
-  private organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService;
-
-  constructor(administrator: OrganizationEmployee, organizationEndpoint: OrganizationEndpoint,
-    organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService) {
+  constructor(private administrator: OrganizationEmployee,
+    organizationEndpoint: OrganizationEndpoint,
+    private organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService) {
     super(organizationEndpoint.getOrganizationEndpointId(),
       organizationEndpoint.getOrganizationId(),
       organizationEndpoint.getName(),
       organizationEndpoint.getGeolocation());
-    this.organizationEndpointAuthorizationService = organizationEndpointAuthorizationService;
-    this.administrator = administrator;
   }
 
   public getAdministrator(): OrganizationEmployee {
