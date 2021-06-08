@@ -24,13 +24,15 @@ export default class AdministratedOrganizationEndpoint extends OrganizationEndpo
   }
 
   public setName(value: string) {
-    this.organizationEndpointAuthorizationService.ensureCanEdit(this.administrator, this);
+    this.organizationEndpointAuthorizationService.ensureEmployeeCanEdit(this.administrator.getId(),
+      this.getOrganizationEndpointId());
     this.name = value;
     this.raiseEvent(new OrganizationEndpointUpdated(this));
   }
 
   public setGeolocation(geolocation: Geolocation) {
-    this.organizationEndpointAuthorizationService.ensureCanEdit(this.administrator, this);
+    this.organizationEndpointAuthorizationService.ensureEmployeeCanEdit(this.administrator.getId(),
+      this.getOrganizationEndpointId());
     this.geolocation = geolocation;
     this.raiseEvent(new OrganizationEndpointUpdated(this));
   }
