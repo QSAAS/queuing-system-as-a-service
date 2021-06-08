@@ -69,7 +69,13 @@ export default class Permission extends ValueObject {
   }
 
   public equals(other: Permission): boolean {
-    if (this.resourceId && other.resourceId) return this.resourceId.equals(other.resourceId);
-    return this.resourceId === other.resourceId;
+    // Check both are not null and equal
+    // OR both are null
+    const equalIds = (this.resourceId && other.resourceId && this.resourceId.equals(other.resourceId))
+    || this.resourceId === other.resourceId;
+
+    return equalIds
+        && this.resourceType === other.resourceType
+        && this.action === other.action;
   }
 }
