@@ -44,25 +44,25 @@ export default class Permission extends ValueObject {
     return this.action;
   }
 
-  public newCreate(resourceType: ResourceType): Permission {
+  public static newCreate(resourceType: ResourceType): Permission {
     return new Permission(null,
       resourceType,
       AuthorizedAction.CREATE);
   }
 
-  public newUpdate(resourceType: ResourceType, entityId: EntityId): Permission {
+  public static newUpdate(resourceType: ResourceType, entityId: EntityId): Permission {
     return new Permission(entityId,
       resourceType,
       AuthorizedAction.UPDATE);
   }
 
-  public newDelete(resourceType: ResourceType, entityId: EntityId): Permission {
+  public static newDelete(resourceType: ResourceType, entityId: EntityId): Permission {
     return new Permission(entityId,
       resourceType,
       AuthorizedAction.DELETE);
   }
 
-  public newManage(resourceType: ResourceType, entityId: EntityId): Permission {
+  public static newManage(resourceType: ResourceType, entityId: EntityId): Permission {
     return new Permission(entityId,
       resourceType,
       AuthorizedAction.MANAGE);
