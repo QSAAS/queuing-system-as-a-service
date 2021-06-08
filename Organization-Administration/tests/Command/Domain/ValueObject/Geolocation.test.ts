@@ -1,28 +1,29 @@
-import GeolocationBuilder from "@tests/Command/Domain/ValueObject/GeolocationBuilder";
 import GeolocationMother from "@tests/Command/Domain/ValueObject/GeolocationMother";
 
 describe("Geolocation", () => {
-  const geolocationBuilder: GeolocationBuilder = GeolocationMother.complete();
-
   it("Accepts valid lat long", () => {
-    expect(() => { geolocationBuilder.build(); }).not.toThrow();
+    expect(() => { GeolocationMother.complete().build(); }).not.toThrow();
     expect(() => {
-      geolocationBuilder
+      GeolocationMother
+        .complete()
         .withLatitude(-90)
         .build();
     }).not.toThrow();
     expect(() => {
-      geolocationBuilder
+      GeolocationMother
+        .complete()
         .withLatitude(90)
         .build();
     }).not.toThrow();
     expect(() => {
-      geolocationBuilder
+      GeolocationMother
+        .complete()
         .withLongitude(180)
         .build();
     }).not.toThrow();
     expect(() => {
-      geolocationBuilder
+      GeolocationMother
+        .complete()
         .withLongitude(-180)
         .build();
     }).not.toThrow();
@@ -30,17 +31,20 @@ describe("Geolocation", () => {
 
   it("Rejects invalid lat", () => {
     expect(() => {
-      geolocationBuilder
+      GeolocationMother
+        .complete()
         .withLatitude(91)
         .build();
     }).toThrow();
     expect(() => {
-      geolocationBuilder
+      GeolocationMother
+        .complete()
         .withLatitude(-91)
         .build();
     }).toThrow();
     expect(() => {
-      geolocationBuilder
+      GeolocationMother
+        .complete()
         .withLatitude(NaN)
         .build();
     }).toThrow();
@@ -48,17 +52,20 @@ describe("Geolocation", () => {
 
   it("Rejects invalid long", () => {
     expect(() => {
-      geolocationBuilder
+      GeolocationMother
+        .complete()
         .withLongitude(181)
         .build();
     }).toThrow();
     expect(() => {
-      geolocationBuilder
+      GeolocationMother
+        .complete()
         .withLongitude(-181)
         .build();
     }).toThrow();
     expect(() => {
-      geolocationBuilder
+      GeolocationMother
+        .complete()
         .withLongitude(NaN)
         .build();
     }).toThrow();
