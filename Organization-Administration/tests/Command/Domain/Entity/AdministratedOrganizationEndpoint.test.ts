@@ -44,8 +44,10 @@ describe("AdministratedOrganizationEndpoint", () => {
       const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder.build();
       const geolocation = GeolocationMother.complete().build();
       administratedOrganizationEndpoint.setGeolocation(geolocation);
-      expect(administratedOrganizationEndpoint.getRaisedEvents())
-        .toContainEqual(new OrganizationEndpointUpdated(administratedOrganizationEndpoint));
+      expect((
+        () => administratedOrganizationEndpoint.getRaisedEvents()
+          .some((e) => e instanceof OrganizationEndpointUpdated)
+      )()).toBeTruthy();
     });
 
     it("Rejects unauthorized administrator", () => {
