@@ -1,7 +1,7 @@
 import EntityId from "@app/Command/Domain/ValueObject/EntityId";
 
 export default class EntityIdBuilder {
-  constructor(public id: string = "") {
+  constructor(private id: string = "") {
   }
 
   public withId(id: string): EntityIdBuilder {
