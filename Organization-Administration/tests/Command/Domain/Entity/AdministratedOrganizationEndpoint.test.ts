@@ -18,6 +18,7 @@ describe("AdministratedOrganizationEndpoint", () => {
     it("Raises update event", () => {
       const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder.build();
       administratedOrganizationEndpoint.setName("::name::");
+      // TODO: Update using ahmed khaled implementation of event testing
       expect(administratedOrganizationEndpoint.getRaisedEvents()).toHaveLength(1);
       expect(administratedOrganizationEndpoint.getRaisedEvents()[0]).toBeInstanceOf(OrganizationEndpointUpdated);
     });
@@ -44,6 +45,7 @@ describe("AdministratedOrganizationEndpoint", () => {
       const administratedOrganizationEndpoint = administratedOrganizationEndpointBuilder.build();
       const geolocation = GeolocationMother.complete().build();
       administratedOrganizationEndpoint.setGeolocation(geolocation);
+      // TODO: Update using ahmed khaled implementation of event testing
       expect((
         () => administratedOrganizationEndpoint.getRaisedEvents()
           .some((e) => e instanceof OrganizationEndpointUpdated)
