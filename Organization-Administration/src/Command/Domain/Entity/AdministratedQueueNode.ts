@@ -4,15 +4,7 @@ import TimeSpan from "@app/Command/Domain/ValueObject/TimeSpan";
 import MetadataSpecification from "@app/Command/Domain/ValueObject/MetadataSpecification";
 import QueueNodeUpdated from "@app/Command/Domain/Event/QueueNodeUpdated";
 import QueueNodeAuthorizationService from "@app/Command/Domain/Service/QueueNodeAuthorizationService";
-import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
-
-export class OrganizationEmployee {
-  constructor(private id: OrganizationEmployeeId) {}
-
-  getId(): OrganizationEmployeeId {
-    return this.id;
-  }
-} // TODO remove after merging
+import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
 
 export default class AdministratedQueueNode extends QueueNode {
   constructor(
