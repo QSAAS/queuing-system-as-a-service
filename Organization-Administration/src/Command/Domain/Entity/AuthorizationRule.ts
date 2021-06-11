@@ -15,4 +15,9 @@ export default class AuthorizationRule extends AggregateRoot {
   public getPermission(): Permission {
     return this.permission;
   }
+
+  public equals(other: AuthorizationRule): boolean {
+    return this.organizationEmployeeId.equals(other.getOrganizationEmployeeId())
+      && this.permission.equals(other.getPermission());
+  }
 }

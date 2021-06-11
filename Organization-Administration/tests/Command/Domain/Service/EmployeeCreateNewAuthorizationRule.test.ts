@@ -33,9 +33,9 @@ describe("Authorization rule creation", () => {
     const passingAuthService = new PassingAuthorizationRuleAuthorizationService();
     const service = new EmployeeCreateNewAuthorizationRule(passingAuthService);
     const rule = service.execute(admin, other, permission);
-    eventsArrayContains(rule.getRaisedEvents(), AuthorizationRuleCreated, (event) => (
+    expect(eventsArrayContains(rule.getRaisedEvents(), AuthorizationRuleCreated, (event) => (
       event.getAuthorizationRule().getOrganizationEmployeeId().equals(other.getId())
       && event.getAuthorizationRule().getPermission().equals(permission)
-    ));
+    ))).toBeTruthy();
   });
 });
