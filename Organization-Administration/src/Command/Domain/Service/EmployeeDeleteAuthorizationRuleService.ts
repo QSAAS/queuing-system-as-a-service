@@ -4,7 +4,7 @@ import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmploye
 import AuthorizationRule from "@app/Command/Domain/Entity/AuthorizationRule";
 import AuthorizationRuleDeleted from "@app/Command/Domain/Event/AuthorizationRuleDeleted";
 
-export default class EmployeeDeleteAuthorizationRule {
+export default class EmployeeDeleteAuthorizationRuleService {
   constructor(
     private ruleRepository: AuthorizationRuleRepository,
     private ruleAuthService: AuthorizationRuleAuthorizationService,

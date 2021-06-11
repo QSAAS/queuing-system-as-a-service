@@ -24,4 +24,8 @@ export default class OrganizationEmployee {
   public getId(): OrganizationEmployeeId {
     return this.id;
   }
+
+  getOrganizationId() {
+    return this.organizationId;
+  }
 }

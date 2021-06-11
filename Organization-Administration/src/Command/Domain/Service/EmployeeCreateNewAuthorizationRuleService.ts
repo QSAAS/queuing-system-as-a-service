@@ -4,7 +4,7 @@ import AuthorizationRuleAuthorizationService from "@app/Command/Domain/Service/A
 import AuthorizationRule from "@app/Command/Domain/Entity/AuthorizationRule";
 import AuthorizationRuleCreated from "@app/Command/Domain/Event/AuthorizationRuleCreated";
 
-export default class EmployeeCreateNewAuthorizationRule {
+export default class EmployeeCreateNewAuthorizationRuleService {
   constructor(
     private ruleAuthService: AuthorizationRuleAuthorizationService,
   ) {
