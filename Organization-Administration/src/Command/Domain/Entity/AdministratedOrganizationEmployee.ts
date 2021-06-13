@@ -16,28 +16,63 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
     this.organizationEmployeeAuthorizationService = organizationEmployeeAuthorizationService;
   }
 
+  /**
+   * @throws EmployeeNotAuthorizedError
+   * @param username
+   */
   public setUsername(username: EmployeeUsername) {
+    this.organizationEmployeeAuthorizationService
+      .ensureEmployeeCanUpdate(this.admin.getOrganizationEmployeeId(),
+        this.getOrganizationEmployeeId());
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.username = username;
   }
 
+  /**
+   * @throws EmployeeNotAuthorizedError
+   * @param name
+   */
   public setName(name:string) {
+    this.organizationEmployeeAuthorizationService
+      .ensureEmployeeCanUpdate(this.admin.getOrganizationEmployeeId(),
+        this.getOrganizationEmployeeId());
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.name = name;
   }
 
+  /**
+   * @throws EmployeeNotAuthorizedError
+   * @param passwordHash
+   */
   public setPasswordHash(passwordHash:PasswordHash) {
+    this.organizationEmployeeAuthorizationService
+      .ensureEmployeeCanUpdate(this.admin.getOrganizationEmployeeId(),
+        this.getOrganizationEmployeeId());
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
 
     this.passwordHash = passwordHash;
   }
 
+  /**
+   * @throws EmployeeNotAuthorizedError
+   * @param organizationEmployeeId
+   */
   public setOrganizationEmployeeId(organizationEmployeeId:OrganizationEmployeeId) {
+    this.organizationEmployeeAuthorizationService
+      .ensureEmployeeCanUpdate(this.admin.getOrganizationEmployeeId(),
+        this.getOrganizationEmployeeId());
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.organizationEmployeeId = organizationEmployeeId;
   }
 
+  /**
+   * @throws EmployeeNotAuthorizedError
+   * @param organizationId
+   */
   public setOrganizationId(organizationId:OrganizationId) {
+    this.organizationEmployeeAuthorizationService
+      .ensureEmployeeCanUpdate(this.admin.getOrganizationEmployeeId(),
+        this.getOrganizationEmployeeId());
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.organizationId = organizationId;
   }
