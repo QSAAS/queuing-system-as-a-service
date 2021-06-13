@@ -2,14 +2,14 @@ import EmployeeUsernameBuilder from "@tests/Command/Domain/ValueObject/EmployeeU
 
 export default class EmployeeUsernameMother {
   public static complete():EmployeeUsernameBuilder {
-    return new EmployeeUsernameBuilder().withUsrname("username");
+    return new EmployeeUsernameBuilder().withUsername("username");
   }
 
   public static admin():EmployeeUsernameBuilder {
-    return new EmployeeUsernameBuilder().withUsrname("username");
+    return new EmployeeUsernameBuilder().withUsername("username");
   }
 
   public static employee():EmployeeUsernameBuilder {
-    return new EmployeeUsernameBuilder().withUsrname("employee");
+    return new EmployeeUsernameBuilder().withUsername("employee");
   }
 }
