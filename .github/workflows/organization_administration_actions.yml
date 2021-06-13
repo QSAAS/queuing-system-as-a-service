@@ -9,7 +9,17 @@ jobs:
       - name: Build docker image
         run: docker build ./Organization-Administration/ --file ./Organization-Administration/Dockerfile --tag organization-administration:$(date +%s)
 
-  tests:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Organization-Administration
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run docker
+        run: docker-compose -f docker-compose-test.yml up --build
+
+  linting:
     runs-on: ubuntu-latest
 
     defaults:
@@ -24,7 +34,3 @@ jobs:
 
       - name: Run eslint checks
         run: npm run lint
-
-      - name: Run unit tests
-        run: npm run test
-
