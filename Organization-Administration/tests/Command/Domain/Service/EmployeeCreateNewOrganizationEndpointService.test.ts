@@ -10,7 +10,7 @@ import PassingOrganizationEndpointAuthorizationService
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
 import OrganizationEndpointCreated from "@app/Command/Domain/Event/OrganizationEndpointCreated";
 
-describe("Organization endpoint rule creation", () => {
+describe("Organization endpoint creation", () => {
   const admin = new OrganizationEmployeeBuilder().build();
   const location = new GeolocationBuilder().build();
   it("Raises an exception with the admin doesn't have the permission", () => {
