@@ -5,9 +5,15 @@ import OrganizationEndpointBuilder from "@tests/Command/Domain/Entity/Organizati
 import AdministratedOrganizationEndpoint from "@app/Command/Domain/Entity/AdministratedOrganizationEndpoint";
 import OrganizationEmployeeMother from "@tests/Command/Domain/Entity/OrganizationEmployeeMother";
 
+import PassingOrganizationEndpointAuthorizationService
+  from "@tests/Command/Infrastructure/PassingOrganizationEndpointAuthorizationService";
+
 export default class AdministratedOrganizationEndpointBuilder extends OrganizationEndpointBuilder {
-  private administrator: OrganizationEmployee = OrganizationEmployeeMother.admin().build();
-  private organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService | undefined;
+  constructor(private administrator: OrganizationEmployee = OrganizationEmployeeMother.admin().build(),
+    private organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService
+    = new PassingOrganizationEndpointAuthorizationService()) {
+    super();
+  }
 
   public withAdministrator(administrator: OrganizationEmployee): AdministratedOrganizationEndpointBuilder {
     this.administrator = administrator;
@@ -22,10 +28,6 @@ export default class AdministratedOrganizationEndpointBuilder extends Organizati
   }
 
   public build(): AdministratedOrganizationEndpoint {
-    if (!this.organizationEndpointAuthorizationService) {
-      throw new TypeError("AdministratedOrganizationEndpoint can't be built with"
-        + "undefined OrganizationEndpointAuthorizationService");
-    }
     return new AdministratedOrganizationEndpoint(
       this.administrator,
       super.build(),

@@ -17,11 +17,9 @@ export enum AuthorizedAction {
 }
 
 export default class Permission extends ValueObject {
-  private resourceId: EntityId|null;
-  private resourceType: ResourceType;
-  private action: AuthorizedAction;
-
-  constructor(resourceId: EntityId | null, resourceType: ResourceType, action: AuthorizedAction) {
+  constructor(private resourceId: EntityId | null,
+    private resourceType: ResourceType,
+    private action: AuthorizedAction) {
     super();
     this.resourceId = resourceId;
     this.resourceType = resourceType;
@@ -44,32 +42,38 @@ export default class Permission extends ValueObject {
     return this.action;
   }
 
-  public newCreate(resourceType: ResourceType): Permission {
+  public static newCreate(resourceType: ResourceType): Permission {
     return new Permission(null,
       resourceType,
       AuthorizedAction.CREATE);
   }
 
-  public newUpdate(resourceType: ResourceType, entityId: EntityId): Permission {
+  public static newUpdate(resourceType: ResourceType, entityId: EntityId): Permission {
     return new Permission(entityId,
       resourceType,
       AuthorizedAction.UPDATE);
   }
 
-  public newDelete(resourceType: ResourceType, entityId: EntityId): Permission {
+  public static newDelete(resourceType: ResourceType, entityId: EntityId): Permission {
     return new Permission(entityId,
       resourceType,
       AuthorizedAction.DELETE);
   }
 
-  public newManage(resourceType: ResourceType, entityId: EntityId): Permission {
+  public static newManage(resourceType: ResourceType, entityId: EntityId): Permission {
     return new Permission(entityId,
       resourceType,
       AuthorizedAction.MANAGE);
   }
 
   public equals(other: Permission): boolean {
-    if (this.resourceId && other.resourceId) return this.resourceId.equals(other.resourceId);
-    return this.resourceId === other.resourceId;
+    // Check both are not null and equal
+    // OR both are null
+    const equalIds = (this.resourceId && other.resourceId && this.resourceId.equals(other.resourceId))
+    || this.resourceId === other.resourceId;
+
+    return equalIds
+        && this.resourceType === other.resourceType
+        && this.action === other.action;
   }
 }

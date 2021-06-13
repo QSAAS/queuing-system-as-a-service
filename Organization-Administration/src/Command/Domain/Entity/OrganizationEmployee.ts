@@ -7,13 +7,13 @@ import OrganizationEmployeeId from "../ValueObject/OrganizationEmployeeId";
 
 export default class OrganizationEmployee extends AggregateRoot {
   protected organizationEmployeeId: OrganizationEmployeeId;
-  protected organizationId : OrganizationId;
-  protected name:string;
-  protected passwordHash : PasswordHash;
+  protected organizationId: OrganizationId;
+  protected name: string;
+  protected passwordHash: PasswordHash;
   protected username: EmployeeUsername;
 
   constructor(organizationEmployeeId: OrganizationEmployeeId,
-    organizationId: OrganizationId, name:string, passwordHash: PasswordHash, username:EmployeeUsername) {
+    organizationId: OrganizationId, name: string, passwordHash: PasswordHash, username: EmployeeUsername) {
     super();
     this.name = name;
     this.organizationEmployeeId = organizationEmployeeId;
@@ -38,17 +38,22 @@ export default class OrganizationEmployee extends AggregateRoot {
     return this.name;
   }
 
-  public getPasswordHash():PasswordHash {
+  public getPasswordHash(): PasswordHash {
     return this.passwordHash;
   }
 
-  public getUsername():EmployeeUsername {
+  public getUsername(): EmployeeUsername {
     return this.username;
   }
 
   public static create(organizationEmployeeId: OrganizationEmployeeId,
-    organizationId: OrganizationId, name:string,
-    passwordHash: PasswordHash, username:EmployeeUsername) : OrganizationEmployee {
+    organizationId: OrganizationId, name: string,
+    passwordHash: PasswordHash, username: EmployeeUsername): OrganizationEmployee {
     return new OrganizationEmployee(organizationEmployeeId, organizationId, name, passwordHash, username);
+  }
+
+  public getId(): OrganizationEmployeeId {
+    // dummy value until class implementation is provided
+    return this.organizationEmployeeId;
   }
 }

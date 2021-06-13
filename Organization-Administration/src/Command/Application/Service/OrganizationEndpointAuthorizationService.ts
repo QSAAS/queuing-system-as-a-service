@@ -1,7 +1,12 @@
-import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
-import AdministratedOrganizationEndpoint from "@app/Command/Domain/Entity/AdministratedOrganizationEndpoint";
+import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
+import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
 
 export default interface OrganizationEndpointAuthorizationService {
-  ensureCanEdit(organizationEmployee: OrganizationEmployee,
-    administratedOrganizationEndpoint: AdministratedOrganizationEndpoint): void;
+  ensureEmployeeCanCreate(organizationEmployeeId: OrganizationEmployeeId): void;
+  ensureEmployeeCanEdit(organizationEmployeeId: OrganizationEmployeeId,
+    endpointId: OrganizationEndpointId): void;
+  ensureEmployeeCanDelete(organizationEmployeeId: OrganizationEmployeeId,
+    endpointId: OrganizationEndpointId): void;
+  ensureEmployeeCanUpdate(organizationEmployeeId: OrganizationEmployeeId,
+    endpointId: OrganizationEndpointId): void;
 }

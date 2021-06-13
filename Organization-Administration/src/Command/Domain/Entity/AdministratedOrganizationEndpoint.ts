@@ -6,17 +6,13 @@ import Geolocation from "@app/Command/Domain/ValueObject/Geolocation";
 import OrganizationEndpointUpdated from "@app/Command/Domain/Event/OrganizationEndpointUpdated";
 
 export default class AdministratedOrganizationEndpoint extends OrganizationEndpoint {
-  private administrator: OrganizationEmployee;
-  private organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService;
-
-  constructor(administrator: OrganizationEmployee, organizationEndpoint: OrganizationEndpoint,
-    organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService) {
+  constructor(private administrator: OrganizationEmployee,
+    organizationEndpoint: OrganizationEndpoint,
+    private organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService) {
     super(organizationEndpoint.getOrganizationEndpointId(),
       organizationEndpoint.getOrganizationId(),
       organizationEndpoint.getName(),
       organizationEndpoint.getGeolocation());
-    this.organizationEndpointAuthorizationService = organizationEndpointAuthorizationService;
-    this.administrator = administrator;
   }
 
   public getAdministrator(): OrganizationEmployee {
@@ -24,13 +20,15 @@ export default class AdministratedOrganizationEndpoint extends OrganizationEndpo
   }
 
   public setName(value: string) {
-    this.organizationEndpointAuthorizationService.ensureCanEdit(this.administrator, this);
+    this.organizationEndpointAuthorizationService.ensureEmployeeCanEdit(this.administrator.getId(),
+      this.getOrganizationEndpointId());
     this.name = value;
     this.raiseEvent(new OrganizationEndpointUpdated(this));
   }
 
   public setGeolocation(geolocation: Geolocation) {
-    this.organizationEndpointAuthorizationService.ensureCanEdit(this.administrator, this);
+    this.organizationEndpointAuthorizationService.ensureEmployeeCanEdit(this.administrator.getId(),
+      this.getOrganizationEndpointId());
     this.geolocation = geolocation;
     this.raiseEvent(new OrganizationEndpointUpdated(this));
   }

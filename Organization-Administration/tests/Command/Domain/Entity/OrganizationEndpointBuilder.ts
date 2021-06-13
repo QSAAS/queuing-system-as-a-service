@@ -5,10 +5,13 @@ import GeolocationMother from "@tests/Command/Domain/ValueObject/GeolocationMoth
 import OrganizationEndpoint from "@app/Command/Domain/Entity/OrganizationEndpoint";
 
 export default class OrganizationEndpointBuilder {
-  protected organizationEndpointId: OrganizationEndpointId = OrganizationEndpointId.from("::id::");
-  protected organizationId: OrganizationId = OrganizationId.from("::id::");
-  protected name: string = "::name::";
-  protected geolocation: Geolocation = GeolocationMother.complete().build();
+  constructor(
+    protected organizationEndpointId: OrganizationEndpointId = OrganizationEndpointId.from("::id::"),
+    protected organizationId: OrganizationId = OrganizationId.from("::id::"),
+    protected name: string = "::name::",
+    protected geolocation: Geolocation = GeolocationMother.complete().build(),
+  ) {
+  }
 
   public withOrganizationEndpointId(organizationEndpointId: OrganizationEndpointId): OrganizationEndpointBuilder {
     this.organizationEndpointId = organizationEndpointId;
