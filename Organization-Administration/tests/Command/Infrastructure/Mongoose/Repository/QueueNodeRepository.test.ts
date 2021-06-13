@@ -1,8 +1,7 @@
 import mongoose, { Connection } from "mongoose";
 import QueueNodeRepository from "@app/Command/Infrastructure/Mongoose/Repository/QueueNodeRepository";
 import QueueNodeTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/QueueNodeTransformer";
-import MetadataSpecificationFieldTransformer
-  from "@app/Command/Infrastructure/Mongoose/Transformer/MetadataSpecificationFieldTransformer";
+import MetadataSpecificationFieldTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/MetadataSpecificationFieldTransformer";
 import ClockTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/ClockTransformer";
 import TimeSpanTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/TimeSpanTransformer";
 import QueueNodeBuilder from "@tests/Command/Domain/Entity/QueueNodeBuilder";
@@ -12,8 +11,12 @@ import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 let mongooseConnection: Connection;
 let repo: QueueNodeRepository;
 
-beforeAll(() => {
-  mongooseConnection = mongoose.createConnection("mongodb://127.0.0.1:27017/qsas_test");
+beforeAll(async () => {
+  const { DB_URL, DB_PORT, DB_NAME } = process.env;
+  mongooseConnection = await mongoose.createConnection(`mongodb://${DB_URL}:${DB_PORT}/${DB_NAME}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
   const clockTransformer = new ClockTransformer();
   const timeSpanTransformer = new TimeSpanTransformer(clockTransformer);
@@ -23,7 +26,7 @@ beforeAll(() => {
   repo = new QueueNodeRepository(mongooseConnection, nodeTransformer);
 });
 
-afterAll(() => mongooseConnection.close());
+afterAll(async () => mongooseConnection.close());
 
 beforeEach(() => {
   const model = repo.getModel();
@@ -54,9 +57,7 @@ describe("Retrieving QueueNode instance by id", () => {
   });
 
   it("Should throw an Error if instance is not found", async () => {
-    await expect(repo.getById(QueueNodeId.create()))
-      .rejects
-      .toBeInstanceOf(Error);
+    await expect(repo.getById(QueueNodeId.create())).rejects.toBeInstanceOf(Error);
   });
 });
 

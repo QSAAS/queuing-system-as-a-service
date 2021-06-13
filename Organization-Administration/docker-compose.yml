@@ -6,7 +6,7 @@ services:
 
     build:
       context: .
-      target: base
+      target: development
 
     volumes:
       - "./src:/home/node/app/src"
