@@ -10,8 +10,6 @@ export default class AdministratedQueueServer extends QueueServer {
   constructor(admin : OrganizationEmployee, queueServer:QueueServer,
     queueServerAuthorizationService:QueueServerAuthorizationService) {
     super(queueServer.getQueueServerId(), queueServer.getOrganizationEndpointId(), queueServer.getServes());
-    this.administrator = admin;
-    this.queueServerAuthorizationService = queueServerAuthorizationService;
   }
 
   public setServedQueueNodes(queueNodeIds: QueueNodeId[]) {
