@@ -14,11 +14,12 @@ describe("test Administrated Queueing Server", () => {
   });
 
   describe("Exceptions", () => {
-    it("throws exception when QueueAdministratedAuthorizationService fails", () => {
+    it("throws exception when QueueAdministratedAuthorizationService fails to updated served Queue Nodes", () => {
       const administratedQueueServer : AdministratedQueueServer = AdministratedQueueServerMother
         .withFailingAuth().build();
-      administratedQueueServer.setServedQueueNodes(administratedQueueServer.getServes());
-      expect(administratedQueueServer).toThrow(EmployeeNotAuthorizedError);
+      expect(() => {
+        administratedQueueServer.setServedQueueNodes(administratedQueueServer.getServes());
+      }).toThrow(EmployeeNotAuthorizedError);
     });
   });
 });
