@@ -15,6 +15,7 @@ import OrganizationEndpointDeleted from "@app/Command/Domain/Event/OrganizationE
 describe("Employee delete authorization rule", () => {
   const endpoint = new OrganizationEndpointBuilder().build();
   const admin = new OrganizationEmployeeBuilder().build();
+
   it("raises an exception when admin is not authorized", () => {
     const repo = new MockOrganizationEndpointRepository([endpoint], []);
     const failingAuthService = new FailingOrganizationEndpointAuthorizationService();
@@ -23,6 +24,7 @@ describe("Employee delete authorization rule", () => {
       service.execute(admin, endpoint);
     }).toThrow(EmployeeNotAuthorizedError);
   });
+
   it("removes from repository", () => {
     const repo = new MockOrganizationEndpointRepository([endpoint], []);
     const passingAuthService = new PassingOrganizationEndpointAuthorizationService();
@@ -32,6 +34,7 @@ describe("Employee delete authorization rule", () => {
       repo.getById(endpoint.getOrganizationEndpointId());
     }).toThrow(OrganizationEndpointNotFound);
   });
+
   it("publishes an event for deleted authorization services", () => {
     const repo = new MockOrganizationEndpointRepository([endpoint], []);
     const passingAuthService = new PassingOrganizationEndpointAuthorizationService();

@@ -15,6 +15,7 @@ import AuthorizationRuleDeleted from "@app/Command/Domain/Event/AuthorizationRul
 describe("Employee delete authorization rule", () => {
   const rule = new AuthorizationRuleBuilder().build();
   const admin = new OrganizationEmployeeBuilder().build();
+
   it("raises an exception when admin is not authorized", () => {
     const repo = new MockAuthorizationRuleRepository([rule], []);
     const failingAuthService = new FailingAuthorizationRuleAuthorizationService();
@@ -23,6 +24,7 @@ describe("Employee delete authorization rule", () => {
       service.execute(admin, rule);
     }).toThrow(EmployeeNotAuthorizedError);
   });
+
   it("removes rule from repository", () => {
     const repo = new MockAuthorizationRuleRepository([rule], []);
     const passingAuthService = new PassingAuthorizationRuleAuthorizationService();
@@ -32,6 +34,7 @@ describe("Employee delete authorization rule", () => {
       repo.getByEmployeeAndPermission(rule.getOrganizationEmployeeId(), rule.getPermission());
     }).toThrow(AuthorizationRuleNotFound);
   });
+
   it("publishes an event for deleted authorization services", () => {
     const repo = new MockAuthorizationRuleRepository([rule], []);
     const passingAuthService = new PassingAuthorizationRuleAuthorizationService();
