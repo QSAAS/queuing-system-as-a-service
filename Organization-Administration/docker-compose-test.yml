@@ -24,10 +24,4 @@ services:
   mongo-db:
     image: mongo
 
-    restart: always
-
-    volumes:
-      - "mongodb:/data/db"
-
-volumes:
-  mongodb:
+    restart: "no"
