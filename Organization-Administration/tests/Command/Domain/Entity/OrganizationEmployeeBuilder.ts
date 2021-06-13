@@ -39,7 +39,7 @@ export default class OrganizationEmployeeBuilder {
   }
 
   public build(): OrganizationEmployee {
-    return OrganizationEmployee.create(this.organizationEmployeeId,
+    return new OrganizationEmployee(this.organizationEmployeeId,
       this.organizationId, this.name, this.passwordHash, this.username);
   }
 }
