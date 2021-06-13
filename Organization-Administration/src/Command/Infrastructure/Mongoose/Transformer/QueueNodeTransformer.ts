@@ -1,7 +1,6 @@
 import QueueNode from "@app/Command/Domain/Entity/QueueNode";
 import IQueueNode from "@app/Command/Infrastructure/Mongoose/Types/IQueueNode";
-import MetadataSpecificationFieldTransformer
-  from "@app/Command/Infrastructure/Mongoose/Transformer/MetadataSpecificationFieldTransformer";
+import MetadataSpecificationFieldTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/MetadataSpecificationFieldTransformer";
 import TimeSpanTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/TimeSpanTransformer";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
@@ -12,9 +11,7 @@ export default class QueueNodeTransformer implements GenericTransformer<IQueueNo
   constructor(
     private metadataFieldTransformer: MetadataSpecificationFieldTransformer,
     private timespanTransformer: TimeSpanTransformer,
-  ) {
-
-  }
+  ) {}
 
   mongooseObjectFrom(nodeInstance: QueueNode): IQueueNode {
     return {
@@ -22,9 +19,10 @@ export default class QueueNodeTransformer implements GenericTransformer<IQueueNo
       endpointId: nodeInstance.getEndPointId().toString(),
       timeSpan: this.timespanTransformer.mongooseObjectFrom(nodeInstance.getTimeSpan()),
       metaSpecs: {
-        fields: nodeInstance.getMetaSpecs().getFields().map(
-          (field) => this.metadataFieldTransformer.mongooseObjectFrom(field),
-        ),
+        fields: nodeInstance
+          .getMetaSpecs()
+          .getFields()
+          .map((field) => this.metadataFieldTransformer.mongooseObjectFrom(field)),
       },
     };
   }

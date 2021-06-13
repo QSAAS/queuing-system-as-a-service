@@ -10,11 +10,11 @@ export default class MetadataSpecificationDropdownField extends MetadataSpecific
   }
 
   equals(other: this): boolean {
-    return this.name === other.name
-        && this.isRequired === other.isRequired
-        && this.options.length === other.options.length
-        && this.options.every(
-          (element, index) => element === other.options[index],
-        );
+    return (
+      this.name === other.name &&
+      this.isRequired === other.isRequired &&
+      this.options.length === other.options.length &&
+      this.options.every((element, index) => element === other.options[index])
+    );
   }
 }

@@ -1,16 +1,15 @@
 import MetadataSpecificationField from "@app/Command/Domain/ValueObject/MetadataSpecificationField";
 import IMetadataSpecificationField from "@app/Command/Infrastructure/Mongoose/Types/IMetadataSpecificationField";
 import MetadataSpecificationTextField from "@app/Command/Domain/ValueObject/MetadataSpecificationTextField";
-import IMetadataSpecificationTextField
-  from "@app/Command/Infrastructure/Mongoose/Types/IMetadataSpecificationTextField";
+import IMetadataSpecificationTextField from "@app/Command/Infrastructure/Mongoose/Types/IMetadataSpecificationTextField";
 import FieldType from "@app/Command/Infrastructure/Mongoose/Types/FieldType";
 import MetadataSpecificationDropdownField from "@app/Command/Domain/ValueObject/MetadataSpecificationDropdownField";
-import IMetadataSpecificationDropdownField
-  from "@app/Command/Infrastructure/Mongoose/Types/IMetadataSpecificationDropdownField";
+import IMetadataSpecificationDropdownField from "@app/Command/Infrastructure/Mongoose/Types/IMetadataSpecificationDropdownField";
 import GenericTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/Interface/GenericTransformer";
 
-export default class MetadataSpecificationFieldTransformer implements
-    GenericTransformer<IMetadataSpecificationField, MetadataSpecificationField> {
+export default class MetadataSpecificationFieldTransformer
+  implements GenericTransformer<IMetadataSpecificationField, MetadataSpecificationField>
+{
   mongooseObjectFrom(fieldInstance: MetadataSpecificationField): IMetadataSpecificationField {
     if (fieldInstance instanceof MetadataSpecificationTextField) {
       return this.textFieldToMongooseType(fieldInstance);

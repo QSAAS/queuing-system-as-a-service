@@ -7,18 +7,11 @@ import QueueServerAuthorizationService from "@app/Command/Domain/Service/QueueSe
 import QueueServerId from "@app/Command/Domain/ValueObject/QueueServerId";
 
 export default class EmployeeCreateNewQueueServerService {
-  constructor(
-    private queueServerAuthService: QueueServerAuthorizationService,
-  ) {
-  }
+  constructor(private queueServerAuthService: QueueServerAuthorizationService) {}
 
   execute(admin: OrganizationEmployee, endpointId: OrganizationEndpointId, serves: QueueNodeId[]): QueueServer {
     this.queueServerAuthService.ensureEmployeeCanCreate(admin.getId());
-    const server = new QueueServer(
-      QueueServerId.create(),
-      endpointId,
-      serves,
-    );
+    const server = new QueueServer(QueueServerId.create(), endpointId, serves);
     server.raiseEvent(new QueueServerCreated(server));
     return server;
   }

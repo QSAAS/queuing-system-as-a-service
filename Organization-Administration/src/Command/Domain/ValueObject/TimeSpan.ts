@@ -7,7 +7,7 @@ export default class TimeSpan extends ValueObject {
   }
 
   equals(other: this): boolean {
-    return (this.start.equals(other.start) && this.end.equals(other.end));
+    return this.start.equals(other.start) && this.end.equals(other.end);
   }
 
   getStartTime() {

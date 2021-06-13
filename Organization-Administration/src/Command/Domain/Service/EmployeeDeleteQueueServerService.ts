@@ -8,8 +8,7 @@ export default class EmployeeDeleteQueueServerService {
   constructor(
     private serverRepository: QueueServerRepository,
     private serverAuthService: QueueServerAuthorizationService,
-  ) {
-  }
+  ) {}
 
   async execute(admin: OrganizationEmployee, server: QueueServer): Promise<void> {
     this.serverAuthService.ensureEmployeeCanDelete(admin.getId(), server.getId());

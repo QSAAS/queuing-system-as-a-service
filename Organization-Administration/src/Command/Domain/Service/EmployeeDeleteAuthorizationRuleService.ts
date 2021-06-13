@@ -8,9 +8,7 @@ export default class EmployeeDeleteAuthorizationRuleService {
   constructor(
     private ruleRepository: AuthorizationRuleRepository,
     private ruleAuthService: AuthorizationRuleAuthorizationService,
-
-  ) {
-  }
+  ) {}
 
   async execute(admin: OrganizationEmployee, rule: AuthorizationRule): Promise<void> {
     this.ruleAuthService.ensureEmployeeCanEdit(admin.getId());

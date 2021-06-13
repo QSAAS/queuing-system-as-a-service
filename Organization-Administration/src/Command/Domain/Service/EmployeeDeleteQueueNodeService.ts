@@ -5,11 +5,7 @@ import QueueNode from "@app/Command/Domain/Entity/QueueNode";
 import QueueNodeDeleted from "@app/Command/Domain/Event/QueueNodeDeleted";
 
 export default class EmployeeDeleteQueueNodeService {
-  constructor(
-    private nodeRepository: QueueNodeRepository,
-    private nodeAuthService: QueueNodeAuthorizationService,
-  ) {
-  }
+  constructor(private nodeRepository: QueueNodeRepository, private nodeAuthService: QueueNodeAuthorizationService) {}
 
   async execute(admin: OrganizationEmployee, node: QueueNode): Promise<void> {
     this.nodeAuthService.ensureEmployeeCanDelete(admin.getId(), node.getId());

@@ -8,10 +8,7 @@ import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 import QueueNodeCreated from "@app/Command/Domain/Event/QueueNodeCreated";
 
 export default class EmployeeCreateNewQueueNodeService {
-  constructor(
-    private nodeAuthService: QueueNodeAuthorizationService,
-  ) {
-  }
+  constructor(private nodeAuthService: QueueNodeAuthorizationService) {}
 
   execute(
     admin: OrganizationEmployee,
@@ -20,12 +17,7 @@ export default class EmployeeCreateNewQueueNodeService {
     operatingTimes: TimeSpan,
   ): QueueNode {
     this.nodeAuthService.ensureEmployeeCanCreate(admin.getId());
-    const node = new QueueNode(
-      QueueNodeId.create(),
-      endpointId,
-      metadataSpecs,
-      operatingTimes,
-    );
+    const node = new QueueNode(QueueNodeId.create(), endpointId, metadataSpecs, operatingTimes);
     node.raiseEvent(new QueueNodeCreated(node));
     return node;
   }

@@ -1,8 +1,7 @@
 import ValueObject from "@app/Command/Domain/ValueObject/ValueObject";
 
 export default class Geolocation extends ValueObject {
-  constructor(private latitude: number,
-    private longitude: number) {
+  constructor(private latitude: number, private longitude: number) {
     super();
     if (Number.isNaN(latitude) || latitude < -90 || latitude > 90) {
       throw new RangeError(`value ${latitude} outside of latitude range [-90, 90]`);

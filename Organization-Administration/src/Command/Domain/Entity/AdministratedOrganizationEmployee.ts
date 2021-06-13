@@ -4,14 +4,21 @@ import PasswordHash from "@app/Command/Domain/ValueObject/PasswordHash";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
 import OrganizationEmployeeUpdated from "@app/Command/Domain/Event/OrganizationEmployeeUpdated";
-import OrganizationEmployeeAuthorizationService
-  from "@app/Command/Domain/Service/OrganizationEmployeeAuthorizaitonService";
+import OrganizationEmployeeAuthorizationService from "@app/Command/Domain/Service/OrganizationEmployeeAuthorizaitonService";
 
 export default class AdministratedOrganizationEmployee extends OrganizationEmployee {
-  constructor(private admin :OrganizationEmployee, administrated: OrganizationEmployee,
-    private organizationEmployeeAuthorizationService :OrganizationEmployeeAuthorizationService) {
-    super(administrated.getOrganizationEmployeeId(), administrated.getOrganizationId(),
-      administrated.getName(), administrated.getPasswordHash(), administrated.getUsername());
+  constructor(
+    private admin: OrganizationEmployee,
+    administrated: OrganizationEmployee,
+    private organizationEmployeeAuthorizationService: OrganizationEmployeeAuthorizationService,
+  ) {
+    super(
+      administrated.getOrganizationEmployeeId(),
+      administrated.getOrganizationId(),
+      administrated.getName(),
+      administrated.getPasswordHash(),
+      administrated.getUsername(),
+    );
   }
 
   /**
@@ -19,9 +26,10 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
    * @param username
    */
   public setUsername(username: EmployeeUsername) {
-    this.organizationEmployeeAuthorizationService
-      .ensureEmployeeCanUpdate(this.admin.getOrganizationEmployeeId(),
-        this.getOrganizationEmployeeId());
+    this.organizationEmployeeAuthorizationService.ensureEmployeeCanUpdate(
+      this.admin.getOrganizationEmployeeId(),
+      this.getOrganizationEmployeeId(),
+    );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.username = username;
   }
@@ -30,10 +38,11 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
    * @throws EmployeeNotAuthorizedError
    * @param name
    */
-  public setName(name:string) {
-    this.organizationEmployeeAuthorizationService
-      .ensureEmployeeCanUpdate(this.admin.getOrganizationEmployeeId(),
-        this.getOrganizationEmployeeId());
+  public setName(name: string) {
+    this.organizationEmployeeAuthorizationService.ensureEmployeeCanUpdate(
+      this.admin.getOrganizationEmployeeId(),
+      this.getOrganizationEmployeeId(),
+    );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.name = name;
   }
@@ -42,10 +51,11 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
    * @throws EmployeeNotAuthorizedError
    * @param passwordHash
    */
-  public setPasswordHash(passwordHash:PasswordHash) {
-    this.organizationEmployeeAuthorizationService
-      .ensureEmployeeCanUpdate(this.admin.getOrganizationEmployeeId(),
-        this.getOrganizationEmployeeId());
+  public setPasswordHash(passwordHash: PasswordHash) {
+    this.organizationEmployeeAuthorizationService.ensureEmployeeCanUpdate(
+      this.admin.getOrganizationEmployeeId(),
+      this.getOrganizationEmployeeId(),
+    );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
 
     this.passwordHash = passwordHash;
@@ -55,10 +65,11 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
    * @throws EmployeeNotAuthorizedError
    * @param organizationEmployeeId
    */
-  public setOrganizationEmployeeId(organizationEmployeeId:OrganizationEmployeeId) {
-    this.organizationEmployeeAuthorizationService
-      .ensureEmployeeCanUpdate(this.admin.getOrganizationEmployeeId(),
-        this.getOrganizationEmployeeId());
+  public setOrganizationEmployeeId(organizationEmployeeId: OrganizationEmployeeId) {
+    this.organizationEmployeeAuthorizationService.ensureEmployeeCanUpdate(
+      this.admin.getOrganizationEmployeeId(),
+      this.getOrganizationEmployeeId(),
+    );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.organizationEmployeeId = organizationEmployeeId;
   }
@@ -67,10 +78,11 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
    * @throws EmployeeNotAuthorizedError
    * @param organizationId
    */
-  public setOrganizationId(organizationId:OrganizationId) {
-    this.organizationEmployeeAuthorizationService
-      .ensureEmployeeCanUpdate(this.admin.getOrganizationEmployeeId(),
-        this.getOrganizationEmployeeId());
+  public setOrganizationId(organizationId: OrganizationId) {
+    this.organizationEmployeeAuthorizationService.ensureEmployeeCanUpdate(
+      this.admin.getOrganizationEmployeeId(),
+      this.getOrganizationEmployeeId(),
+    );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.organizationId = organizationId;
   }

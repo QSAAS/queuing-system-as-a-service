@@ -5,10 +5,7 @@ import AuthorizationRule from "@app/Command/Domain/Entity/AuthorizationRule";
 import AuthorizationRuleCreated from "@app/Command/Domain/Event/AuthorizationRuleCreated";
 
 export default class EmployeeCreateNewAuthorizationRuleService {
-  constructor(
-    private ruleAuthService: AuthorizationRuleAuthorizationService,
-  ) {
-  }
+  constructor(private ruleAuthService: AuthorizationRuleAuthorizationService) {}
 
   public execute(
     admin: OrganizationEmployee,
