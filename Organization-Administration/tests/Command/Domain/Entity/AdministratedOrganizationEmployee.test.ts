@@ -11,14 +11,14 @@ describe("test AdministratedOrganization Employee", () => {
       const administratedEmployee: AdministratedOrganizationEmployee = new
       AdministratedOrganizationEmployeeBuilder().build();
       administratedEmployee.setUsername(administratedEmployee.getUsername());
-
+      /// todo
       expect(administratedEmployee.getRaisedEvents().length).toEqual(1);
     });
     it("raise event when update name", () => {
       const administratedEmployee: AdministratedOrganizationEmployee = new
       AdministratedOrganizationEmployeeBuilder().build();
       administratedEmployee.setName(administratedEmployee.getName());
-
+      /// todo
       expect(administratedEmployee.getRaisedEvents().length).toEqual(1);
     });
 
@@ -26,6 +26,7 @@ describe("test AdministratedOrganization Employee", () => {
       const administratedEmployee: AdministratedOrganizationEmployee = new
       AdministratedOrganizationEmployeeBuilder().build();
       administratedEmployee.setPasswordHash(administratedEmployee.getPasswordHash());
+      /// todo
       expect(administratedEmployee.getRaisedEvents().length).toEqual(1);
     });
   });
