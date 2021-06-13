@@ -5,11 +5,11 @@ import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
 import OrganizationEmployeeId from "../ValueObject/OrganizationEmployeeId";
 
 export default class OrganizationEmployee extends AggregateRoot {
-  constructor(private readonly organizationEmployeeId: OrganizationEmployeeId,
-    private readonly organizationId: OrganizationId,
-    private readonly name: string,
-    private readonly passwordHash: PasswordHash,
-    private readonly username: EmployeeUsername) {
+  constructor(protected organizationEmployeeId: OrganizationEmployeeId,
+    protected organizationId: OrganizationId,
+    protected name: string,
+    protected passwordHash: PasswordHash,
+    protected username: EmployeeUsername) {
     super();
   }
 
