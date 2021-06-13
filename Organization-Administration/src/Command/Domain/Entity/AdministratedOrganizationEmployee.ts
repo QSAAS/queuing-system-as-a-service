@@ -8,11 +8,8 @@ import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
 import OrganizationEmployeeUpdated from "@app/Command/Domain/Event/OrganizationEmployeeUpdated";
 
 export default class AdministratedOrganizationEmployee extends OrganizationEmployee {
-  private admin :OrganizationEmployee;
-  private organizationEmployeeAuthorizationService : OrganizationEmployeeAuthorizationService;
-
-  constructor(admin :OrganizationEmployee, administrated: OrganizationEmployee,
-    organizationEmployeeAuthorizationService :OrganizationEmployeeAuthorizationService) {
+  constructor(private admin :OrganizationEmployee, administrated: OrganizationEmployee,
+    private organizationEmployeeAuthorizationService :OrganizationEmployeeAuthorizationService) {
     super(administrated.getOrganizationEmployeeId(), administrated.getOrganizationId(),
       administrated.getName(), administrated.getPasswordHash(), administrated.getUsername());
     this.admin = admin;
