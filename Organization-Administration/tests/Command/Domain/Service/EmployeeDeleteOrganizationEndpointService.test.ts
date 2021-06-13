@@ -12,34 +12,32 @@ import PassingOrganizationEndpointAuthorizationService
 import OrganizationEndpointNotFound from "@app/Command/Domain/Error/OrganizationEndpointNotFound";
 import OrganizationEndpointDeleted from "@app/Command/Domain/Event/OrganizationEndpointDeleted";
 
-describe("Employee delete authorization rule", () => {
+describe("Employee delete endpoint", () => {
   const endpoint = new OrganizationEndpointBuilder().build();
   const admin = new OrganizationEmployeeBuilder().build();
 
-  it("raises an exception when admin is not authorized", () => {
+  it("raises an exception when admin is not authorized", async () => {
     const repo = new MockOrganizationEndpointRepository([endpoint], []);
     const failingAuthService = new FailingOrganizationEndpointAuthorizationService();
     const service = new EmployeeDeleteOrganizationEndpointService(repo, failingAuthService);
-    expect(() => {
-      service.execute(admin, endpoint);
-    }).toThrow(EmployeeNotAuthorizedError);
+    await expect(service.execute(admin, endpoint)).rejects.toBeInstanceOf(EmployeeNotAuthorizedError);
   });
 
-  it("removes from repository", () => {
+  it("removes from repository", async () => {
     const repo = new MockOrganizationEndpointRepository([endpoint], []);
     const passingAuthService = new PassingOrganizationEndpointAuthorizationService();
     const service = new EmployeeDeleteOrganizationEndpointService(repo, passingAuthService);
-    service.execute(admin, endpoint);
+    await service.execute(admin, endpoint);
     expect(() => {
       repo.getById(endpoint.getOrganizationEndpointId());
     }).toThrow(OrganizationEndpointNotFound);
   });
 
-  it("publishes an event for deleted authorization services", () => {
+  it("publishes an event for deleted authorization services", async () => {
     const repo = new MockOrganizationEndpointRepository([endpoint], []);
     const passingAuthService = new PassingOrganizationEndpointAuthorizationService();
     const service = new EmployeeDeleteOrganizationEndpointService(repo, passingAuthService);
-    service.execute(admin, endpoint);
+    await service.execute(admin, endpoint);
     expect(
       eventsArrayContains(repo.getPublishedEvents(), OrganizationEndpointDeleted,
         (event) => (

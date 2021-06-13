@@ -16,30 +16,27 @@ describe("Employee delete authorization rule", () => {
   const rule = new AuthorizationRuleBuilder().build();
   const admin = new OrganizationEmployeeBuilder().build();
 
-  it("raises an exception when admin is not authorized", () => {
+  it("raises an exception when admin is not authorized", async () => {
     const repo = new MockAuthorizationRuleRepository([rule], []);
     const failingAuthService = new FailingAuthorizationRuleAuthorizationService();
     const service = new EmployeeDeleteAuthorizationRuleService(repo, failingAuthService);
-    expect(() => {
-      service.execute(admin, rule);
-    }).toThrow(EmployeeNotAuthorizedError);
+    await expect(service.execute(admin, rule)).rejects.toBeInstanceOf(EmployeeNotAuthorizedError);
   });
 
-  it("removes rule from repository", () => {
+  it("removes rule from repository", async () => {
     const repo = new MockAuthorizationRuleRepository([rule], []);
     const passingAuthService = new PassingAuthorizationRuleAuthorizationService();
     const service = new EmployeeDeleteAuthorizationRuleService(repo, passingAuthService);
-    service.execute(admin, rule);
-    expect(() => {
-      repo.getByEmployeeAndPermission(rule.getOrganizationEmployeeId(), rule.getPermission());
-    }).toThrow(AuthorizationRuleNotFound);
+    await service.execute(admin, rule);
+    await expect(repo.getByEmployeeAndPermission(rule.getOrganizationEmployeeId(), rule.getPermission()))
+      .rejects.toBeInstanceOf(AuthorizationRuleNotFound);
   });
 
-  it("publishes an event for deleted authorization services", () => {
+  it("publishes an event for deleted authorization services", async () => {
     const repo = new MockAuthorizationRuleRepository([rule], []);
     const passingAuthService = new PassingAuthorizationRuleAuthorizationService();
     const service = new EmployeeDeleteAuthorizationRuleService(repo, passingAuthService);
-    service.execute(admin, rule);
+    await service.execute(admin, rule);
     expect(
       eventsArrayContains(repo.getPublishedEvents(), AuthorizationRuleDeleted,
         (event) => (event.getAuthorizationRule().equals(rule))),

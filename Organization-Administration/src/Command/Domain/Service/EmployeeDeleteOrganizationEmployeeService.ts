@@ -11,9 +11,9 @@ export default class EmployeeDeleteOrganizationEmployeeService {
   ) {
   }
 
-  execute(admin: OrganizationEmployee, employee: OrganizationEmployee): void {
+  async execute(admin: OrganizationEmployee, employee: OrganizationEmployee): Promise<void> {
     this.employeeAuthService.ensureEmployeeCanDelete(admin.getId(), employee.getId());
     employee.raiseEvent(new OrganizationEmployeeDeleted(employee));
-    this.employeeRepository.delete(employee);
+    await this.employeeRepository.delete(employee);
   }
 }

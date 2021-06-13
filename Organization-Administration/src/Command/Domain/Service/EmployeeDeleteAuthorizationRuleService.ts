@@ -12,9 +12,9 @@ export default class EmployeeDeleteAuthorizationRuleService {
   ) {
   }
 
-  execute(admin: OrganizationEmployee, rule: AuthorizationRule): void {
+  async execute(admin: OrganizationEmployee, rule: AuthorizationRule): Promise<void> {
     this.ruleAuthService.ensureEmployeeCanEdit(admin.getId());
     rule.raiseEvent(new AuthorizationRuleDeleted(rule));
-    this.ruleRepository.delete(rule);
+    await this.ruleRepository.delete(rule);
   }
 }

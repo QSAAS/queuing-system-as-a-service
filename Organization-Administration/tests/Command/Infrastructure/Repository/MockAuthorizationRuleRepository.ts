@@ -12,7 +12,7 @@ export default class MockAuthorizationRuleRepository implements AuthorizationRul
   ) {
   }
 
-  delete(item: AuthorizationRule): void {
+  async delete(item: AuthorizationRule): Promise<void> {
     const idx = this.getMatchingIdx(item.getOrganizationEmployeeId(), item.getPermission());
     this.items.splice(idx, 1);
     this.publishedEvents.push(...item.getRaisedEvents());
@@ -29,7 +29,7 @@ export default class MockAuthorizationRuleRepository implements AuthorizationRul
     return -1;
   }
 
-  save(item: AuthorizationRule): void {
+  async save(item: AuthorizationRule): Promise<void> {
     const idx = this.getMatchingIdx(item.getOrganizationEmployeeId(), item.getPermission());
     if (idx === -1) {
       this.items[idx] = item;
@@ -43,7 +43,10 @@ export default class MockAuthorizationRuleRepository implements AuthorizationRul
     return this.publishedEvents;
   }
 
-  getByEmployeeAndPermission(employeeId: OrganizationEmployeeId, permission: Permission): AuthorizationRule {
+  async getByEmployeeAndPermission(
+    employeeId: OrganizationEmployeeId,
+    permission: Permission,
+  ): Promise<AuthorizationRule> {
     const idx = this.getMatchingIdx(employeeId, permission);
     if (idx === -1) {
       throw new AuthorizationRuleNotFound();

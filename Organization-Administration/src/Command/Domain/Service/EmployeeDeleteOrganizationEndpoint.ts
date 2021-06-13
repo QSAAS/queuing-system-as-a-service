@@ -12,9 +12,9 @@ export default class EmployeeDeleteOrganizationEndpointService {
   ) {
   }
 
-  execute(admin: OrganizationEmployee, endpoint: OrganizationEndpoint): void {
+  async execute(admin: OrganizationEmployee, endpoint: OrganizationEndpoint): Promise<void> {
     this.endpointAuthService.ensureEmployeeCanDelete(admin.getId(), endpoint.getOrganizationEndpointId());
     endpoint.raiseEvent(new OrganizationEndpointDeleted(endpoint));
-    this.endpointRepository.delete(endpoint);
+    await this.endpointRepository.delete(endpoint);
   }
 }

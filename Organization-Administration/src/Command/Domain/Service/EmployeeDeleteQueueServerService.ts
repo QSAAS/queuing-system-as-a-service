@@ -11,9 +11,9 @@ export default class EmployeeDeleteQueueServerService {
   ) {
   }
 
-  execute(admin: OrganizationEmployee, server: QueueServer): void {
+  async execute(admin: OrganizationEmployee, server: QueueServer): Promise<void> {
     this.serverAuthService.ensureEmployeeCanDelete(admin.getId(), server.getId());
     server.raiseEvent(new QueueServerDeleted(server));
-    this.serverRepository.delete(server);
+    await this.serverRepository.delete(server);
   }
 }

@@ -15,30 +15,28 @@ describe("Employee delete queue server", () => {
   const server = new QueueServerBuilder().build();
   const admin = new OrganizationEmployeeBuilder().build();
 
-  it("raises an exception when admin is not authorized", () => {
+  it("raises an exception when admin is not authorized", async () => {
     const repo = new MockQueueServerRepository([server], []);
     const failingAuthService = new FailingQueueServerAuthorizationService();
     const service = new EmployeeDeleteQueueServerService(repo, failingAuthService);
-    expect(() => {
-      service.execute(admin, server);
-    }).toThrow(EmployeeNotAuthorizedError);
+    await expect(service.execute(admin, server)).rejects.toBeInstanceOf(EmployeeNotAuthorizedError);
   });
 
-  it("removes from repository", () => {
+  it("removes from repository", async () => {
     const repo = new MockQueueServerRepository([server], []);
     const passingAuthService = new PassingQueueServerAuthorizationService();
     const service = new EmployeeDeleteQueueServerService(repo, passingAuthService);
-    service.execute(admin, server);
+    await service.execute(admin, server);
     expect(() => {
       repo.getById(server.getId());
     }).toThrow(QueueServerNotFound);
   });
 
-  it("publishes an event for deleted authorization services", () => {
+  it("publishes an event for deleted authorization services", async () => {
     const repo = new MockQueueServerRepository([server], []);
     const passingAuthService = new PassingQueueServerAuthorizationService();
     const service = new EmployeeDeleteQueueServerService(repo, passingAuthService);
-    service.execute(admin, server);
+    await service.execute(admin, server);
     expect(
       eventsArrayContains(repo.getPublishedEvents(), QueueServerDeleted,
         (event) => (

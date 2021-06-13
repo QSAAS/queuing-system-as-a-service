@@ -11,9 +11,9 @@ export default class EmployeeDeleteQueueNodeService {
   ) {
   }
 
-  execute(admin: OrganizationEmployee, node: QueueNode): void {
+  async execute(admin: OrganizationEmployee, node: QueueNode): Promise<void> {
     this.nodeAuthService.ensureEmployeeCanDelete(admin.getId(), node.getId());
     node.raiseEvent(new QueueNodeDeleted(node));
-    this.nodeRepository.delete(node);
+    await this.nodeRepository.delete(node);
   }
 }

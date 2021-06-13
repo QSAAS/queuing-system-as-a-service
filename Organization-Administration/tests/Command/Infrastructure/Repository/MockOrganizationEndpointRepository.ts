@@ -11,7 +11,7 @@ export default class MockOrganizationEndpointRepository implements OrganizationE
   ) {
   }
 
-  delete(item: OrganizationEndpoint): void {
+  async delete(item: OrganizationEndpoint): Promise<void> {
     const idx = this.getMatchingIdx(item.getOrganizationEndpointId());
     this.items.splice(idx, 1);
     this.publishedEvents.push(...item.getRaisedEvents());
@@ -35,7 +35,7 @@ export default class MockOrganizationEndpointRepository implements OrganizationE
     return this.items[idx];
   }
 
-  save(item: OrganizationEndpoint): void {
+  async save(item: OrganizationEndpoint): Promise<void> {
     const idx = this.getMatchingIdx(item.getOrganizationEndpointId());
     if (idx === -1) {
       this.items[idx] = item;
