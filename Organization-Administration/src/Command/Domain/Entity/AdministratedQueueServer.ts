@@ -5,15 +5,14 @@ import QueueServerUpdated from "@app/Command/Domain/Event/QueueServerUpdated";
 import QueueServerAuthorizationService from "@app/Command/Application/Service/QueueServerAuthorizationService";
 
 export default class AdministratedQueueServer extends QueueServer {
-  private administrator : OrganizationEmployee;
-  private queueServerAuthorizationService: QueueServerAuthorizationService ;
-  constructor(admin : OrganizationEmployee, queueServer:QueueServer,
-    queueServerAuthorizationService:QueueServerAuthorizationService) {
+  constructor(private admin : OrganizationEmployee,
+    private queueServer:QueueServer,
+    private queueServerAuthorizationService:QueueServerAuthorizationService) {
     super(queueServer.getQueueServerId(), queueServer.getOrganizationEndpointId(), queueServer.getServes());
   }
 
   public setServedQueueNodes(queueNodeIds: QueueNodeId[]) {
-    this.queueServerAuthorizationService.ensureEmployeeCanUpdate(this.administrator.getId(),
+    this.queueServerAuthorizationService.ensureEmployeeCanUpdate(this.admin.getId(),
       this.queueServerId);
     this.raiseEvent(new QueueServerUpdated(this));
     this.serves = queueNodeIds;

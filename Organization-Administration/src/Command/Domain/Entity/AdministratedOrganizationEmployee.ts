@@ -12,8 +12,6 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
     private organizationEmployeeAuthorizationService :OrganizationEmployeeAuthorizationService) {
     super(administrated.getOrganizationEmployeeId(), administrated.getOrganizationId(),
       administrated.getName(), administrated.getPasswordHash(), administrated.getUsername());
-    this.admin = admin;
-    this.organizationEmployeeAuthorizationService = organizationEmployeeAuthorizationService;
   }
 
   /**
