@@ -4,19 +4,19 @@ import QueueServerId from "@app/Command/Domain/ValueObject/QueueServerId";
 export default interface QueueServerAuthorizationService{
   /**
    * @throws EmployeeNotAuthorizedError
-   * @param organizationEmployeeId
+   * @param admin
    * @param queueServerId
    */
-  ensureEmployeeCanDelete(organizationEmployeeId:OrganizationEmployeeId, queueServerId:QueueServerId):void ;
+  ensureEmployeeCanDelete(admin:OrganizationEmployeeId, queueServerId:QueueServerId):void ;
   /**
    * @throws EmployeeNotAuthorizedError
-   * @param organizationEmployeeId
+   * @param admin
    * @param queueServerId
    */
-  ensureEmployeeCanUpdate(organizationEmployeeId:OrganizationEmployeeId, queueServerId:QueueServerId):void ;
+  ensureEmployeeCanUpdate(admin:OrganizationEmployeeId, queueServerId:QueueServerId):void ;
   /**
    * @throws EmployeeNotAuthorizedError
-   * @param organizationEmployeeId
+   * @param admin
    */
-  ensureEmployeeCanCreate(organizationEmployeeId: OrganizationEmployeeId):void ;
+  ensureEmployeeCanCreate(admin: OrganizationEmployeeId):void ;
 }
