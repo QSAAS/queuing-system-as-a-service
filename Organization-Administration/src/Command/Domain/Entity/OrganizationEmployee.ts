@@ -11,11 +11,6 @@ export default class OrganizationEmployee extends AggregateRoot {
     private readonly passwordHash: PasswordHash,
     private readonly username: EmployeeUsername) {
     super();
-    this.name = name;
-    this.organizationEmployeeId = organizationEmployeeId;
-    this.organizationId = organizationId;
-    this.passwordHash = passwordHash;
-    this.username = username;
   }
 
   public getOrganizationEmployeeId(): OrganizationEmployeeId {
