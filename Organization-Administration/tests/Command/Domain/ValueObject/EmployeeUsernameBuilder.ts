@@ -2,7 +2,7 @@ import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
 
 export default class EmployeeUsernameBuilder {
   private username: string = "";
-  public withUsrname(username: string): EmployeeUsernameBuilder {
+  public withUsername(username: string): EmployeeUsernameBuilder {
     this.username = username;
     return this;
   }
