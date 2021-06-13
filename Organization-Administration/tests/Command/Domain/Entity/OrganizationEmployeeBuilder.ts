@@ -3,14 +3,14 @@ import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/Organization
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
 import PasswordHash from "@app/Command/Domain/ValueObject/PasswordHash";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
-import TrialPasswordHash from "@tests/Command/Domain/ValueObject/TrialPasswordHash";
+import DummyPasswordHash from "@tests/Command/Domain/ValueObject/DummyPasswordHash";
 import EmployeeUsernameMother from "@tests/Command/Domain/ValueObject/EmployeeUsernameMother";
 
 export default class OrganizationEmployeeBuilder {
   protected organizationEmployeeId: OrganizationEmployeeId = OrganizationEmployeeId.create();
   protected organizationId : OrganizationId = OrganizationId.create();
   protected name:string = "name";
-  protected passwordHash : PasswordHash = TrialPasswordHash.create();
+  protected passwordHash : PasswordHash = DummyPasswordHash.create();
   protected username: EmployeeUsername = EmployeeUsernameMother.complete().build();
 
   public withName(name : string): OrganizationEmployeeBuilder {
