@@ -1,20 +1,15 @@
-name: Code quality checks
-
-# Controls when the action will run.
+name: Build Client Account system docker image CI
 on:
-  # Triggers the workflow on push or pull request events but only for the development branch
   push:
-    branches: [ development ]
-  pull_request:
-    branches: [ development ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "test_quality"
-  client_account_system_tests_and_quality:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build docker image
+        run: docker build ./Client-Account-System/ --file ./Client-Account-System/Dockerfile --tag client-account-system:$(date +%s)
+
+  tests:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -35,3 +30,4 @@ jobs:
 
       - name: Run unit tests
         run: npm run test
+
