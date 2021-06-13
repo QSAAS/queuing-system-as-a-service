@@ -3,16 +3,14 @@ import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAut
 import PassingOrganizationEndpointAuthorizationService
   from "@tests/Command/Infrastructure/PassingOrganizationEndpointAuthorizationService";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
-import FailingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/FailingQueueNodeAuthorizationService";
-import EmployeeCreateNewQueueNodeService from "@app/Command/Domain/Service/EmployeeCreateNewQueueNodeService";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
-import MetadataSpecificationBuilder from "@tests/Command/Domain/ValueObject/MetadataSpecificationBuilder";
-import TimeSpanBuilder from "@tests/Command/Domain/ValueObject/TimeSpanBuilder";
-import QueueNodeCreated from "@app/Command/Domain/Event/QueueNodeCreated";
 import EmployeeCreateNewQueueServerService from "@app/Command/Domain/Service/EmployeeCreateNewQueueServerService";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
+import FailingQueueServerAuthorizationService
+  from "@tests/Command/Infrastructure/FailingQueueServerAuthorizationService";
+import QueueServerCreated from "@app/Command/Domain/Event/QueueServerCreated";
 
-describe("Queue node creation", () => {
+describe("Queue server creation", () => {
   const admin = new OrganizationEmployeeBuilder().build();
   const endpointId = OrganizationEndpointId.create();
   const serves = [
@@ -20,7 +18,7 @@ describe("Queue node creation", () => {
     QueueNodeId.create(),
   ];
   it("Raises an exception with the admin doesn't have the permission", () => {
-    const failingAuth = new FailingQueueServerRepository();
+    const failingAuth = new FailingQueueServerAuthorizationService();
     const service = new EmployeeCreateNewQueueServerService(failingAuth);
     expect(() => {
       service.execute(admin, endpointId, serves);
@@ -28,10 +26,10 @@ describe("Queue node creation", () => {
   });
   it("Raises an event on created object", () => {
     const passingAuth = new PassingOrganizationEndpointAuthorizationService();
-    const service = new EmployeeCreateNewQueueNodeService(passingAuth);
-    const endpoint = service.execute(admin, endpointId, serves);
-    expect(eventsArrayContains(endpoint.getRaisedEvents(), QueueNodeCreated, (event) => (
-      event.getQueueNode().getId().equals(endpoint.getId())
+    const service = new EmployeeCreateNewQueueServerService(passingAuth);
+    const server = service.execute(admin, endpointId, serves);
+    expect(eventsArrayContains(server.getRaisedEvents(), QueueServerCreated, (event) => (
+      event.getQueueServer().getQueueServerId().equals(server.getQueueServerId())
     ))).toBeTruthy();
   });
 });

@@ -25,9 +25,9 @@ describe("Queue node creation", () => {
   it("Raises an event on created object", () => {
     const passingAuth = new PassingOrganizationEndpointAuthorizationService();
     const service = new EmployeeCreateNewQueueNodeService(passingAuth);
-    const endpoint = service.execute(admin, endpointId, metadataSpecs, operatingTimes);
-    expect(eventsArrayContains(endpoint.getRaisedEvents(), QueueNodeCreated, (event) => (
-      event.getQueueNode().getId().equals(endpoint.getId())
+    const node = service.execute(admin, endpointId, metadataSpecs, operatingTimes);
+    expect(eventsArrayContains(node.getRaisedEvents(), QueueNodeCreated, (event) => (
+      event.getQueueNode().getId().equals(node.getId())
     ))).toBeTruthy();
   });
 });

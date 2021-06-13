@@ -1,31 +1,39 @@
-// TODO: Remove those after Hanafy implements his part
-// eslint-disable-next-line max-classes-per-file
-import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
+import AggregateRoot from "@app/Command/Domain/Entity/AggregateRoot";
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
+import PasswordHash from "@app/Command/Domain/ValueObject/PasswordHash";
+import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
+import OrganizationEmployeeId from "../ValueObject/OrganizationEmployeeId";
 
-// TODO: Remove those after Hanafy implements his part
+export default class OrganizationEmployee extends AggregateRoot {
+  constructor(protected organizationEmployeeId: OrganizationEmployeeId,
+    protected organizationId: OrganizationId,
+    protected name: string,
+    protected passwordHash: PasswordHash,
+    protected username: EmployeeUsername) {
+    super();
+  }
 
-export class EmployeeUsername {
-}
+  public getOrganizationEmployeeId(): OrganizationEmployeeId {
+    return this.organizationEmployeeId;
+  }
 
-export class PasswordHash {
-}
+  public getOrganizationId(): OrganizationId {
+    return this.organizationId;
+  }
 
-export default class OrganizationEmployee {
-  constructor(
-    private id: OrganizationEmployeeId,
-    private organizationId: OrganizationId,
-    private username: EmployeeUsername,
-    private passwordHash: PasswordHash,
-    private name: string,
-  ) {
+  public getName(): string {
+    return this.name;
+  }
+
+  public getPasswordHash(): PasswordHash {
+    return this.passwordHash;
+  }
+
+  public getUsername(): EmployeeUsername {
+    return this.username;
   }
 
   public getId(): OrganizationEmployeeId {
-    return this.id;
-  }
-
-  getOrganizationId() {
-    return this.organizationId;
+    return this.organizationEmployeeId;
   }
 }

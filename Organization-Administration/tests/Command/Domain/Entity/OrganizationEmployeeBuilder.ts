@@ -1,46 +1,46 @@
+import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
-import OrganizationEmployee, { EmployeeUsername, PasswordHash } from "@app/Command/Domain/Entity/OrganizationEmployee";
+import PasswordHash from "@app/Command/Domain/ValueObject/PasswordHash";
+import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
+import DummyPasswordHash from "@tests/Command/Domain/ValueObject/DummyPasswordHash";
+import EmployeeUsernameMother from "@tests/Command/Domain/ValueObject/EmployeeUsernameMother";
 
 export default class OrganizationEmployeeBuilder {
-  private id: OrganizationEmployeeId;
-  private organizationId: OrganizationId;
-  private username: EmployeeUsername;
-  private passwordHash: PasswordHash;
-  private name: string;
+  protected organizationEmployeeId: OrganizationEmployeeId = OrganizationEmployeeId.create();
+  protected organizationId : OrganizationId = OrganizationId.create();
+  protected name:string = "name";
+  protected passwordHash : PasswordHash = DummyPasswordHash.create();
+  protected username: EmployeeUsername = EmployeeUsernameMother.complete().build();
 
-  constructor() {
-    this.id = OrganizationEmployeeId.create();
-    this.organizationId = OrganizationId.create();
-    // TODO: Edit after Hanafy merges
-    this.username = new EmployeeUsername();
-    this.passwordHash = new PasswordHash();
-    this.name = "::name::";
-  }
-
-  public withId(id: OrganizationId) {
-    this.id = id;
+  public withName(name : string): OrganizationEmployeeBuilder {
+    this.name = name;
     return this;
   }
 
-  public withOrganizationId(organizationId: OrganizationId) {
+  public withOrganizationEmployeeId(organizationEmployeeId:OrganizationEmployeeId):this {
+    this.organizationEmployeeId = organizationEmployeeId;
+    return this;
+  }
+
+  public withOrganizationId(organizationId:OrganizationId):OrganizationEmployeeBuilder {
     this.organizationId = organizationId;
     return this;
   }
 
-  public withUsername(username: EmployeeUsername) {
-    this.username = username;
+  public withPasswordHash(passwordHash:PasswordHash):OrganizationEmployeeBuilder {
+    this.passwordHash = passwordHash;
     return this;
   }
 
-  public withName(name: string) {
-    this.name = name;
+  public withUsername(username: EmployeeUsername):OrganizationEmployeeBuilder {
+    this.username = username;
     return this;
   }
 
   public build(): OrganizationEmployee {
     return new OrganizationEmployee(
-      this.id, this.organizationId, this.username, this.passwordHash, this.name,
+      this.organizationEmployeeId, this.organizationId, this.name, this.passwordHash, this.username,
     );
   }
 }

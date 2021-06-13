@@ -19,7 +19,7 @@ export default class EmployeeCreateNewQueueNodeService {
     metadataSpecs: MetadataSpecification,
     operatingTimes: TimeSpan,
   ): QueueNode {
-    this.nodeAuthService.ensureEmployeeCanCreate(admin.getOrganizationId());
+    this.nodeAuthService.ensureEmployeeCanCreate(admin.getId());
     const node = new QueueNode(
       QueueNodeId.create(),
       endpointId,
