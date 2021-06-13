@@ -19,6 +19,11 @@ export default class AdministratedQueueServerBuilder extends QueueServerBuilder 
     return this;
   }
 
+  withQueueServerAuthorizationService(queueServerAuthorizationService: QueueServerAuthorizationService) {
+    this.queueServerAuthorizationService = queueServerAuthorizationService;
+    return this;
+  }
+
   build(): AdministratedQueueServer {
     return new AdministratedQueueServer(this.admin, this.queueServer, this.queueServerAuthorizationService);
   }
