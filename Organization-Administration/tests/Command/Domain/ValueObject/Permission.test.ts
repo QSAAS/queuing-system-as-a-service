@@ -1,7 +1,9 @@
 import PermissionMother from "@tests/Command/Domain/ValueObject/PermissionMother";
 import EntityIdMother from "@tests/Command/Domain/ValueObject/EntityIdMother";
-import Permission, { AuthorizedAction, ResourceType } from "@app/Command/Domain/ValueObject/Permission";
+import Permission from "@app/Command/Domain/ValueObject/Permission";
 import PermissionBuilder from "@tests/Command/Domain/ValueObject/PermissionBuilder";
+import AuthorizedAction from "@app/Command/Domain/Enum/AuthorizedAction";
+import ResourceType from "@app/Command/Domain/Enum/ResourceType";
 
 describe("Permission", () => {
   describe("equals", () => {
