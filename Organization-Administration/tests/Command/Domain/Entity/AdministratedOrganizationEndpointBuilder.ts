@@ -3,11 +3,13 @@ import OrganizationEndpointAuthorizationService
   from "@app/Command/Application/Service/OrganizationEndpointAuthorizationService";
 import OrganizationEndpointBuilder from "@tests/Command/Domain/Entity/OrganizationEndpointBuilder";
 import AdministratedOrganizationEndpoint from "@app/Command/Domain/Entity/AdministratedOrganizationEndpoint";
+import OrganizationEmployeeMother from "@tests/Command/Domain/Entity/OrganizationEmployeeMother";
+
 import PassingOrganizationEndpointAuthorizationService
   from "@tests/Command/Infrastructure/PassingOrganizationEndpointAuthorizationService";
 
 export default class AdministratedOrganizationEndpointBuilder extends OrganizationEndpointBuilder {
-  constructor(private administrator: OrganizationEmployee = new OrganizationEmployee(),
+  constructor(private administrator: OrganizationEmployee = OrganizationEmployeeMother.admin().build(),
     private organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService
     = new PassingOrganizationEndpointAuthorizationService()) {
     super();
