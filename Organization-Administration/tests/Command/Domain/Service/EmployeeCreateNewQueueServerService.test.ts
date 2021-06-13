@@ -29,7 +29,7 @@ describe("Queue server creation", () => {
     const service = new EmployeeCreateNewQueueServerService(passingAuth);
     const server = service.execute(admin, endpointId, serves);
     expect(eventsArrayContains(server.getRaisedEvents(), QueueServerCreated, (event) => (
-      event.getQueueServer().getQueueServerId().equals(server.getQueueServerId())
+      event.getQueueServer().getId().equals(server.getId())
     ))).toBeTruthy();
   });
 });

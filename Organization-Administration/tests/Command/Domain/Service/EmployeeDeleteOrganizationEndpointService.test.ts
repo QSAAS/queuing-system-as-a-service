@@ -3,7 +3,7 @@ import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAut
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
 import OrganizationEndpointBuilder from "@tests/Command/Domain/Entity/OrganizationEndpointBuilder";
 import MockOrganizationEndpointRepository
-  from "@tests/Command/Infrastructure/Mongoose/Repository/MockOrganizationEndpointRepository";
+  from "@tests/Command/Infrastructure/Repository/MockOrganizationEndpointRepository";
 import FailingOrganizationEndpointAuthorizationService
   from "@tests/Command/Infrastructure/FailingOrganizationEndpointAuthorizationService";
 import EmployeeDeleteOrganizationEndpointService from "@app/Command/Domain/Service/EmployeeDeleteOrganizationEndpoint";

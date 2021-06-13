@@ -12,7 +12,7 @@ export default class EmployeeDeleteQueueServerService {
   }
 
   execute(admin: OrganizationEmployee, server: QueueServer): void {
-    this.serverAuthService.ensureEmployeeCanDelete(admin.getId(), server.getQueueServerId());
+    this.serverAuthService.ensureEmployeeCanDelete(admin.getId(), server.getId());
     server.raiseEvent(new QueueServerDeleted(server));
     this.serverRepository.delete(server);
   }

@@ -1,6 +1,6 @@
 import EmployeeDeleteAuthorizationRuleService from "@app/Command/Domain/Service/EmployeeDeleteAuthorizationRuleService";
 import MockAuthorizationRuleRepository
-  from "@tests/Command/Infrastructure/Mongoose/Repository/MockAuthorizationRuleRepository";
+  from "@tests/Command/Infrastructure/Repository/MockAuthorizationRuleRepository";
 import AuthorizationRuleBuilder from "@tests/Command/Domain/Entity/AuthorizationRuleBuilder";
 import FailingAuthorizationRuleAuthorizationService
   from "@tests/Command/Infrastructure/FailingAuthorizationRuleAuthorizationService";

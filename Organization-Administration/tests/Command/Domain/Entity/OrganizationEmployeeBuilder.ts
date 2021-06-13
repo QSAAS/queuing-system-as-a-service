@@ -3,7 +3,7 @@ import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/Organization
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
 import PasswordHash from "@app/Command/Domain/ValueObject/PasswordHash";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
-import DummyPasswordHash from "@tests/Command/Domain/ValueObject/DummyPasswordHash";
+import DummyPasswordHash from "@tests/Command/Infrastructure/ValueObject/DummyPasswordHash";
 import EmployeeUsernameMother from "@tests/Command/Domain/ValueObject/EmployeeUsernameMother";
 
 export default class OrganizationEmployeeBuilder {

@@ -18,8 +18,7 @@ export default class QueueServer extends AggregateRoot {
     return this.serves;
   }
 
-  // TODO: Rename to getId() for consistency
-  public getQueueServerId(): QueueServerId {
+  public getId(): QueueServerId {
     return this.queueServerId;
   }
 

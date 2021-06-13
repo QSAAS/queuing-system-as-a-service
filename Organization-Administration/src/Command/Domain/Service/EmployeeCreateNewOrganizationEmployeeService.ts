@@ -4,25 +4,25 @@ import OrganizationEmployeeAuthorizationService
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
-import DummyPasswordHash from "@tests/Command/Domain/ValueObject/DummyPasswordHash";
 import OrganizationEmployeeCreated from "@app/Command/Domain/Event/OrganizationEmployeeCreated";
+import PasswordHashFactory from "@app/Command/Domain/Service/PasswordHashFactory";
 
 export default class EmployeeCreateNewOrganizaitonEmployeeService {
   constructor(
     private employeeAuthService: OrganizationEmployeeAuthorizationService,
+    private passwordHashFactory: PasswordHashFactory,
   ) {
   }
 
-  execute(
+  async execute(
     admin: OrganizationEmployee,
     orgId: OrganizationId,
     name: string,
     password: string,
     username: EmployeeUsername,
-  ): OrganizationEmployee {
+  ): Promise<OrganizationEmployee> {
     this.employeeAuthService.ensureEmployeeCanCreate(admin.getId());
-    // TODO: Use password hash factory
-    const passwordHash = new DummyPasswordHash(password);
+    const passwordHash = await this.passwordHashFactory.create(password);
     const employee = new OrganizationEmployee(
       OrganizationEmployeeId.create(),
       orgId,

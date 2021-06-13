@@ -10,24 +10,24 @@ import FailingOrganizationEmployeeAuthorizationService
 import PassingOrganizationEmployeeAuthorizationService
   from "@tests/Command/Infrastructure/PassingOrganizationEmployeeAuthorizationService";
 import OrganizationEmployeeCreated from "@app/Command/Domain/Event/OrganizationEmployeeCreated";
+import DummyPasswordHashFactory from "@tests/Command/Infrastructure/Service/DummyPasswordHashFactory";
 
 describe("Queue server creation", () => {
   const admin = new OrganizationEmployeeBuilder().build();
+  const passwordHash = new DummyPasswordHashFactory();
   const orgId = OrganizationId.create();
   const name = "::Organization name::";
   const password = "::s3cr3t::";
   const username = EmployeeUsernameMother.complete().build();
   it("Raises an exception with the admin doesn't have the permission", () => {
     const failingAuth = new FailingOrganizationEmployeeAuthorizationService();
-    const service = new EmployeeCreateNewOrganizaitonEmployeeService(failingAuth);
-    expect(() => {
-      service.execute(admin, orgId, name, password, username);
-    }).toThrow(EmployeeNotAuthorizedError);
+    const service = new EmployeeCreateNewOrganizaitonEmployeeService(failingAuth, passwordHash);
+    expect(service.execute(admin, orgId, name, password, username)).rejects.toBeInstanceOf(EmployeeNotAuthorizedError);
   });
-  it("Raises an event on created object", () => {
+  it("Raises an event on created object", async () => {
     const passingAuth = new PassingOrganizationEmployeeAuthorizationService();
-    const service = new EmployeeCreateNewOrganizaitonEmployeeService(passingAuth);
-    const employee = service.execute(admin, orgId, name, password, username);
+    const service = new EmployeeCreateNewOrganizaitonEmployeeService(passingAuth, passwordHash);
+    const employee = await service.execute(admin, orgId, name, password, username);
     expect(eventsArrayContains(employee.getRaisedEvents(), OrganizationEmployeeCreated, (event) => (
       event.getOrganizationEmployee().getId().equals(employee.getId())
     ))).toBeTruthy();
