@@ -1,8 +1,6 @@
 import mongoose, { Connection } from "mongoose";
-import MongooseAuthorizationRuleRepository
-  from "@app/Command/Infrastructure/Mongoose/Repository/MongooseAuthorizationRuleRepository";
-import AuthorizationRuleTransformer
-  from "@app/Command/Infrastructure/Mongoose/Transformer/AuthorizationRuleTransformer";
+import MongooseAuthorizationRuleRepository from "@app/Command/Infrastructure/Mongoose/Repository/MongooseAuthorizationRuleRepository";
+import AuthorizationRuleTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/AuthorizationRuleTransformer";
 import AuthorizationRuleBuilder from "@tests/Command/Domain/Entity/AuthorizationRuleBuilder";
 import PermissionMother from "@tests/Command/Domain/ValueObject/PermissionMother";
 import IAuthorizationRule from "@app/Command/Infrastructure/Mongoose/Types/IAuthorizationRule";
@@ -14,8 +12,12 @@ let model: mongoose.Model<IAuthorizationRule & mongoose.Document>;
 
 const authorizationTransformer = new AuthorizationRuleTransformer();
 
-beforeAll(() => {
-  mongooseConnection = mongoose.createConnection("mongodb://127.0.0.1:27017/qsas_test");
+beforeAll(async () => {
+  const { DB_URL, DB_PORT, DB_NAME } = process.env;
+  mongooseConnection = await mongoose.createConnection(`mongodb://${DB_URL}:${DB_PORT}/${DB_NAME}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   repo = new MongooseAuthorizationRuleRepository(mongooseConnection, authorizationTransformer);
   model = repo.getModel();
 });
@@ -49,8 +51,10 @@ describe("Retrieving AuthorizationRule instance by employee and permission", () 
     const ruleInstance = new AuthorizationRuleBuilder().build();
 
     await repo.save(ruleInstance);
-    const returnedInstance = await repo.getByEmployeeAndPermission(ruleInstance.getOrganizationEmployeeId(),
-      ruleInstance.getPermission());
+    const returnedInstance = await repo.getByEmployeeAndPermission(
+      ruleInstance.getOrganizationEmployeeId(),
+      ruleInstance.getPermission(),
+    );
 
     expect(ruleInstance.getPermission().equals(returnedInstance.getPermission())).toBeTruthy();
     expect(ruleInstance.getOrganizationEmployeeId().equals(returnedInstance.getOrganizationEmployeeId()));
@@ -59,9 +63,7 @@ describe("Retrieving AuthorizationRule instance by employee and permission", () 
   it("Should throw an Error if AuthorizationRule instance is not found", async () => {
     const employeeId = OrganizationEmployeeId.create();
     const permission = PermissionMother.withResourceId().build();
-    await expect(repo.getByEmployeeAndPermission(employeeId, permission))
-      .rejects
-      .toBeInstanceOf(Error);
+    await expect(repo.getByEmployeeAndPermission(employeeId, permission)).rejects.toBeInstanceOf(Error);
   });
 });
 
@@ -79,12 +81,10 @@ it("Should delete an AuthorizationRule instance", async () => {
  *  This test can fail if you drop the database without restarting the web server and MongoDB server.
  *  You must restart both MongoDB and Web servers or explicitly call for MongoDB to rebuild the indices
  *                                               if you dropped the database to avoid this test failing.
-*/
+ */
 it("Should throw an error if the AuthorizationRule instance already exists", async () => {
   const ruleInstance = new AuthorizationRuleBuilder().build();
 
   await repo.save(ruleInstance);
-  await expect(repo.save(ruleInstance))
-    .rejects
-    .toBeInstanceOf(Error);
+  await expect(repo.save(ruleInstance)).rejects.toBeInstanceOf(Error);
 });

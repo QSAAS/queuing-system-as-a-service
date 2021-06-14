@@ -1,12 +1,14 @@
 import MetadataSpecificationField from "@app/Command/Domain/ValueObject/MetadataSpecificationField";
 
 export default class MetadataSpecificationTextField extends MetadataSpecificationField {
-  constructor(name: string,
+  constructor(
+    name: string,
     isRequired: boolean,
     private maxLength: number,
     private minLength: number,
     private regex: string, // TODO use RegExp?
-    private placeholder: string) {
+    private placeholder: string,
+  ) {
     super(name, isRequired);
   }
 
@@ -27,11 +29,13 @@ export default class MetadataSpecificationTextField extends MetadataSpecificatio
   }
 
   equals(other: this): boolean {
-    return this.name === other.name
-        && this.isRequired === other.isRequired
-        && this.maxLength === other.maxLength
-        && this.minLength === other.minLength
-        && this.regex === other.regex
-        && this.placeholder === other.placeholder;
+    return (
+      this.name === other.name &&
+      this.isRequired === other.isRequired &&
+      this.maxLength === other.maxLength &&
+      this.minLength === other.minLength &&
+      this.regex === other.regex &&
+      this.placeholder === other.placeholder
+    );
   }
 }

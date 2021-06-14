@@ -2,7 +2,7 @@ import InvalidEmployeeUsernameError from "@app/Command/Domain/Error/InvalidEmplo
 import ValueObject from "@app/Command/Domain/ValueObject/ValueObject";
 
 export default class EmployeeUsername extends ValueObject {
-  private readonly username: string ;
+  private readonly username: string;
   constructor(username: string) {
     super();
     if (this.valid(username)) {
@@ -12,11 +12,11 @@ export default class EmployeeUsername extends ValueObject {
     }
   }
 
-  public toString():string {
+  public toString(): string {
     return this.username;
   }
 
-  public valid(username: string):boolean {
+  public valid(username: string): boolean {
     return username.length > 4 && username.length < 50;
   }
 

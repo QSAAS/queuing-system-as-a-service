@@ -6,8 +6,8 @@ import OrganizationEndpointId from "@app/Command/Domain/ValueObject/Organization
 export default class QueueServer extends AggregateRoot {
   protected queueServerId: QueueServerId;
   protected organizationSEndpointId: OrganizationEndpointId;
-  protected serves : QueueNodeId[];
-  constructor(queueServerId: QueueServerId, organizationSEndpointId: OrganizationEndpointId, serves : QueueNodeId[]) {
+  protected serves: QueueNodeId[];
+  constructor(queueServerId: QueueServerId, organizationSEndpointId: OrganizationEndpointId, serves: QueueNodeId[]) {
     super();
     this.queueServerId = queueServerId;
     this.organizationSEndpointId = organizationSEndpointId;
@@ -18,7 +18,7 @@ export default class QueueServer extends AggregateRoot {
     return this.serves;
   }
 
-  public getQueueServerId(): QueueServerId {
+  public getId(): QueueServerId {
     return this.queueServerId;
   }
 
@@ -26,8 +26,11 @@ export default class QueueServer extends AggregateRoot {
     return this.organizationSEndpointId;
   }
 
-  public static create(queueServerId:QueueServerId,
-    organizationEndpointId:OrganizationEndpointId, serves:QueueNodeId[]) {
+  public static create(
+    queueServerId: QueueServerId,
+    organizationEndpointId: OrganizationEndpointId,
+    serves: QueueNodeId[],
+  ) {
     return new QueueServer(queueServerId, organizationEndpointId, serves);
   }
 }

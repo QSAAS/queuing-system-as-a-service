@@ -3,8 +3,7 @@ import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/Organization
 import Permission from "@app/Command/Domain/ValueObject/Permission";
 
 export default class AuthorizationRule extends AggregateRoot {
-  constructor(protected organizationEmployeeId: OrganizationEmployeeId,
-    protected permission: Permission) {
+  constructor(protected organizationEmployeeId: OrganizationEmployeeId, protected permission: Permission) {
     super();
   }
 
@@ -14,5 +13,12 @@ export default class AuthorizationRule extends AggregateRoot {
 
   public getPermission(): Permission {
     return this.permission;
+  }
+
+  public equals(other: AuthorizationRule): boolean {
+    return (
+      this.organizationEmployeeId.equals(other.getOrganizationEmployeeId()) &&
+      this.permission.equals(other.getPermission())
+    );
   }
 }

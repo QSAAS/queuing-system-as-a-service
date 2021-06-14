@@ -1,6 +1,4 @@
 import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
-import OrganizationEmployeeAuthorizationService
-  from "@app/Command/Application/Service/OrganizationEmployeeAuthorizationService";
 import AdministratedOrganizationEmployee from "@app/Command/Domain/Entity/AdministratedOrganizationEmployee";
 
 import PassingOrganizationEmployeeAuthorizationService
@@ -8,6 +6,8 @@ import PassingOrganizationEmployeeAuthorizationService
 
 import OrganizationEmployeeMother from "@tests/Command/Domain/Entity/OrganizationEmployeeMother";
 import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/OrganizationEmployeeBuilder";
+import OrganizationEmployeeAuthorizationService
+  from "@app/Command/Domain/Service/OrganizationEmployeeAuthorizaitonService";
 
 export default class AdministratedOrganizationEmployeeBuilder extends OrganizationEmployeeBuilder {
   private admin: OrganizationEmployee = OrganizationEmployeeMother.admin().build() ;

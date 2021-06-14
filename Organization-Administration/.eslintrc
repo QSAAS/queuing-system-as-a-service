@@ -2,10 +2,13 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "prettier"
   ],
   "extends": [
-    "airbnb-typescript/base"
+    "airbnb-typescript/base",
+    "prettier",
+    "prettier/prettier"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
@@ -28,10 +31,6 @@
       {
         "allowForLoopAfterthoughts": true
       }
-    ],
-    "max-len": [
-      "error",
-      120
     ],
     "no-console": [
       "off"

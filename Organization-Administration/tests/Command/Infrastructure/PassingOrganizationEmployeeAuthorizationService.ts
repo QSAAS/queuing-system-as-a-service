@@ -1,6 +1,6 @@
-import OrganizationEmployeeAuthorizationService
-  from "@app/Command/Application/Service/OrganizationEmployeeAuthorizationService";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
+import OrganizationEmployeeAuthorizationService
+  from "@app/Command/Domain/Service/OrganizationEmployeeAuthorizaitonService";
 
 export default class PassingOrganizationEmployeeAuthorizationService
 implements OrganizationEmployeeAuthorizationService {

@@ -4,10 +4,12 @@ import Geolocation from "@app/Command/Domain/ValueObject/Geolocation";
 import AggregateRoot from "@app/Command/Domain/Entity/AggregateRoot";
 
 export default class OrganizationEndpoint extends AggregateRoot {
-  constructor(protected organizationEndpointId: OrganizationEndpointId,
+  constructor(
+    protected organizationEndpointId: OrganizationEndpointId,
     protected organizationId: OrganizationId,
     protected name: string,
-    protected geolocation: Geolocation) {
+    protected geolocation: Geolocation,
+  ) {
     super();
   }
 

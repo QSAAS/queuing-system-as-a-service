@@ -1,3 +1,1 @@
-export default class InvalidEmployeeUsernameError extends Error {
-
-}
+export default class InvalidEmployeeUsernameError extends Error {}

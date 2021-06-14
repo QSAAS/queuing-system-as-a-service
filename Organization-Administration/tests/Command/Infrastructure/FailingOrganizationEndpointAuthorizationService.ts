@@ -1,8 +1,8 @@
-import OrganizationEndpointAuthorizationService
-  from "@app/Command/Application/Service/OrganizationEndpointAuthorizationService";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
+import OrganizationEndpointAuthorizationService
+  from "@app/Command/Domain/Service/OrganizationEndpointAuthorizationService";
 
 export default class FailingOrganizationEndpointAuthorizationService
 implements OrganizationEndpointAuthorizationService {

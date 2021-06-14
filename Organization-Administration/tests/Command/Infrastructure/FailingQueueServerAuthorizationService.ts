@@ -1,7 +1,7 @@
-import QueueServerAuthorizationService from "@app/Command/Application/Service/QueueServerAuthorizationService";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
 import QueueServerId from "@app/Command/Domain/ValueObject/QueueServerId";
+import QueueServerAuthorizationService from "@app/Command/Domain/Service/QueueServerAuthorizationService";
 
 export default class FailingQueueServerAuthorizationService implements QueueServerAuthorizationService {
   /**

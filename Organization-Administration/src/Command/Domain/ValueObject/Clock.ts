@@ -50,9 +50,7 @@ export default class Clock extends ValueObject {
   }
 
   equals(other: this): boolean {
-    return this.hours === other.hours
-            && this.minutes === other.minutes
-            && this.seconds === other.seconds;
+    return this.hours === other.hours && this.minutes === other.minutes && this.seconds === other.seconds;
   }
 
   greaterThan(other: this): boolean {

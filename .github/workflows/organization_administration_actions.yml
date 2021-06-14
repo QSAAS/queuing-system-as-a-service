@@ -1,0 +1,36 @@
+name: Build Organization Administration component with docker and test it
+on:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build docker image
+        run: docker build ./Organization-Administration/ --file ./Organization-Administration/Dockerfile --tag organization-administration:$(date +%s)
+
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Organization-Administration
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run docker
+        run: docker-compose -f docker-compose-test.yml up --build  --exit-code-from node_and_jest
+
+  linting:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./Organization-Administration
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install NPM packages
+        run: npm ci
+
+      - name: Run eslint checks
+        run: npm run lint

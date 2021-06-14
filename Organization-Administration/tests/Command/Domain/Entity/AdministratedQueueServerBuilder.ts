@@ -2,10 +2,10 @@ import QueueServerBuilder from "@tests/Command/Domain/Entity/QueueServerBuilder"
 import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
 import OrganizationEmployeeMother from "@tests/Command/Domain/Entity/OrganizationEmployeeMother";
 import AdministratedQueueServer from "@app/Command/Domain/Entity/AdministratedQueueServer";
-import QueueServerAuthorizationService from "@app/Command/Application/Service/QueueServerAuthorizationService";
 import PassingQueueServerAuthorizationService
   from "@tests/Command/Infrastructure/PassingQueueServerAuthorizationService";
 import QueueServer from "@app/Command/Domain/Entity/QueueServer";
+import QueueServerAuthorizationService from "@app/Command/Domain/Service/QueueServerAuthorizationService";
 
 export default class AdministratedQueueServerBuilder extends QueueServerBuilder {
   private admin: OrganizationEmployee = OrganizationEmployeeMother.admin().build();

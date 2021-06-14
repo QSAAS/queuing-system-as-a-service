@@ -6,8 +6,8 @@ import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 import TimeSpanBuilder from "@tests/Command/Domain/ValueObject/TimeSpanBuilder";
 import PassingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/PassingQueueNodeAuthorizationService";
 import MetadataSpecificationBuilder from "@tests/Command/Domain/ValueObject/MetadataSpecificationBuilder";
+import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/OrganizationEmployeeBuilder";
 import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
-import OrganizationEmployeeMother from "@tests/Command/Domain/Entity/OrganizationEmployeeMother";
 
 export default class AdministratedQueueNodeBuilder {
   private admin: OrganizationEmployee;
@@ -15,11 +15,13 @@ export default class AdministratedQueueNodeBuilder {
   private authService: QueueNodeAuthorizationService;
 
   constructor() {
-    this.admin = OrganizationEmployeeMother.admin().build();
-    this.queueNode = new QueueNode(QueueNodeId.create(),
+    this.admin = new OrganizationEmployeeBuilder().build();
+    this.queueNode = new QueueNode(
+      QueueNodeId.create(),
       OrganizationEmployeeId.create(),
       new MetadataSpecificationBuilder().build(),
-      new TimeSpanBuilder().build());
+      new TimeSpanBuilder().build(),
+    );
     this.authService = new PassingQueueNodeAuthorizationService();
   }
 
