@@ -1,30 +1,21 @@
-import mongoose, { Connection } from "mongoose";
+import mongoose from "mongoose";
 import MongooseAuthorizationRuleRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseAuthorizationRuleRepository";
 import AuthorizationRuleTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/AuthorizationRuleTransformer";
 import AuthorizationRuleBuilder from "@tests/Command/Domain/Entity/Builder/AuthorizationRuleBuilder";
 import PermissionMother from "@tests/Command/Domain/ValueObject/Mother/PermissionMother";
 import IAuthorizationRule from "@app/Command/Infrastructure/Repository/Mongoose/Types/IAuthorizationRule";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
+import createTestingDbConnection from "@tests/Utils/dbUtils";
 
-let mongooseConnection: Connection;
 let repo: MongooseAuthorizationRuleRepository;
 let model: mongoose.Model<IAuthorizationRule & mongoose.Document>;
 
 const authorizationTransformer = new AuthorizationRuleTransformer();
 
-beforeAll(async () => {
-  const { DB_URL, DB_PORT, DB_NAME } = process.env;
-  mongooseConnection = await mongoose.createConnection(`mongodb://${DB_URL}:${DB_PORT}/${DB_NAME}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  repo = new MongooseAuthorizationRuleRepository(mongooseConnection, authorizationTransformer);
+createTestingDbConnection((connection) => {
+  repo = new MongooseAuthorizationRuleRepository(connection, authorizationTransformer);
   model = repo.getModel();
 });
-
-afterAll(() => mongooseConnection.close());
-
-beforeEach(() => model.deleteMany({}));
 
 it("Should save AuthorizationRule instance with null resourceId", async () => {
   const permission = PermissionMother.withNullResourceId().build();

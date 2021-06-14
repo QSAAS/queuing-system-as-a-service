@@ -1,4 +1,3 @@
-import mongoose, { Connection } from "mongoose";
 import MongooseQueueNodeRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseQueueNodeRepository";
 import QueueNodeTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/QueueNodeTransformer";
 import MetadataSpecificationFieldTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/MetadataSpecificationFieldTransformer";
@@ -7,30 +6,17 @@ import TimeSpanTransformer from "@app/Command/Infrastructure/Repository/Mongoose
 import QueueNodeBuilder from "@tests/Command/Domain/Entity/Builder/QueueNodeBuilder";
 import IQueueNode from "@app/Command/Infrastructure/Repository/Mongoose/Types/IQueueNode";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
+import createTestingDbConnection from "@tests/Utils/dbUtils";
 
-let mongooseConnection: Connection;
+const clockTransformer = new ClockTransformer();
+const timeSpanTransformer = new TimeSpanTransformer(clockTransformer);
+const metadataSpecificationFieldTransformer = new MetadataSpecificationFieldTransformer();
+const nodeTransformer = new QueueNodeTransformer(metadataSpecificationFieldTransformer, timeSpanTransformer);
+
 let repo: MongooseQueueNodeRepository;
 
-beforeAll(async () => {
-  const { DB_URL, DB_PORT, DB_NAME } = process.env;
-  mongooseConnection = await mongoose.createConnection(`mongodb://${DB_URL}:${DB_PORT}/${DB_NAME}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
-  const clockTransformer = new ClockTransformer();
-  const timeSpanTransformer = new TimeSpanTransformer(clockTransformer);
-  const metadataSpecificationFieldTransformer = new MetadataSpecificationFieldTransformer();
-  const nodeTransformer = new QueueNodeTransformer(metadataSpecificationFieldTransformer, timeSpanTransformer);
-
-  repo = new MongooseQueueNodeRepository(mongooseConnection, nodeTransformer);
-});
-
-afterAll(async () => mongooseConnection.close());
-
-beforeEach(() => {
-  const model = repo.getModel();
-  return model.deleteMany({});
+createTestingDbConnection((connection) => {
+  repo = new MongooseQueueNodeRepository(connection, nodeTransformer);
 });
 
 it("Should save QueueNode instance", async () => {
