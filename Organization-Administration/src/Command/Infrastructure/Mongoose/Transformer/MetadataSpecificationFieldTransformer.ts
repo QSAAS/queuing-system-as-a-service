@@ -36,7 +36,7 @@ export default class MetadataSpecificationFieldTransformer
       field.isRequired,
       field.maxLength,
       field.minLength,
-      field.regex,
+      new RegExp(field.regex),
       field.placeholder,
     );
   }
@@ -51,7 +51,7 @@ export default class MetadataSpecificationFieldTransformer
       isRequired: field.getIsRequired(),
       maxLength: field.getMaxLength(),
       minLength: field.getMinLength(),
-      regex: field.getRegex(),
+      regex: field.getRegex().toString(),
       placeholder: field.getPlaceholder(),
       kind: FieldType.Text,
     };

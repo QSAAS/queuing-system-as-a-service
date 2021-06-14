@@ -5,7 +5,7 @@ export default class MetadataSpecificationTextFieldBuilder {
   private isRequired;
   private maxLength;
   private minLength;
-  private regex;
+  private regex: RegExp;
   private placeholder;
 
   constructor() {
@@ -13,7 +13,7 @@ export default class MetadataSpecificationTextFieldBuilder {
     this.isRequired = true;
     this.maxLength = 16;
     this.minLength = 4;
-    this.regex = "w+";
+    this.regex = new RegExp("/w+/");
     this.placeholder = "placeholder";
   }
 
@@ -37,7 +37,7 @@ export default class MetadataSpecificationTextFieldBuilder {
     return this;
   }
 
-  withRegex(val: string) {
+  withRegex(val: RegExp) {
     this.regex = val;
     return this;
   }
@@ -48,7 +48,13 @@ export default class MetadataSpecificationTextFieldBuilder {
   }
 
   build() {
-    return new MetadataSpecificationTextField(this.name, this.isRequired, this.maxLength,
-      this.minLength, this.regex, this.placeholder);
+    return new MetadataSpecificationTextField(
+      this.name,
+      this.isRequired,
+      this.maxLength,
+      this.minLength,
+      this.regex,
+      this.placeholder,
+    );
   }
 }

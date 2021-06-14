@@ -24,7 +24,7 @@ describe("Unequal attributes", () => {
   });
 
   it("Should return false on unequal regex", () => {
-    const other = new TextFieldBuilder().withRegex(`${base.getRegex()}#`).build();
+    const other = new TextFieldBuilder().withRegex(new RegExp(`${base.getRegex()}#`)).build();
     expect(base.equals(other)).toBeFalsy();
   });
 

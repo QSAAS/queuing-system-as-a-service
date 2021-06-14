@@ -6,7 +6,7 @@ export default class MetadataSpecificationTextField extends MetadataSpecificatio
     isRequired: boolean,
     private maxLength: number,
     private minLength: number,
-    private regex: string, // TODO use RegExp?
+    private regex: RegExp,
     private placeholder: string,
   ) {
     super(name, isRequired);
@@ -20,7 +20,7 @@ export default class MetadataSpecificationTextField extends MetadataSpecificatio
     return this.minLength;
   }
 
-  getRegex(): string {
+  getRegex(): RegExp {
     return this.regex;
   }
 
@@ -34,7 +34,7 @@ export default class MetadataSpecificationTextField extends MetadataSpecificatio
       this.isRequired === other.isRequired &&
       this.maxLength === other.maxLength &&
       this.minLength === other.minLength &&
-      this.regex === other.regex &&
+      this.regex.toString() === other.regex.toString() &&
       this.placeholder === other.placeholder
     );
   }
