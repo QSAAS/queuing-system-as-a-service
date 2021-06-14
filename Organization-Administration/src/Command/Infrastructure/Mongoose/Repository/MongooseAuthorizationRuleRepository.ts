@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 import AuthorizationRuleRepository from "@app/Command/Domain/Service/AuthorizationRuleRepository";
 import IAuthorizationRule from "@app/Command/Infrastructure/Mongoose/Types/IAuthorizationRule";
-import AuthorizationRuleTransformer
-  from "@app/Command/Infrastructure/Mongoose/Transformer/AuthorizationRuleTransformer";
+import AuthorizationRuleTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/AuthorizationRuleTransformer";
 import AuthorizationRuleSchema from "@app/Command/Infrastructure/Mongoose/Schema/AuthorizationRuleSchema";
 import AuthorizationRule from "@app/Command/Domain/Entity/AuthorizationRule";
 import Permission from "@app/Command/Domain/ValueObject/Permission";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
+import AuthorizationRuleAlreadyExists from "@app/Command/Domain/Error/AuthorizationRuleAlreadyExists";
+import AuthorizationRuleNotFound from "@app/Command/Domain/Error/AuthorizationRuleNotFound";
 
 export default class MongooseAuthorizationRuleRepository implements AuthorizationRuleRepository {
   private readonly AuthorizationRuleModel: mongoose.Model<IAuthorizationRule & mongoose.Document>;
@@ -26,7 +27,7 @@ export default class MongooseAuthorizationRuleRepository implements Authorizatio
       await instance.save();
     } catch (error) {
       if (error.name === "MongoError" && error.code === 11000) {
-        throw new Error("Duplicate key error"); // TODO create custom error
+        throw new AuthorizationRuleAlreadyExists();
       } else {
         throw error;
       }
@@ -50,7 +51,7 @@ export default class MongooseAuthorizationRuleRepository implements Authorizatio
     const object = await this.AuthorizationRuleModel.findOne(this.authorizationTransformer.mongooseObjectFrom(rule));
 
     if (!object) {
-      throw new Error("AuthorizationRule not found"); // TODO create custom error
+      throw new AuthorizationRuleNotFound();
     }
 
     return this.authorizationTransformer.domainInstanceFrom(object);
