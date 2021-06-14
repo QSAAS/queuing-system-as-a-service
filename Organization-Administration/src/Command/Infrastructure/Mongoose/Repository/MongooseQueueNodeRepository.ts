@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 import QueueNode from "@app/Command/Domain/Entity/QueueNode";
 import IQueueNode from "@app/Command/Infrastructure/Mongoose/Types/IQueueNode";
 import QueueNodeSchema from "@app/Command/Infrastructure/Mongoose/Schema/QueueNodeSchema";
-import IQueueNodeRepository from "@app/Command/Domain/Service/QueueNodeRepository";
+import QueueNodeRepository from "@app/Command/Domain/Service/QueueNodeRepository";
 import QueueNodeTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/QueueNodeTransformer";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 
-export default class QueueNodeRepository implements IQueueNodeRepository {
+export default class MongooseQueueNodeRepository implements QueueNodeRepository {
   private readonly QueueNodeModel: mongoose.Model<IQueueNode & mongoose.Document>;
   private readonly queueNodeTransformer: QueueNodeTransformer;
 

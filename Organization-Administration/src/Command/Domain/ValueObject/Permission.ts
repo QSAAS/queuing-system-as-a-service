@@ -1,20 +1,7 @@
 import ValueObject from "@app/Command/Domain/ValueObject/ValueObject";
 import EntityId from "@app/Command/Domain/ValueObject/EntityId";
-
-export enum ResourceType {
-  ORGANIZATION_EMPLOYEE,
-  ENDPOINT,
-  QUEUE_NODE,
-  QUEUE_SERVER,
-  AUTHORIZATION_RULE,
-}
-
-export enum AuthorizedAction {
-  CREATE,
-  UPDATE,
-  DELETE,
-  MANAGE,
-}
+import ResourceType from "@app/Command/Domain/Enum/ResourceType";
+import AuthorizedAction from "@app/Command/Domain/Enum/AuthorizedAction";
 
 export default class Permission extends ValueObject {
   constructor(

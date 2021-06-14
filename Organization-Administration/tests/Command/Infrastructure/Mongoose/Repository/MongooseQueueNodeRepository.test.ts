@@ -1,5 +1,5 @@
 import mongoose, { Connection } from "mongoose";
-import QueueNodeRepository from "@app/Command/Infrastructure/Mongoose/Repository/QueueNodeRepository";
+import MongooseQueueNodeRepository from "@app/Command/Infrastructure/Mongoose/Repository/MongooseQueueNodeRepository";
 import QueueNodeTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/QueueNodeTransformer";
 import MetadataSpecificationFieldTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/MetadataSpecificationFieldTransformer";
 import ClockTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/ClockTransformer";
@@ -9,7 +9,7 @@ import IQueueNode from "@app/Command/Infrastructure/Mongoose/Types/IQueueNode";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 
 let mongooseConnection: Connection;
-let repo: QueueNodeRepository;
+let repo: MongooseQueueNodeRepository;
 
 beforeAll(async () => {
   const { DB_URL, DB_PORT, DB_NAME } = process.env;
@@ -23,7 +23,7 @@ beforeAll(async () => {
   const metadataSpecificationFieldTransformer = new MetadataSpecificationFieldTransformer();
   const nodeTransformer = new QueueNodeTransformer(metadataSpecificationFieldTransformer, timeSpanTransformer);
 
-  repo = new QueueNodeRepository(mongooseConnection, nodeTransformer);
+  repo = new MongooseQueueNodeRepository(mongooseConnection, nodeTransformer);
 });
 
 afterAll(async () => mongooseConnection.close());
