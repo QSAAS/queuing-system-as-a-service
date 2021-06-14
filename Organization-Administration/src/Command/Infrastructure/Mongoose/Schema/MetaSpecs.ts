@@ -5,3 +5,4 @@ const MetaSpecsSchema = new Schema({
 });
 
 export default MetaSpecsSchema;
+// TODO add suffix 'Schema' to file name

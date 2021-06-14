@@ -1,5 +1,5 @@
 import mongoose, { Connection } from "mongoose";
-import QueueNodeRepository from "@app/Command/Infrastructure/Mongoose/Repository/QueueNodeRepository";
+import MongooseQueueNodeRepository from "@app/Command/Infrastructure/Mongoose/Repository/MongooseQueueNodeRepository";
 import QueueNodeTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/QueueNodeTransformer";
 import MetadataSpecificationFieldTransformer
   from "@app/Command/Infrastructure/Mongoose/Transformer/MetadataSpecificationFieldTransformer";
@@ -10,7 +10,7 @@ import IQueueNode from "@app/Command/Infrastructure/Mongoose/Types/IQueueNode";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 
 let mongooseConnection: Connection;
-let repo: QueueNodeRepository;
+let repo: MongooseQueueNodeRepository;
 
 beforeAll(() => {
   mongooseConnection = mongoose.createConnection("mongodb://127.0.0.1:27017/qsas_test");
@@ -20,7 +20,7 @@ beforeAll(() => {
   const metadataSpecificationFieldTransformer = new MetadataSpecificationFieldTransformer();
   const nodeTransformer = new QueueNodeTransformer(metadataSpecificationFieldTransformer, timeSpanTransformer);
 
-  repo = new QueueNodeRepository(mongooseConnection, nodeTransformer);
+  repo = new MongooseQueueNodeRepository(mongooseConnection, nodeTransformer);
 });
 
 afterAll(() => mongooseConnection.close());

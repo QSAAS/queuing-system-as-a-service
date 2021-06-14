@@ -1,5 +1,7 @@
 import EntityId from "@app/Command/Domain/ValueObject/EntityId";
-import Permission, { AuthorizedAction, ResourceType } from "@app/Command/Domain/ValueObject/Permission";
+import Permission from "@app/Command/Domain/ValueObject/Permission";
+import ResourceType from "@app/Command/Domain/Enum/ResourceType";
+import AuthorizedAction from "@app/Command/Domain/Enum/AuthorizedAction";
 
 export default class PermissionBuilder {
   constructor(private resourceId: EntityId | null = null,
