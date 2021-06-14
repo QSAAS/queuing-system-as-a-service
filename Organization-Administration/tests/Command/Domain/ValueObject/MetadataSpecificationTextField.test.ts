@@ -1,4 +1,4 @@
-import TextFieldBuilder from "@tests/Command/Domain/ValueObject/MetadataSpecificationTextFieldBuilder";
+import TextFieldBuilder from "@tests/Command/Domain/ValueObject/Builder/MetadataSpecificationTextFieldBuilder";
 
 const base = new TextFieldBuilder().build();
 

@@ -1,11 +1,11 @@
-import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/OrganizationEmployeeBuilder";
+import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
-import MockQueueNodeRepository from "@tests/Command/Infrastructure/Repository/MockQueueNodeRepository";
-import QueueNodeBuilder from "@tests/Command/Domain/Entity/QueueNodeBuilder";
+import MockQueueNodeRepository from "@tests/Command/Infrastructure/Repository/Mock/MockQueueNodeRepository";
+import QueueNodeBuilder from "@tests/Command/Domain/Entity/Builder/QueueNodeBuilder";
 import EmployeeDeleteQueueNodeService from "@app/Command/Domain/Service/EmployeeDeleteQueueNodeService";
-import FailingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/FailingQueueNodeAuthorizationService";
-import PassingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/PassingQueueNodeAuthorizationService";
+import FailingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/FailingQueueNodeAuthorizationService";
+import PassingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/PassingQueueNodeAuthorizationService";
 import QueueNodeDeleted from "@app/Command/Domain/Event/QueueNodeDeleted";
 import QueueNodeNotFound from "@app/Command/Domain/Error/QueueNodeNotFound";
 
@@ -36,9 +36,9 @@ describe("Employee delete queue node", () => {
     const service = new EmployeeDeleteQueueNodeService(repo, passingAuthService);
     await service.execute(admin, node);
     expect(
-      eventsArrayContains(repo.getPublishedEvents(), QueueNodeDeleted,
-        (event) => (
-          event.getQueueNode().getId().equals(node.getId()))),
+      eventsArrayContains(repo.getPublishedEvents(), QueueNodeDeleted, (event) =>
+        event.getQueueNode().getId().equals(node.getId()),
+      ),
     );
   });
 });

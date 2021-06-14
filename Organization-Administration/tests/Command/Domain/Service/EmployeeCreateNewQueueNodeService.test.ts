@@ -1,13 +1,12 @@
-import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/OrganizationEmployeeBuilder";
+import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
-import PassingOrganizationEndpointAuthorizationService
-  from "@tests/Command/Infrastructure/PassingOrganizationEndpointAuthorizationService";
+import PassingOrganizationEndpointAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/PassingOrganizationEndpointAuthorizationService";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
-import FailingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/FailingQueueNodeAuthorizationService";
+import FailingQueueNodeAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/FailingQueueNodeAuthorizationService";
 import EmployeeCreateNewQueueNodeService from "@app/Command/Domain/Service/EmployeeCreateNewQueueNodeService";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
-import MetadataSpecificationBuilder from "@tests/Command/Domain/ValueObject/MetadataSpecificationBuilder";
-import TimeSpanBuilder from "@tests/Command/Domain/ValueObject/TimeSpanBuilder";
+import MetadataSpecificationBuilder from "@tests/Command/Domain/ValueObject/Builder/MetadataSpecificationBuilder";
+import TimeSpanBuilder from "@tests/Command/Domain/ValueObject/Builder/TimeSpanBuilder";
 import QueueNodeCreated from "@app/Command/Domain/Event/QueueNodeCreated";
 
 describe("Queue node creation", () => {
@@ -26,8 +25,10 @@ describe("Queue node creation", () => {
     const passingAuth = new PassingOrganizationEndpointAuthorizationService();
     const service = new EmployeeCreateNewQueueNodeService(passingAuth);
     const node = service.execute(admin, endpointId, metadataSpecs, operatingTimes);
-    expect(eventsArrayContains(node.getRaisedEvents(), QueueNodeCreated, (event) => (
-      event.getQueueNode().getId().equals(node.getId())
-    ))).toBeTruthy();
+    expect(
+      eventsArrayContains(node.getRaisedEvents(), QueueNodeCreated, (event) =>
+        event.getQueueNode().getId().equals(node.getId()),
+      ),
+    ).toBeTruthy();
   });
 });

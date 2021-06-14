@@ -1,14 +1,10 @@
-import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/OrganizationEmployeeBuilder";
+import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
-import MockOrganizationEmployeeRepository
-  from "@tests/Command/Infrastructure/Repository/MockOrganizationEmployeeRepository";
-import FailingOrganizationEmployeeAuthorizationService
-  from "@tests/Command/Infrastructure/FailingOrganizationEmployeeAuthorizationService";
-import EmployeeDeleteOrganizationEmployeeService
-  from "@app/Command/Domain/Service/EmployeeDeleteOrganizationEmployeeService";
-import PassingOrganizationEmployeeAuthorizationService
-  from "@tests/Command/Infrastructure/PassingOrganizationEmployeeAuthorizationService";
+import MockOrganizationEmployeeRepository from "@tests/Command/Infrastructure/Repository/Mock/MockOrganizationEmployeeRepository";
+import FailingOrganizationEmployeeAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/FailingOrganizationEmployeeAuthorizationService";
+import EmployeeDeleteOrganizationEmployeeService from "@app/Command/Domain/Service/EmployeeDeleteOrganizationEmployeeService";
+import PassingOrganizationEmployeeAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/PassingOrganizationEmployeeAuthorizationService";
 import OrganizationEmployeeNotFound from "@app/Command/Domain/Error/OrganizationEmployeeNotFound";
 import OrganizationEmployeeCreated from "@app/Command/Domain/Event/OrganizationEmployeeCreated";
 
@@ -39,9 +35,9 @@ describe("Employee delete organization employee", () => {
     const service = new EmployeeDeleteOrganizationEmployeeService(repo, passingAuthService);
     await service.execute(admin, employee);
     expect(
-      eventsArrayContains(repo.getPublishedEvents(), OrganizationEmployeeCreated,
-        (event) => (
-          event.getOrganizationEmployee().getId().equals(employee.getId()))),
+      eventsArrayContains(repo.getPublishedEvents(), OrganizationEmployeeCreated, (event) =>
+        event.getOrganizationEmployee().getId().equals(employee.getId()),
+      ),
     );
   });
 });

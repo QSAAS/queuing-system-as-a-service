@@ -1,14 +1,11 @@
-import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/OrganizationEmployeeBuilder";
+import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
-import EmployeeCreateNewOrganizaitonEmployeeService
-  from "@app/Command/Domain/Service/EmployeeCreateNewOrganizationEmployeeService";
+import EmployeeCreateNewOrganizaitonEmployeeService from "@app/Command/Domain/Service/EmployeeCreateNewOrganizationEmployeeService";
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
-import EmployeeUsernameMother from "@tests/Command/Domain/ValueObject/EmployeeUsernameMother";
-import FailingOrganizationEmployeeAuthorizationService
-  from "@tests/Command/Infrastructure/FailingOrganizationEmployeeAuthorizationService";
-import PassingOrganizationEmployeeAuthorizationService
-  from "@tests/Command/Infrastructure/PassingOrganizationEmployeeAuthorizationService";
+import EmployeeUsernameMother from "@tests/Command/Domain/ValueObject/Mother/EmployeeUsernameMother";
+import FailingOrganizationEmployeeAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/FailingOrganizationEmployeeAuthorizationService";
+import PassingOrganizationEmployeeAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/PassingOrganizationEmployeeAuthorizationService";
 import OrganizationEmployeeCreated from "@app/Command/Domain/Event/OrganizationEmployeeCreated";
 import DummyPasswordHashFactory from "@tests/Command/Infrastructure/Service/DummyPasswordHashFactory";
 
@@ -28,8 +25,10 @@ describe("Queue server creation", () => {
     const passingAuth = new PassingOrganizationEmployeeAuthorizationService();
     const service = new EmployeeCreateNewOrganizaitonEmployeeService(passingAuth, passwordHash);
     const employee = await service.execute(admin, orgId, name, password, username);
-    expect(eventsArrayContains(employee.getRaisedEvents(), OrganizationEmployeeCreated, (event) => (
-      event.getOrganizationEmployee().getId().equals(employee.getId())
-    ))).toBeTruthy();
+    expect(
+      eventsArrayContains(employee.getRaisedEvents(), OrganizationEmployeeCreated, (event) =>
+        event.getOrganizationEmployee().getId().equals(employee.getId()),
+      ),
+    ).toBeTruthy();
   });
 });

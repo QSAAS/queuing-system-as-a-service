@@ -2,9 +2,9 @@
 /* eslint-disable max-len */
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
 import MetadataSpecification from "@app/Command/Domain/ValueObject/MetadataSpecification";
-import TimeSpanBuilder from "@tests/Command/Domain/ValueObject/TimeSpanBuilder";
-import AdministratedQueueNodeMother from "@tests/Command/Domain/Entity/AdministratedQueueNodeMother";
-import AdministratedQueueNodeBuilder from "@tests/Command/Domain/Entity/AdministratedQueueNodeBuilder";
+import TimeSpanBuilder from "@tests/Command/Domain/ValueObject/Builder/TimeSpanBuilder";
+import AdministratedQueueNodeMother from "@tests/Command/Domain/Entity/Mother/AdministratedQueueNodeMother";
+import AdministratedQueueNodeBuilder from "@tests/Command/Domain/Entity/Builder/AdministratedQueueNodeBuilder";
 import QueueNodeUpdated from "@app/Command/Domain/Event/QueueNodeUpdated";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
 
@@ -42,7 +42,9 @@ describe("Events", () => {
     const span = new TimeSpanBuilder().build();
     node.setOperatingTimes(span);
     const events = node.getRaisedEvents();
-    expect(eventsArrayContains(events, QueueNodeUpdated, (event) => event.getQueueNode().getTimeSpan() === span)).toBe(true);
+    expect(eventsArrayContains(events, QueueNodeUpdated, (event) => event.getQueueNode().getTimeSpan() === span)).toBe(
+      true,
+    );
   });
 
   it("Should raise QueueNodeUpdated event on setMetaDataSpecification", () => {
@@ -50,6 +52,8 @@ describe("Events", () => {
     const meta = new MetadataSpecification([]);
     node.setMetaDataSpecification(meta);
     const events = node.getRaisedEvents();
-    expect(eventsArrayContains(events, QueueNodeUpdated, (event) => event.getQueueNode().getMetaSpecs() === meta)).toBe(true);
+    expect(eventsArrayContains(events, QueueNodeUpdated, (event) => event.getQueueNode().getMetaSpecs() === meta)).toBe(
+      true,
+    );
   });
 });

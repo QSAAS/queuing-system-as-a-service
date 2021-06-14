@@ -1,5 +1,5 @@
 import InvalidTimeError from "@app/Command/Domain/Error/InvalidTimeError";
-import ClockBuilder from "@tests/Command/Domain/ValueObject/ClockBuilder";
+import ClockBuilder from "@tests/Command/Domain/ValueObject/Builder/ClockBuilder";
 
 const base = new ClockBuilder().build();
 

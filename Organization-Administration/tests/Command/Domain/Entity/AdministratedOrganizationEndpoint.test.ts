@@ -1,7 +1,7 @@
 import OrganizationEndpointUpdated from "@app/Command/Domain/Event/OrganizationEndpointUpdated";
-import AdministratedOrganizationEndpointMother from "@tests/Command/Domain/Entity/AdministratedOrganizationEndpointMother";
-import GeolocationMother from "@tests/Command/Domain/ValueObject/GeolocationMother";
-import FailingOrganizationEndpointAuthorizationService from "@tests/Command/Infrastructure/FailingOrganizationEndpointAuthorizationService";
+import AdministratedOrganizationEndpointMother from "@tests/Command/Domain/Entity/Mother/AdministratedOrganizationEndpointMother";
+import GeolocationMother from "@tests/Command/Domain/ValueObject/Mother/GeolocationMother";
+import FailingOrganizationEndpointAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/FailingOrganizationEndpointAuthorizationService";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
 
 describe("AdministratedOrganizationEndpoint", () => {

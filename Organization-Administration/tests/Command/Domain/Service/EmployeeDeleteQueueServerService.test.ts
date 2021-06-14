@@ -1,13 +1,11 @@
-import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/OrganizationEmployeeBuilder";
+import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
-import QueueServerBuilder from "@tests/Command/Domain/Entity/QueueServerBuilder";
-import MockQueueServerRepository from "@tests/Command/Infrastructure/Repository/MockQueueServerRepository";
-import FailingQueueServerAuthorizationService
-  from "@tests/Command/Infrastructure/FailingQueueServerAuthorizationService";
+import QueueServerBuilder from "@tests/Command/Domain/Entity/Builder/QueueServerBuilder";
+import MockQueueServerRepository from "@tests/Command/Infrastructure/Repository/Mock/MockQueueServerRepository";
+import FailingQueueServerAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/FailingQueueServerAuthorizationService";
 import EmployeeDeleteQueueServerService from "@app/Command/Domain/Service/EmployeeDeleteQueueServerService";
-import PassingQueueServerAuthorizationService
-  from "@tests/Command/Infrastructure/PassingQueueServerAuthorizationService";
+import PassingQueueServerAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/PassingQueueServerAuthorizationService";
 import QueueServerNotFound from "@app/Command/Domain/Error/QueueServerNotFound";
 import QueueServerDeleted from "@app/Command/Domain/Event/QueueServerDeleted";
 
@@ -38,9 +36,9 @@ describe("Employee delete queue server", () => {
     const service = new EmployeeDeleteQueueServerService(repo, passingAuthService);
     await service.execute(admin, server);
     expect(
-      eventsArrayContains(repo.getPublishedEvents(), QueueServerDeleted,
-        (event) => (
-          event.getQueueServer().getId().equals(server.getId()))),
+      eventsArrayContains(repo.getPublishedEvents(), QueueServerDeleted, (event) =>
+        event.getQueueServer().getId().equals(server.getId()),
+      ),
     );
   });
 });
