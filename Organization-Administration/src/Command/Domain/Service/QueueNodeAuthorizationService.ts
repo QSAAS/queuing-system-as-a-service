@@ -6,19 +6,19 @@ export default interface QueueNodeAuthorizationService {
    * @throws EmployeeNotAuthorizedError
    * @param employeeId
    */
-  ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId): void;
+  ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId): Promise<void>;
 
   /**
    * @throws EmployeeNotAuthorizedError
    * @param employeeId
    * @param queueNodeId
    */
-  ensureEmployeeCanDelete(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void;
+  ensureEmployeeCanDelete(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): Promise<void>;
 
   /**
    * @throws EmployeeNotAuthorizedError
    * @param employeeId
    * @param queueNodeId
    */
-  ensureEmployeeCanUpdate(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void;
+  ensureEmployeeCanUpdate(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): Promise<void>;
 }

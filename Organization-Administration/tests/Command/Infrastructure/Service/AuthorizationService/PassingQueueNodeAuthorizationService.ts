@@ -4,9 +4,15 @@ import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export default class PassingQueueNodeAuthorizationService implements QueueNodeAuthorizationService {
-  ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId): void {}
+  async ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId) {
+    return Promise.resolve();
+  }
 
-  ensureEmployeeCanDelete(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void {}
+  async ensureEmployeeCanDelete(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId) {
+    return Promise.resolve();
+  }
 
-  ensureEmployeeCanUpdate(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void {}
+  async ensureEmployeeCanUpdate(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId) {
+    return Promise.resolve();
+  }
 }

@@ -10,13 +10,13 @@ import QueueNodeCreated from "@app/Command/Domain/Event/QueueNodeCreated";
 export default class EmployeeCreateNewQueueNodeService {
   constructor(private nodeAuthService: QueueNodeAuthorizationService) {}
 
-  execute(
+  async execute(
     admin: OrganizationEmployee,
     endpointId: OrganizationEndpointId,
     metadataSpecs: MetadataSpecification,
     operatingTimes: TimeSpan,
-  ): QueueNode {
-    this.nodeAuthService.ensureEmployeeCanCreate(admin.getId());
+  ): Promise<QueueNode> {
+    await this.nodeAuthService.ensureEmployeeCanCreate(admin.getId());
     const node = new QueueNode(QueueNodeId.create(), endpointId, metadataSpecs, operatingTimes);
     node.raiseEvent(new QueueNodeCreated(node));
     return node;

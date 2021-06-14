@@ -5,15 +5,15 @@ import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export default class FailingQueueNodeAuthorizationService implements QueueNodeAuthorizationService {
-  ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId): void {
+  async ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId) {
     throw new EmployeeNotAuthorizedError();
   }
 
-  ensureEmployeeCanDelete(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void {
+  async ensureEmployeeCanDelete(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId) {
     throw new EmployeeNotAuthorizedError();
   }
 
-  ensureEmployeeCanUpdate(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): void {
+  async ensureEmployeeCanUpdate(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId) {
     throw new EmployeeNotAuthorizedError();
   }
 }
