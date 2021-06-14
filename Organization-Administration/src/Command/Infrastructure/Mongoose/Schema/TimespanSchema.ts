@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import ClockSchema from "@app/Command/Infrastructure/Mongoose/Schema/Clock";
+import ClockSchema from "@app/Command/Infrastructure/Mongoose/Schema/ClockSchema";
 
 const TimespanSchema = new Schema({
   start: ClockSchema,
@@ -7,4 +7,3 @@ const TimespanSchema = new Schema({
 });
 
 export default TimespanSchema;
-// TODO add suffix 'Schema' to file name

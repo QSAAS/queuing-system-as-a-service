@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
-import MetaSpecsSchema from "@app/Command/Infrastructure/Mongoose/Schema/MetaSpecs";
-import TimespanSchema from "@app/Command/Infrastructure/Mongoose/Schema/Timespan";
+import MetaSpecsSchema from "@app/Command/Infrastructure/Mongoose/Schema/MetaSpecsSchema";
+import TimespanSchema from "@app/Command/Infrastructure/Mongoose/Schema/TimespanSchema";
 
 const QueueNodeSchema = new Schema({
   id: String,
