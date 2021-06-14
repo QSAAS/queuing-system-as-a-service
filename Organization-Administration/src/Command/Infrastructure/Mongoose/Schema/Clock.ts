@@ -7,3 +7,4 @@ const ClockSchema = new Schema({
 });
 
 export default ClockSchema;
+// TODO add suffix 'Schema' to file name

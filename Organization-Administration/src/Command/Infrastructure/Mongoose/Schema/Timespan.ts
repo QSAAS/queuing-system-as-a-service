@@ -7,3 +7,4 @@ const TimespanSchema = new Schema({
 });
 
 export default TimespanSchema;
+// TODO add suffix 'Schema' to file name
