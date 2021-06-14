@@ -5,6 +5,7 @@ import QueueNodeSchema from "@app/Command/Infrastructure/Mongoose/Schema/QueueNo
 import QueueNodeRepository from "@app/Command/Domain/Service/QueueNodeRepository";
 import QueueNodeTransformer from "@app/Command/Infrastructure/Mongoose/Transformer/QueueNodeTransformer";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
+import QueueNodeNotFound from "@app/Command/Domain/Error/QueueNodeNotFound";
 
 export default class MongooseQueueNodeRepository implements QueueNodeRepository {
   private readonly QueueNodeModel: mongoose.Model<IQueueNode & mongoose.Document>;
@@ -28,8 +29,7 @@ export default class MongooseQueueNodeRepository implements QueueNodeRepository 
     const object = await this.QueueNodeModel.findOne({ id: id.toString() });
 
     if (!object) {
-      // TODO create custom error
-      throw new Error(`QueueNode with id '${id.toString()}' not found`);
+      throw new QueueNodeNotFound();
     }
 
     return this.queueNodeTransformer.domainInstanceFrom(object);
