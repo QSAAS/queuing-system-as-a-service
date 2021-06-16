@@ -5,11 +5,7 @@ import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/Organization
 import OrganizationEmployeeNotFound from "@app/Command/Domain/Error/OrganizationEmployeeNotFound";
 
 export default class MockOrganizationEmployeeRepository implements OrganizationEmployeeRepository {
-  constructor(
-    private items: OrganizationEmployee[] = [],
-    private publishedEvents: DomainEvent[] = [],
-  ) {
-  }
+  constructor(private items: OrganizationEmployee[] = [], private publishedEvents: DomainEvent[] = []) {}
 
   async delete(item: OrganizationEmployee): Promise<void> {
     const idx = this.getMatchingIdx(item.getId());
@@ -27,12 +23,12 @@ export default class MockOrganizationEmployeeRepository implements OrganizationE
     return -1;
   }
 
-  public getById(id: OrganizationEmployeeId): OrganizationEmployee {
+  public getById(id: OrganizationEmployeeId): Promise<OrganizationEmployee> {
     const idx = this.getMatchingIdx(id);
     if (idx === -1) {
       throw new OrganizationEmployeeNotFound();
     }
-    return this.items[idx];
+    return Promise.resolve(this.items[idx]);
   }
 
   async save(item: OrganizationEmployee): Promise<void> {
