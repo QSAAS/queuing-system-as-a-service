@@ -21,7 +21,7 @@ export default class OrganizationEndpointController extends Controller {
     response.json(responseDto);
   }
 
-  createSchema(): Joi.Schema {
+  protected createSchema(): Joi.Schema {
     return Joi.object({
       access_token: EmployeeAccessTokenSchema,
       name: Joi.string().required(),

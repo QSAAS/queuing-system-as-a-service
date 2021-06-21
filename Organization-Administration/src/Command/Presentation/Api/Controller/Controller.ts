@@ -2,7 +2,7 @@ import { Request } from "express";
 import Joi from "joi";
 
 export default abstract class Controller {
-  async validateRequest(request: Request) {
+  protected async validateRequest(request: Request) {
     const schema = this.createSchema();
     try {
       await schema.validateAsync(request.body);
@@ -14,5 +14,5 @@ export default abstract class Controller {
     }
   }
 
-  abstract createSchema(): Joi.Schema;
+  protected abstract createSchema(): Joi.Schema;
 }
