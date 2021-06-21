@@ -71,7 +71,7 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
       this.getOrganizationEmployeeId(),
     );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
-    this.organizationEmployeeId = organizationEmployeeId;
+    this.id = organizationEmployeeId;
   }
 
   /**
