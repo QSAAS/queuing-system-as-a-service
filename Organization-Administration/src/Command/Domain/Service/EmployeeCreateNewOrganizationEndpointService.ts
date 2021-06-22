@@ -7,8 +7,8 @@ import OrganizationEndpointId from "@app/Command/Domain/ValueObject/Organization
 export default class EmployeeCreateNewOrganizationEndpointService {
   constructor(private endpointAuthService: OrganizationEndpointAuthorizationService) {}
 
-  execute(admin: OrganizationEmployee, name: string, location: Geolocation): OrganizationEndpoint {
-    this.endpointAuthService.ensureEmployeeCanCreate(admin.getOrganizationId());
+  async execute(admin: OrganizationEmployee, name: string, location: Geolocation): Promise<OrganizationEndpoint> {
+    await this.endpointAuthService.ensureEmployeeCanCreate(admin.getId());
     return OrganizationEndpoint.create(
       OrganizationEndpointId.create(),
       admin.getOrganizationId(),

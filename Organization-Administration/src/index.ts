@@ -1,8 +1,7 @@
 import express from "express";
+import "express-async-errors"
 import dotenv from "dotenv";
-import DependencyInjectionContainer from "@app/Command/Infrastructure/Config/DependencyInjectionContainer";
-import DependencyDefinitions from "@app/Command/Infrastructure/Config/DependencyDefinitions";
-import createOrganizationEndpointRouter from "@app/Command/Presentation/Api/Routes/OrganizationEndpointRouter";
+import createOrganizationAdministrationRouter from "@app/Command/Presentation/Api/Routes/Router";
 
 dotenv.config();
 
@@ -11,11 +10,8 @@ const PORT = process.env.SERVER_PORT || "N/A";
 const app = express();
 app.use(express.json());
 
-const container = new DependencyInjectionContainer();
+app.use("/administration", createOrganizationAdministrationRouter())
 
-container.addDefinitions(DependencyDefinitions).then(() => {
-  app.use("/endpoint", createOrganizationEndpointRouter(container));
   app.listen(80, () => {
     console.log(`Server started, forwarding host port ${PORT} to port 80`);
   });
-});

@@ -8,6 +8,6 @@ export default class EmployeeUsernameBuilder {
   }
 
   public build():EmployeeUsername {
-    return EmployeeUsername.create(this.username);
+    return EmployeeUsername.from(this.username);
   }
 }

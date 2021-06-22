@@ -17,7 +17,7 @@ export default class CreateOrganizationEndpoint {
   async execute(request: CreateOrganizationEndpointRequest): Promise<CreateOrganizationEndpointResponse> {
     const admin = await this.employeeRepo.getById(OrganizationEmployeeId.from(request.adminId));
     const geolocation = this.geolocationTransformer.toObject(request.geolocation);
-    const endpoint = this.createService.execute(admin, request.name, geolocation);
+    const endpoint = await this.createService.execute(admin, request.name, geolocation);
     await this.endpointRepo.save(endpoint);
     return new CreateOrganizationEndpointResponse(endpoint.getId().toString());
   }

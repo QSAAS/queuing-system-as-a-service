@@ -9,7 +9,7 @@ export default abstract class Controller {
     } catch (error) {
       if (error instanceof Joi.ValidationError) {
         // TODO: throw validation error
-        throw new Error("Validation error occured");
+        throw new Error(`Validation error occurred ${  error.message}`);
       }
     }
   }

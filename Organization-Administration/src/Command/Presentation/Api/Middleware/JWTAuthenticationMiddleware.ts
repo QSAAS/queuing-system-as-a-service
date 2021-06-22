@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
+import AccessToken from "@app/Command/Presentation/Api/Type/AccessToken";
 
 export default function JwtAuthenticationMiddleware(jwtSecret: string) {
   return (request: Request, response: Response, next: NextFunction) => {
@@ -13,12 +14,11 @@ export default function JwtAuthenticationMiddleware(jwtSecret: string) {
         throw new Error("Authentication error");
       }
     }
-    request.body.access_token = jwt.verify(authorizationHeader, jwtSecret) as AccessToken;
-    next();
+    try{
+      request.body.access_token = jwt.verify(authorizationHeader, jwtSecret) as AccessToken;
+      next();
+    } catch (e) {
+      throw new Error("Invalid token"); // TODO create custom error
+    }
   };
-}
-
-interface AccessToken {
-  type: "ACCESS_TOKEN";
-  employee_id: string;
 }

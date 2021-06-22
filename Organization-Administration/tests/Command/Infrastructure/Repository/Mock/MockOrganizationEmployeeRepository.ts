@@ -3,6 +3,8 @@ import OrganizationEmployeeRepository from "@app/Command/Domain/Service/Organiza
 import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import OrganizationEmployeeNotFound from "@app/Command/Domain/Error/OrganizationEmployeeNotFound";
+import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
+import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 
 export default class MockOrganizationEmployeeRepository implements OrganizationEmployeeRepository {
   constructor(private items: OrganizationEmployee[] = [], private publishedEvents: DomainEvent[] = []) {}
@@ -43,5 +45,10 @@ export default class MockOrganizationEmployeeRepository implements OrganizationE
 
   getPublishedEvents() {
     return this.publishedEvents;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getByUsername(username: EmployeeUsername): Promise<OrganizationEmployee> {
+    return Promise.resolve(new OrganizationEmployeeBuilder().build()); // TODO
   }
 }

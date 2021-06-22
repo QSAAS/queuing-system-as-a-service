@@ -6,6 +6,7 @@ import IOrganizationEmployee from "@app/Command/Infrastructure/Repository/Mongoo
 import OrganizationEmployeeMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEmployeeMongooseTransformer";
 import OrganizationEmployeeSchema from "@app/Command/Infrastructure/Repository/Mongoose/Schema/OrganizationEmployeeSchema";
 import OrganizationEmployeeNotFound from "@app/Command/Domain/Error/OrganizationEmployeeNotFound";
+import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
 
 export default class MongooseOrganizationEmployeeRepository implements OrganizationEmployeeRepository {
   private readonly OrganizationEmployeeModel: mongoose.Model<IOrganizationEmployee & mongoose.Document>;
@@ -30,15 +31,22 @@ export default class MongooseOrganizationEmployeeRepository implements Organizat
 
   async getById(id: OrganizationEmployeeId): Promise<OrganizationEmployee> {
     const object = await this.OrganizationEmployeeModel.findOne({ id: id.toString() });
-
-    if (!object) {
-      throw new OrganizationEmployeeNotFound();
-    }
-
-    return this.employeeTransformer.domainInstanceFrom(object);
+    return this.instanceOrThrowEmployeeNotFound(object);
   }
 
   getModel() {
     return this.OrganizationEmployeeModel;
+  }
+
+  async getByUsername(username: EmployeeUsername): Promise<OrganizationEmployee> {
+    const object = await this.OrganizationEmployeeModel.findOne({username: username.toString()});
+    return this.instanceOrThrowEmployeeNotFound(object);
+  }
+
+  private instanceOrThrowEmployeeNotFound(object: IOrganizationEmployee|null): OrganizationEmployee {
+    if (!object) {
+      throw new OrganizationEmployeeNotFound();
+    }
+    return this.employeeTransformer.domainInstanceFrom(object);
   }
 }

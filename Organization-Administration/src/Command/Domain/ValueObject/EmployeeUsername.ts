@@ -24,7 +24,7 @@ export default class EmployeeUsername extends ValueObject {
     return this.username === other.username;
   }
 
-  public static create(username: string): EmployeeUsername {
+  public static from(username: string): EmployeeUsername {
     return new EmployeeUsername(username);
   }
 }

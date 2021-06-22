@@ -22,9 +22,13 @@ import OrganizationEndpointMongooseTransformer
   from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEndpointMongooseTransformer";
 import GeolocationMongooseTransformer
   from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/GeolocationMongooseTransformer";
+import LoginService from "@app/Command/Application/Service/LoginService";
+import OrganizationEmployeeController from "@app/Command/Presentation/Api/Controller/OrganizationEmployeeController";
+import JwtTokenGenerator from "@app/Command/Presentation/Api/Service/JwtTokenGenerator";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
+  JWT_KEY,
   AuthorizationRuleRepository,
   AuthorizationRuleMongooseTransformer,
   CreateOrganizationEndpoint,
@@ -37,6 +41,9 @@ export enum DiEntry {
   OrganizationEndpointAuthorizationService,
   OrganizationEmployeeMongooseTransformer,
   OrganizationEndPointMongooseTransformer,
+  LoginService,
+  OrganizationEmployeeController,
+  JwtTokenGenerator,
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -90,6 +97,19 @@ const definitions: DependencyDefinitions<DiEntry> = {
     container.resolve(DiEntry.GeolocationMongooseTransformer),
   ),
   [DiEntry.GeolocationMongooseTransformer]: () => new GeolocationMongooseTransformer(),
-};
+  [DiEntry.JWT_KEY]: () => {
+    const key = process.env.JWT_KEY;
+    if (!key) {
+      throw new Error("JWT_KEY not defined");
+    }
+    return key;
+  },
+  [DiEntry.LoginService]: (container) => new LoginService(container.resolve(DiEntry.OrganizationEmployeeRepository)),
+  [DiEntry.OrganizationEmployeeController]: (container) => new OrganizationEmployeeController(
+    container.resolve(DiEntry.LoginService),
+    container.resolve(DiEntry.JwtTokenGenerator),
+  ),
+  [DiEntry.JwtTokenGenerator]: (container) => new JwtTokenGenerator(container.resolve(DiEntry.JWT_KEY)),
+}
 
 export default definitions;

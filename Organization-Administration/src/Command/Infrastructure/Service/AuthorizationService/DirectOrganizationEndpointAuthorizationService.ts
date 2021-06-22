@@ -28,6 +28,7 @@ export default class DirectOrganizationEndpointAuthorizationService implements O
 
   private async ensureHasPermission(employeeId: OrganizationEmployeeId, permission: Permission): Promise<void> {
     try {
+      console.log(employeeId, permission);
       await this.authRuleRepo.getByEmployeeAndPermission(employeeId, permission);
     } catch (e) {
       if (e instanceof AuthorizationRuleNotFound) {
