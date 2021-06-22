@@ -2,38 +2,41 @@
 import mongoose from "mongoose";
 import MongooseAuthorizationRuleRepository
   from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseAuthorizationRuleRepository";
-import AuthorizationRuleTransformer
-  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/AuthorizationRuleTransformer";
+import AuthorizationRuleMongooseTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/AuthorizationRuleMongooseTransformer";
 import OrganizationEndpointController from "@app/Command/Presentation/Api/Controller/OrganizationEndpointController";
-import GeolocationTransformer from "@app/Command/Application/Transformer/GeolocationTransformer";
+import GeolocationDtoTransformer from "@app/Command/Application/Transformer/GeolocationDtoTransformer";
 import EmployeeCreateNewOrganizationEndpointService
   from "@app/Command/Domain/Service/EmployeeCreateNewOrganizationEndpointService";
 import CreateOrganizationEndpoint from "@app/Command/Application/Service/CreateOrganizationEndpoint";
 import { DependencyDefinitions } from "@app/Command/Infrastructure/Config/DependencyInjectionContainer";
 import MongooseOrganizationEmployeeRepository
   from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseOrganizationEmployeeRepository";
-import OrganizationEmployeeTransformer
-  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEmployeeTransformer";
+import OrganizationEmployeeMongooseTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEmployeeMongooseTransformer";
+import DirectOrganizationEndpointAuthorizationService
+  from "@app/Command/Infrastructure/Service/AuthorizationService/DirectOrganizationEndpointAuthorizationService";
+import MongooseOrganizationEndpointRepository
+  from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseOrganizationEndpointRepository";
+import OrganizationEndpointMongooseTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEndpointMongooseTransformer";
+import GeolocationMongooseTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/GeolocationMongooseTransformer";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
   AuthorizationRuleRepository,
-  AuthorizationRuleTransformer,
+  AuthorizationRuleMongooseTransformer,
   CreateOrganizationEndpoint,
   OrganizationEndpointController,
   OrganizationEmployeeRepository,
-  GeolocationTransformer,
+  GeolocationDtoTransformer,
+  GeolocationMongooseTransformer,
   EmployeeCreateNewOrganizationEndpointService,
   OrganizationEndpointRepository,
   OrganizationEndpointAuthorizationService,
-  OrganizationEmployeeTransformer
-}
-
-// TODO: Implement those
-class DirectOrganizationEndpointAuthorizationService {
-}
-
-class MongooseOrganizationEndpointRepository {
+  OrganizationEmployeeMongooseTransformer,
+  OrganizationEndPointMongooseTransformer,
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -49,35 +52,44 @@ const definitions: DependencyDefinitions<DiEntry> = {
       useCreateIndex: true,
     });
   },
-  [DiEntry.AuthorizationRuleTransformer]: () => new AuthorizationRuleTransformer(),
-  [DiEntry.OrganizationEmployeeRepository]: (container) => new MongooseOrganizationEmployeeRepository(container.resolve(DiEntry.MONGOOSE_CONNECTION), container.resolve(DiEntry.OrganizationEmployeeTransformer)),
+  [DiEntry.AuthorizationRuleMongooseTransformer]: () => new AuthorizationRuleMongooseTransformer(),
+  [DiEntry.OrganizationEmployeeRepository]: (container) => new MongooseOrganizationEmployeeRepository(container.resolve(DiEntry.MONGOOSE_CONNECTION), container.resolve(DiEntry.OrganizationEmployeeMongooseTransformer)),
   [DiEntry.AuthorizationRuleRepository]: (container) =>
     new MongooseAuthorizationRuleRepository(
       container.resolve(DiEntry.MONGOOSE_CONNECTION),
-      container.resolve(DiEntry.AuthorizationRuleTransformer),
+      container.resolve(DiEntry.AuthorizationRuleMongooseTransformer),
     ),
   [DiEntry.CreateOrganizationEndpoint]: (container) =>
     new CreateOrganizationEndpoint(
       container.resolve(DiEntry.OrganizationEmployeeRepository),
-      container.resolve(DiEntry.GeolocationTransformer),
+      container.resolve(DiEntry.GeolocationDtoTransformer),
       container.resolve(DiEntry.EmployeeCreateNewOrganizationEndpointService),
       container.resolve(DiEntry.OrganizationEndpointRepository),
     ),
   [DiEntry.OrganizationEndpointController]: (container) => {
     return new OrganizationEndpointController(container.resolve(DiEntry.CreateOrganizationEndpoint));
   },
-  [DiEntry.GeolocationTransformer]: () => new GeolocationTransformer(),
+  [DiEntry.GeolocationDtoTransformer]: () => new GeolocationDtoTransformer(),
   [DiEntry.EmployeeCreateNewOrganizationEndpointService]: (container) =>
     new EmployeeCreateNewOrganizationEndpointService(
       container.resolve(DiEntry.OrganizationEndpointAuthorizationService),
     ),
-  [DiEntry.OrganizationEndpointAuthorizationService]: () => {
-    return new DirectOrganizationEndpointAuthorizationService();
+  [DiEntry.OrganizationEndpointAuthorizationService]: (container) => {
+    return new DirectOrganizationEndpointAuthorizationService(
+      container.resolve(DiEntry.AuthorizationRuleRepository)
+    );
   },
-  [DiEntry.OrganizationEndpointRepository]: () => {
-    return new MongooseOrganizationEndpointRepository();
+  [DiEntry.OrganizationEndpointRepository]: (container) => {
+    return new MongooseOrganizationEndpointRepository(
+      container.resolve(DiEntry.MONGOOSE_CONNECTION),
+      container.resolve(DiEntry.OrganizationEndPointMongooseTransformer)
+    );
   },
-  [DiEntry.OrganizationEmployeeTransformer]: () => new OrganizationEmployeeTransformer()
+  [DiEntry.OrganizationEmployeeMongooseTransformer]: () => new OrganizationEmployeeMongooseTransformer(),
+  [DiEntry.OrganizationEndPointMongooseTransformer]: (container) => new OrganizationEndpointMongooseTransformer(
+    container.resolve(DiEntry.GeolocationMongooseTransformer),
+  ),
+  [DiEntry.GeolocationMongooseTransformer]: () => new GeolocationMongooseTransformer(),
 };
 
 export default definitions;

@@ -26,7 +26,7 @@ export default class DependencyInjectionContainer<T extends number | string> {
         throw new Error("Cannot resolve dependencies, check for circular dependencies");
       }
       const key = notInitializedKeys[0];
-      const create = definitions[key as unknown as DiEntry];
+      const create = definitions[key as unknown as T];
       try {
         // eslint-disable-next-line no-await-in-loop
         const object = await create(this);
@@ -42,5 +42,5 @@ export default class DependencyInjectionContainer<T extends number | string> {
   }
 }
 export type DependencyDefinitions<T extends number | string> = {
-  [key in DiEntry]: (container: DependencyInjectionContainer<T>) => any;
+  [key in T]: (container: DependencyInjectionContainer<T>) => any;
 };
