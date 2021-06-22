@@ -1,5 +1,3 @@
-import { DiEntry } from "@app/Command/Infrastructure/Config/DependencyDefinitions";
-
 export default class DependencyInjectionContainer<T extends number | string> {
   private container: Map<string, object>;
 
