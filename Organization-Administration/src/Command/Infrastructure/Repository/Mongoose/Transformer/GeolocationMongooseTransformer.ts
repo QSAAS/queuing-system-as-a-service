@@ -2,7 +2,7 @@ import GenericTransformer from "@app/Command/Infrastructure/Repository/Mongoose/
 import Geolocation from "@app/Command/Domain/ValueObject/Geolocation";
 import IGeolocation from "@app/Command/Infrastructure/Repository/Mongoose/Types/IGeolocation";
 
-export default class GeolocationTransformer implements GenericTransformer<IGeolocation, Geolocation> {
+export default class GeolocationMongooseTransformer implements GenericTransformer<IGeolocation, Geolocation> {
   mongooseObjectFrom(instance: Geolocation): IGeolocation {
     return {
       latitude: instance.getLatitude(),

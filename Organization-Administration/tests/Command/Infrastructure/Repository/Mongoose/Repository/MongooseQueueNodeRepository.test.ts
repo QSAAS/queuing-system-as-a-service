@@ -1,18 +1,18 @@
 import MongooseQueueNodeRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseQueueNodeRepository";
-import QueueNodeTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/QueueNodeTransformer";
-import MetadataSpecificationFieldTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/MetadataSpecificationFieldTransformer";
-import ClockTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/ClockTransformer";
-import TimeSpanTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/TimeSpanTransformer";
+import QueueNodeMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/QueueNodeMongooseTransformer";
+import MetadataSpecificationFieldMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/MetadataSpecificationFieldMongooseTransformer";
+import ClockMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/ClockMongooseTransformer";
+import TimeSpanMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/TimeSpanMongooseTransformer";
 import QueueNodeBuilder from "@tests/Command/Domain/Entity/Builder/QueueNodeBuilder";
 import IQueueNode from "@app/Command/Infrastructure/Repository/Mongoose/Types/IQueueNode";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 import createTestingDbConnection from "@tests/Utils/dbUtils";
 import QueueNodeNotFound from "@app/Command/Domain/Error/QueueNodeNotFound";
 
-const clockTransformer = new ClockTransformer();
-const timeSpanTransformer = new TimeSpanTransformer(clockTransformer);
-const metadataSpecificationFieldTransformer = new MetadataSpecificationFieldTransformer();
-const nodeTransformer = new QueueNodeTransformer(metadataSpecificationFieldTransformer, timeSpanTransformer);
+const clockTransformer = new ClockMongooseTransformer();
+const timeSpanTransformer = new TimeSpanMongooseTransformer(clockTransformer);
+const metadataSpecificationFieldTransformer = new MetadataSpecificationFieldMongooseTransformer();
+const nodeTransformer = new QueueNodeMongooseTransformer(metadataSpecificationFieldTransformer, timeSpanTransformer);
 
 let repo: MongooseQueueNodeRepository;
 

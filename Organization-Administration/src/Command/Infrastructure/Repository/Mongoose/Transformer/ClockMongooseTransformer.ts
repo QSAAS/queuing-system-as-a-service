@@ -2,7 +2,7 @@ import Clock from "@app/Command/Domain/ValueObject/Clock";
 import IClock from "@app/Command/Infrastructure/Repository/Mongoose/Types/IClock";
 import GenericTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/Interface/GenericTransformer";
 
-export default class ClockTransformer implements GenericTransformer<IClock, Clock> {
+export default class ClockMongooseTransformer implements GenericTransformer<IClock, Clock> {
   mongooseObjectFrom(clockInstance: Clock): IClock {
     return {
       hours: clockInstance.getHours(),

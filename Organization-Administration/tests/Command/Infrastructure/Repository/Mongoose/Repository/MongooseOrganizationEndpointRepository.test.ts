@@ -1,13 +1,13 @@
 import createTestingDbConnection from "@tests/Utils/dbUtils";
 import MongooseOrganizationEndpointRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseOrganizationEndpointRepository";
-import OrganizationEndpointTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEndpointTransformer";
-import GeolocationTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/GeolocationTransformer";
+import OrganizationEndpointMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEndpointMongooseTransformer";
+import GeolocationMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/GeolocationMongooseTransformer";
 import OrganizationEndpointBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEndpointBuilder";
 import IOrganizationEndpoint from "@app/Command/Infrastructure/Repository/Mongoose/Types/IOrganizationEndpoint";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
 import OrganizationEndpointNotFound from "@app/Command/Domain/Error/OrganizationEndpointNotFound";
 
-const endpointTransformer = new OrganizationEndpointTransformer(new GeolocationTransformer());
+const endpointTransformer = new OrganizationEndpointMongooseTransformer(new GeolocationMongooseTransformer());
 
 let repo: MongooseOrganizationEndpointRepository;
 

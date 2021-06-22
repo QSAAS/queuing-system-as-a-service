@@ -3,15 +3,15 @@ import OrganizationEmployeeRepository from "@app/Command/Domain/Service/Organiza
 import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import IOrganizationEmployee from "@app/Command/Infrastructure/Repository/Mongoose/Types/IOrganizationEmployee";
-import OrganizationEmployeeTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEmployeeTransformer";
+import OrganizationEmployeeMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEmployeeMongooseTransformer";
 import OrganizationEmployeeSchema from "@app/Command/Infrastructure/Repository/Mongoose/Schema/OrganizationEmployeeSchema";
 import OrganizationEmployeeNotFound from "@app/Command/Domain/Error/OrganizationEmployeeNotFound";
 
 export default class MongooseOrganizationEmployeeRepository implements OrganizationEmployeeRepository {
   private readonly OrganizationEmployeeModel: mongoose.Model<IOrganizationEmployee & mongoose.Document>;
-  private readonly employeeTransformer: OrganizationEmployeeTransformer;
+  private readonly employeeTransformer: OrganizationEmployeeMongooseTransformer;
 
-  constructor(connection: mongoose.Connection, employeeTransformer: OrganizationEmployeeTransformer) {
+  constructor(connection: mongoose.Connection, employeeTransformer: OrganizationEmployeeMongooseTransformer) {
     this.OrganizationEmployeeModel = connection.model<IOrganizationEmployee & mongoose.Document>(
       "OrganizationEmployee",
       OrganizationEmployeeSchema,

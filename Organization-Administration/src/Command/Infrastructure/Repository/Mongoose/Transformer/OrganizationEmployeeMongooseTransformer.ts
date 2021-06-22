@@ -6,7 +6,7 @@ import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/Organization
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
 
-export default class OrganizationEmployeeTransformer
+export default class OrganizationEmployeeMongooseTransformer
   implements GenericTransformer<IOrganizationEmployee, OrganizationEmployee>
 {
   mongooseObjectFrom(employee: OrganizationEmployee): IOrganizationEmployee {

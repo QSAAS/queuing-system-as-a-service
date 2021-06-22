@@ -1,10 +1,10 @@
-import ClockTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/ClockTransformer";
+import ClockMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/ClockMongooseTransformer";
 import TimeSpan from "@app/Command/Domain/ValueObject/TimeSpan";
 import ITimeSpan from "@app/Command/Infrastructure/Repository/Mongoose/Types/ITimeSpan";
 import GenericTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/Interface/GenericTransformer";
 
-export default class TimeSpanTransformer implements GenericTransformer<ITimeSpan, TimeSpan> {
-  constructor(private clockTransformer: ClockTransformer) {}
+export default class TimeSpanMongooseTransformer implements GenericTransformer<ITimeSpan, TimeSpan> {
+  constructor(private clockTransformer: ClockMongooseTransformer) {}
 
   mongooseObjectFrom(timeSpanInstance: TimeSpan): ITimeSpan {
     return {

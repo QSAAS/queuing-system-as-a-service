@@ -3,13 +3,13 @@ import CreateOrganizationEndpointRequest from "@app/Command/Application/DataTran
 import EmployeeCreateNewOrganizationEndpointService from "@app/Command/Domain/Service/EmployeeCreateNewOrganizationEndpointService";
 import OrganizationEmployeeRepository from "@app/Command/Domain/Service/OrganizationEmployeeRepository";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
-import GeolocationTransformer from "@app/Command/Application/Transformer/GeolocationTransformer";
+import GeolocationDtoTransformer from "@app/Command/Application/Transformer/GeolocationDtoTransformer";
 import OrganizationEndpointRepository from "@app/Command/Domain/Service/OrganizationEndpointRepository";
 
 export default class CreateOrganizationEndpoint {
   constructor(
     private employeeRepo: OrganizationEmployeeRepository,
-    private geolocationTransformer: GeolocationTransformer,
+    private geolocationTransformer: GeolocationDtoTransformer,
     private createService: EmployeeCreateNewOrganizationEndpointService,
     private endpointRepo: OrganizationEndpointRepository,
   ) {}

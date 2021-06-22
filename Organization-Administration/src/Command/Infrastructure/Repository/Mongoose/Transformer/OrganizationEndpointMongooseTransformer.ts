@@ -2,12 +2,12 @@ import GenericTransformer from "@app/Command/Infrastructure/Repository/Mongoose/
 import IOrganizationEndpoint from "@app/Command/Infrastructure/Repository/Mongoose/Types/IOrganizationEndpoint";
 import OrganizationEndpoint from "@app/Command/Domain/Entity/OrganizationEndpoint";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
-import GeolocationTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/GeolocationTransformer";
+import GeolocationMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/GeolocationMongooseTransformer";
 
-export default class OrganizationEndpointTransformer
+export default class OrganizationEndpointMongooseTransformer
   implements GenericTransformer<IOrganizationEndpoint, OrganizationEndpoint>
 {
-  constructor(private geolocationTransformer: GeolocationTransformer) {}
+  constructor(private geolocationTransformer: GeolocationMongooseTransformer) {}
 
   mongooseObjectFrom(instance: OrganizationEndpoint): IOrganizationEndpoint {
     return {

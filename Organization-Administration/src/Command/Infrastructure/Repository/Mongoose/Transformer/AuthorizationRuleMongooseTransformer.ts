@@ -7,7 +7,7 @@ import AuthorizedAction from "@app/Command/Domain/Enum/AuthorizedAction";
 import Permission from "@app/Command/Domain/ValueObject/Permission";
 import EntityId from "@app/Command/Domain/ValueObject/EntityId";
 
-export default class AuthorizationRuleTransformer implements GenericTransformer<IAuthorizationRule, AuthorizationRule> {
+export default class AuthorizationRuleMongooseTransformer implements GenericTransformer<IAuthorizationRule, AuthorizationRule> {
   mongooseObjectFrom(instance: AuthorizationRule): IAuthorizationRule {
     const permission = instance.getPermission();
     return {

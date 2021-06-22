@@ -11,7 +11,7 @@ import IMetadataSpecificationDropdownField
 import GenericTransformer
   from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/Interface/GenericTransformer";
 
-export default class MetadataSpecificationFieldTransformer
+export default class MetadataSpecificationFieldMongooseTransformer
   implements GenericTransformer<IMetadataSpecificationField, MetadataSpecificationField>
 {
   mongooseObjectFrom(fieldInstance: MetadataSpecificationField): IMetadataSpecificationField {

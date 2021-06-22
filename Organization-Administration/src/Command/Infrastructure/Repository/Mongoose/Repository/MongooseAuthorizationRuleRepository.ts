@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import AuthorizationRuleRepository from "@app/Command/Domain/Service/AuthorizationRuleRepository";
 import IAuthorizationRule from "@app/Command/Infrastructure/Repository/Mongoose/Types/IAuthorizationRule";
-import AuthorizationRuleTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/AuthorizationRuleTransformer";
+import AuthorizationRuleMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/AuthorizationRuleMongooseTransformer";
 import AuthorizationRuleSchema from "@app/Command/Infrastructure/Repository/Mongoose/Schema/AuthorizationRuleSchema";
 import AuthorizationRule from "@app/Command/Domain/Entity/AuthorizationRule";
 import Permission from "@app/Command/Domain/ValueObject/Permission";
@@ -11,9 +11,9 @@ import AuthorizationRuleNotFound from "@app/Command/Domain/Error/AuthorizationRu
 
 export default class MongooseAuthorizationRuleRepository implements AuthorizationRuleRepository {
   private readonly AuthorizationRuleModel: mongoose.Model<IAuthorizationRule & mongoose.Document>;
-  private readonly authorizationTransformer: AuthorizationRuleTransformer;
+  private readonly authorizationTransformer: AuthorizationRuleMongooseTransformer;
 
-  constructor(connection: mongoose.Connection, authorizationTransformer: AuthorizationRuleTransformer) {
+  constructor(connection: mongoose.Connection, authorizationTransformer: AuthorizationRuleMongooseTransformer) {
     this.AuthorizationRuleModel = connection.model<IAuthorizationRule & mongoose.Document>(
       "authorization_rule",
       AuthorizationRuleSchema,

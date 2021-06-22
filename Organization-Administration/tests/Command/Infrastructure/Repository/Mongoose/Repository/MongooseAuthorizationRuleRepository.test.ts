@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import MongooseAuthorizationRuleRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseAuthorizationRuleRepository";
-import AuthorizationRuleTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/AuthorizationRuleTransformer";
+import AuthorizationRuleMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/AuthorizationRuleMongooseTransformer";
 import AuthorizationRuleBuilder from "@tests/Command/Domain/Entity/Builder/AuthorizationRuleBuilder";
 import PermissionMother from "@tests/Command/Domain/ValueObject/Mother/PermissionMother";
 import IAuthorizationRule from "@app/Command/Infrastructure/Repository/Mongoose/Types/IAuthorizationRule";
@@ -10,7 +10,7 @@ import createTestingDbConnection from "@tests/Utils/dbUtils";
 let repo: MongooseAuthorizationRuleRepository;
 let model: mongoose.Model<IAuthorizationRule & mongoose.Document>;
 
-const authorizationTransformer = new AuthorizationRuleTransformer();
+const authorizationTransformer = new AuthorizationRuleMongooseTransformer();
 
 createTestingDbConnection((connection) => {
   repo = new MongooseAuthorizationRuleRepository(connection, authorizationTransformer);

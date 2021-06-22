@@ -3,15 +3,15 @@ import OrganizationEndpointRepository from "@app/Command/Domain/Service/Organiza
 import OrganizationEndpoint from "@app/Command/Domain/Entity/OrganizationEndpoint";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
 import OrganizationEndpointSchema from "@app/Command/Infrastructure/Repository/Mongoose/Schema/OrganizationEndpointSchema";
-import OrganizationEndpointTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEndpointTransformer";
+import OrganizationEndpointMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEndpointMongooseTransformer";
 import IOrganizationEndpoint from "@app/Command/Infrastructure/Repository/Mongoose/Types/IOrganizationEndpoint";
 import OrganizationEndpointNotFound from "@app/Command/Domain/Error/OrganizationEndpointNotFound";
 
 export default class MongooseOrganizationEndpointRepository implements OrganizationEndpointRepository {
   private readonly OrganizationEndpointModel: mongoose.Model<IOrganizationEndpoint & mongoose.Document>;
-  private readonly endpointTransformer: OrganizationEndpointTransformer;
+  private readonly endpointTransformer: OrganizationEndpointMongooseTransformer;
 
-  constructor(connection: mongoose.Connection, endpointTransformer: OrganizationEndpointTransformer) {
+  constructor(connection: mongoose.Connection, endpointTransformer: OrganizationEndpointMongooseTransformer) {
     this.OrganizationEndpointModel = connection.model<IOrganizationEndpoint & mongoose.Document>(
       "OrganizationEndpoint",
       OrganizationEndpointSchema,
