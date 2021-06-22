@@ -11,7 +11,7 @@ export default class AdministratedOrganizationEndpoint extends OrganizationEndpo
     private organizationEndpointAuthorizationService: OrganizationEndpointAuthorizationService,
   ) {
     super(
-      organizationEndpoint.getOrganizationEndpointId(),
+      organizationEndpoint.getId(),
       organizationEndpoint.getOrganizationId(),
       organizationEndpoint.getName(),
       organizationEndpoint.getGeolocation(),
@@ -23,19 +23,13 @@ export default class AdministratedOrganizationEndpoint extends OrganizationEndpo
   }
 
   public setName(value: string) {
-    this.organizationEndpointAuthorizationService.ensureEmployeeCanUpdate(
-      this.administrator.getId(),
-      this.getOrganizationEndpointId(),
-    );
+    this.organizationEndpointAuthorizationService.ensureEmployeeCanUpdate(this.administrator.getId(), this.getId());
     this.name = value;
     this.raiseEvent(new OrganizationEndpointUpdated(this));
   }
 
   public setGeolocation(geolocation: Geolocation) {
-    this.organizationEndpointAuthorizationService.ensureEmployeeCanUpdate(
-      this.administrator.getId(),
-      this.getOrganizationEndpointId(),
-    );
+    this.organizationEndpointAuthorizationService.ensureEmployeeCanUpdate(this.administrator.getId(), this.getId());
     this.geolocation = geolocation;
     this.raiseEvent(new OrganizationEndpointUpdated(this));
   }

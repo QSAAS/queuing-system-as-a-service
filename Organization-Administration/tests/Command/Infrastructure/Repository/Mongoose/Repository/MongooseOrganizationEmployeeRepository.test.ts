@@ -1,8 +1,6 @@
 import createTestingDbConnection from "@tests/Utils/dbUtils";
-import MongooseOrganizationEmployeeRepository
-  from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseOrganizationEmployeeRepository";
-import OrganizationEmployeeTransformer
-  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEmployeeTransformer";
+import MongooseOrganizationEmployeeRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseOrganizationEmployeeRepository";
+import OrganizationEmployeeTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEmployeeTransformer";
 import IOrganizationEmployee from "@app/Command/Infrastructure/Repository/Mongoose/Types/IOrganizationEmployee";
 import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
@@ -45,7 +43,7 @@ describe("Retrieving Organization Employee instance by id", () => {
   });
 });
 
-it("Should delete a QueueNode instance", async () => {
+it("Should delete a Employee instance", async () => {
   const instance = new OrganizationEmployeeBuilder().build();
 
   await repo.save(instance);

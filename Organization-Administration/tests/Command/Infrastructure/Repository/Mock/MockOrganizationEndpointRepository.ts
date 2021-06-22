@@ -5,14 +5,10 @@ import OrganizationEndpointId from "@app/Command/Domain/ValueObject/Organization
 import OrganizationEndpointNotFound from "@app/Command/Domain/Error/OrganizationEndpointNotFound";
 
 export default class MockOrganizationEndpointRepository implements OrganizationEndpointRepository {
-  constructor(
-    private items: OrganizationEndpoint[] = [],
-    private publishedEvents: DomainEvent[] = [],
-  ) {
-  }
+  constructor(private items: OrganizationEndpoint[] = [], private publishedEvents: DomainEvent[] = []) {}
 
   async delete(item: OrganizationEndpoint): Promise<void> {
-    const idx = this.getMatchingIdx(item.getOrganizationEndpointId());
+    const idx = this.getMatchingIdx(item.getId());
     this.items.splice(idx, 1);
     this.publishedEvents.push(...item.getRaisedEvents());
   }
@@ -20,7 +16,7 @@ export default class MockOrganizationEndpointRepository implements OrganizationE
   private getMatchingIdx(item: OrganizationEndpointId): number {
     for (let i = 0; i < this.items.length; ++i) {
       const current = this.items[i];
-      if (current.getOrganizationEndpointId().equals(item)) {
+      if (current.getId().equals(item)) {
         return i;
       }
     }
@@ -36,7 +32,7 @@ export default class MockOrganizationEndpointRepository implements OrganizationE
   }
 
   async save(item: OrganizationEndpoint): Promise<void> {
-    const idx = this.getMatchingIdx(item.getOrganizationEndpointId());
+    const idx = this.getMatchingIdx(item.getId());
     if (idx === -1) {
       this.items[idx] = item;
     } else {

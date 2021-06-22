@@ -6,7 +6,7 @@ import OrganizationEndpointCreated from "@app/Command/Domain/Event/OrganizationE
 
 export default class OrganizationEndpoint extends AggregateRoot {
   constructor(
-    protected organizationEndpointId: OrganizationEndpointId,
+    protected id: OrganizationEndpointId,
     protected organizationId: OrganizationId,
     protected name: string,
     protected geolocation: Geolocation,
@@ -14,23 +14,19 @@ export default class OrganizationEndpoint extends AggregateRoot {
     super();
   }
 
-  static create(organizationEndpointId: OrganizationEndpointId,
-                organizationId: OrganizationId,
-                name: string,
-                geolocation: Geolocation,
+  static create(
+    organizationEndpointId: OrganizationEndpointId,
+    organizationId: OrganizationId,
+    name: string,
+    geolocation: Geolocation,
   ) {
-    const endpoint = new OrganizationEndpoint(
-      OrganizationEndpointId.create(),
-      organizationId,
-      name,
-      geolocation,
-    );
+    const endpoint = new OrganizationEndpoint(OrganizationEndpointId.create(), organizationId, name, geolocation);
     endpoint.raiseEvent(new OrganizationEndpointCreated(endpoint));
     return endpoint;
   }
 
-  public getOrganizationEndpointId(): OrganizationEndpointId {
-    return this.organizationEndpointId;
+  public getId(): OrganizationEndpointId {
+    return this.id;
   }
 
   public getOrganizationId(): OrganizationId {
