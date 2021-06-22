@@ -26,7 +26,7 @@ describe("Employee delete endpoint", () => {
     const service = new EmployeeDeleteOrganizationEndpointService(repo, passingAuthService);
     await service.execute(admin, endpoint);
     expect(() => {
-      repo.getById(endpoint.getOrganizationEndpointId());
+      repo.getById(endpoint.getId());
     }).toThrow(OrganizationEndpointNotFound);
   });
 

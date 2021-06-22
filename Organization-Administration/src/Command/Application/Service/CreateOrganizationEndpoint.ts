@@ -19,6 +19,6 @@ export default class CreateOrganizationEndpoint {
     const geolocation = this.geolocationTransformer.toObject(request.geolocation);
     const endpoint = this.createService.execute(admin, request.name, geolocation);
     await this.endpointRepo.save(endpoint);
-    return new CreateOrganizationEndpointResponse(endpoint.getOrganizationEndpointId().toString());
+    return new CreateOrganizationEndpointResponse(endpoint.getId().toString());
   }
 }

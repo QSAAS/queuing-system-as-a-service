@@ -23,7 +23,7 @@ describe("Organization endpoint creation", () => {
     const endpoint = service.execute(admin, "::EndpointName::", location);
     expect(
       eventsArrayContains(endpoint.getRaisedEvents(), OrganizationEndpointCreated, (event) =>
-        event.getEndpoint().getOrganizationEndpointId().equals(endpoint.getOrganizationEndpointId()),
+        event.getEndpoint().getId().equals(endpoint.getId()),
       ),
     ).toBeTruthy();
   });
