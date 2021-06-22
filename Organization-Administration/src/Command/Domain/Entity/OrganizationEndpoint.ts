@@ -2,6 +2,7 @@ import OrganizationEndpointId from "@app/Command/Domain/ValueObject/Organization
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
 import Geolocation from "@app/Command/Domain/ValueObject/Geolocation";
 import AggregateRoot from "@app/Command/Domain/Entity/AggregateRoot";
+import OrganizationEndpointCreated from "@app/Command/Domain/Event/OrganizationEndpointCreated";
 
 export default class OrganizationEndpoint extends AggregateRoot {
   constructor(
@@ -11,6 +12,21 @@ export default class OrganizationEndpoint extends AggregateRoot {
     protected geolocation: Geolocation,
   ) {
     super();
+  }
+
+  static create(organizationEndpointId: OrganizationEndpointId,
+                organizationId: OrganizationId,
+                name: string,
+                geolocation: Geolocation,
+  ) {
+    const endpoint = new OrganizationEndpoint(
+      OrganizationEndpointId.create(),
+      organizationId,
+      name,
+      geolocation,
+    );
+    endpoint.raiseEvent(new OrganizationEndpointCreated(endpoint));
+    return endpoint;
   }
 
   public getOrganizationEndpointId(): OrganizationEndpointId {
