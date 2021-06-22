@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-import QueueNodeNotFound from "@app/Command/Domain/Error/QueueNodeNotFound";
 import OrganizationEmployeeRepository from "@app/Command/Domain/Service/OrganizationEmployeeRepository";
 import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import IOrganizationEmployee from "@app/Command/Infrastructure/Repository/Mongoose/Types/IOrganizationEmployee";
 import OrganizationEmployeeTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEmployeeTransformer";
 import OrganizationEmployeeSchema from "@app/Command/Infrastructure/Repository/Mongoose/Schema/OrganizationEmployeeSchema";
+import OrganizationEmployeeNotFound from "@app/Command/Domain/Error/OrganizationEmployeeNotFound";
 
 export default class MongooseOrganizationEmployeeRepository implements OrganizationEmployeeRepository {
   private readonly OrganizationEmployeeModel: mongoose.Model<IOrganizationEmployee & mongoose.Document>;
@@ -32,7 +32,7 @@ export default class MongooseOrganizationEmployeeRepository implements Organizat
     const object = await this.OrganizationEmployeeModel.findOne({ id: id.toString() });
 
     if (!object) {
-      throw new QueueNodeNotFound();
+      throw new OrganizationEmployeeNotFound();
     }
 
     return this.employeeTransformer.domainInstanceFrom(object);

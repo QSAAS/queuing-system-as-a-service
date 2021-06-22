@@ -1,12 +1,19 @@
 /* eslint-disable @typescript-eslint/no-shadow,max-classes-per-file */
 import mongoose from "mongoose";
-import MongooseAuthorizationRuleRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseAuthorizationRuleRepository";
-import AuthorizationRuleTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/AuthorizationRuleTransformer";
+import MongooseAuthorizationRuleRepository
+  from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseAuthorizationRuleRepository";
+import AuthorizationRuleTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/AuthorizationRuleTransformer";
 import OrganizationEndpointController from "@app/Command/Presentation/Api/Controller/OrganizationEndpointController";
 import GeolocationTransformer from "@app/Command/Application/Transformer/GeolocationTransformer";
-import EmployeeCreateNewOrganizationEndpointService from "@app/Command/Domain/Service/EmployeeCreateNewOrganizationEndpointService";
+import EmployeeCreateNewOrganizationEndpointService
+  from "@app/Command/Domain/Service/EmployeeCreateNewOrganizationEndpointService";
 import CreateOrganizationEndpoint from "@app/Command/Application/Service/CreateOrganizationEndpoint";
 import { DependencyDefinitions } from "@app/Command/Infrastructure/Config/DependencyInjectionContainer";
+import MongooseOrganizationEmployeeRepository
+  from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseOrganizationEmployeeRepository";
+import OrganizationEmployeeTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/OrganizationEmployeeTransformer";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
@@ -19,16 +26,23 @@ export enum DiEntry {
   EmployeeCreateNewOrganizationEndpointService,
   OrganizationEndpointRepository,
   OrganizationEndpointAuthorizationService,
+  OrganizationEmployeeTransformer
 }
 
 // TODO: Implement those
-class MongooseOrganizationEmployeeRepository {}
-class DirectOrganizationEndpointAuthorizationService {}
-class MongooseOrganizationEndpointRepository {}
+class DirectOrganizationEndpointAuthorizationService {
+}
+
+class MongooseOrganizationEndpointRepository {
+}
 
 const definitions: DependencyDefinitions<DiEntry> = {
   [DiEntry.MONGOOSE_CONNECTION]: async () => {
-    const { DB_URL, DB_PORT, DB_NAME } = process.env;
+    const {
+      DB_URL,
+      DB_PORT,
+      DB_NAME
+    } = process.env;
     return mongoose.createConnection(`mongodb://${DB_URL}:${DB_PORT}/${DB_NAME}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -36,7 +50,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
     });
   },
   [DiEntry.AuthorizationRuleTransformer]: () => new AuthorizationRuleTransformer(),
-  [DiEntry.OrganizationEmployeeRepository]: () => new MongooseOrganizationEmployeeRepository(),
+  [DiEntry.OrganizationEmployeeRepository]: (container) => new MongooseOrganizationEmployeeRepository(container.resolve(DiEntry.MONGOOSE_CONNECTION), container.resolve(DiEntry.OrganizationEmployeeTransformer)),
   [DiEntry.AuthorizationRuleRepository]: (container) =>
     new MongooseAuthorizationRuleRepository(
       container.resolve(DiEntry.MONGOOSE_CONNECTION),
@@ -63,6 +77,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
   [DiEntry.OrganizationEndpointRepository]: () => {
     return new MongooseOrganizationEndpointRepository();
   },
+  [DiEntry.OrganizationEmployeeTransformer]: () => new OrganizationEmployeeTransformer()
 };
 
 export default definitions;

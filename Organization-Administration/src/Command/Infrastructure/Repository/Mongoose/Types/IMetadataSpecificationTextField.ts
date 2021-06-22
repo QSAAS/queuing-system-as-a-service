@@ -4,7 +4,6 @@ import IMetadataSpecificationField from "@app/Command/Infrastructure/Repository/
 export default interface IMetadataSpecificationTextField extends IMetadataSpecificationField {
   maxLength: number;
   minLength: number;
-  regex: string;
   placeholder: string;
   kind: FieldType.Text;
 }

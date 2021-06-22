@@ -23,11 +23,6 @@ describe("Unequal attributes", () => {
     expect(base.equals(other)).toBeFalsy();
   });
 
-  it("Should return false on unequal regex", () => {
-    const other = new TextFieldBuilder().withRegex(new RegExp(`${base.getRegex()}#`)).build();
-    expect(base.equals(other)).toBeFalsy();
-  });
-
   it("Should return false on unequal placeholders", () => {
     const other = new TextFieldBuilder().withPlaceholder(`${base.getPlaceholder()}#`).build();
     expect(base.equals(other)).toBeFalsy();

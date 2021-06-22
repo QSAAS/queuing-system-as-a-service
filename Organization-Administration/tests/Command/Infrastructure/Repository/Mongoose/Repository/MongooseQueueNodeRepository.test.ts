@@ -7,6 +7,7 @@ import QueueNodeBuilder from "@tests/Command/Domain/Entity/Builder/QueueNodeBuil
 import IQueueNode from "@app/Command/Infrastructure/Repository/Mongoose/Types/IQueueNode";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 import createTestingDbConnection from "@tests/Utils/dbUtils";
+import QueueNodeNotFound from "@app/Command/Domain/Error/QueueNodeNotFound";
 
 const clockTransformer = new ClockTransformer();
 const timeSpanTransformer = new TimeSpanTransformer(clockTransformer);
@@ -37,13 +38,13 @@ describe("Retrieving QueueNode instance by id", () => {
     const returnedInstance = await repo.getById(nodeInstance.getId());
 
     expect(nodeInstance.getId().equals(returnedInstance.getId())).toBeTruthy();
-    expect(nodeInstance.getTimeSpan().equals(returnedInstance.getTimeSpan()));
-    expect(nodeInstance.getMetaSpecs().equals(returnedInstance.getMetaSpecs()));
-    expect(nodeInstance.getEndPointId().equals(returnedInstance.getEndPointId()));
+    expect(nodeInstance.getTimeSpan().equals(returnedInstance.getTimeSpan())).toBeTruthy();
+    expect(nodeInstance.getMetaSpecs().equals(returnedInstance.getMetaSpecs())).toBeTruthy();
+    expect(nodeInstance.getEndPointId().equals(returnedInstance.getEndPointId())).toBeTruthy();
   });
 
   it("Should throw an Error if instance is not found", async () => {
-    await expect(repo.getById(QueueNodeId.create())).rejects.toBeInstanceOf(Error);
+    await expect(repo.getById(QueueNodeId.create())).rejects.toBeInstanceOf(QueueNodeNotFound);
   });
 });
 

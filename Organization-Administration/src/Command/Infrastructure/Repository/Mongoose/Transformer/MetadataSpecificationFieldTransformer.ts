@@ -1,11 +1,15 @@
 import MetadataSpecificationField from "@app/Command/Domain/ValueObject/MetadataSpecificationField";
-import IMetadataSpecificationField from "@app/Command/Infrastructure/Repository/Mongoose/Types/IMetadataSpecificationField";
+import IMetadataSpecificationField
+  from "@app/Command/Infrastructure/Repository/Mongoose/Types/IMetadataSpecificationField";
 import MetadataSpecificationTextField from "@app/Command/Domain/ValueObject/MetadataSpecificationTextField";
-import IMetadataSpecificationTextField from "@app/Command/Infrastructure/Repository/Mongoose/Types/IMetadataSpecificationTextField";
+import IMetadataSpecificationTextField
+  from "@app/Command/Infrastructure/Repository/Mongoose/Types/IMetadataSpecificationTextField";
 import FieldType from "@app/Command/Infrastructure/Repository/Mongoose/Types/FieldType";
 import MetadataSpecificationDropdownField from "@app/Command/Domain/ValueObject/MetadataSpecificationDropdownField";
-import IMetadataSpecificationDropdownField from "@app/Command/Infrastructure/Repository/Mongoose/Types/IMetadataSpecificationDropdownField";
-import GenericTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/Interface/GenericTransformer";
+import IMetadataSpecificationDropdownField
+  from "@app/Command/Infrastructure/Repository/Mongoose/Types/IMetadataSpecificationDropdownField";
+import GenericTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/Interface/GenericTransformer";
 
 export default class MetadataSpecificationFieldTransformer
   implements GenericTransformer<IMetadataSpecificationField, MetadataSpecificationField>
@@ -27,16 +31,18 @@ export default class MetadataSpecificationFieldTransformer
     if (fieldObject.kind === FieldType.Dropdown) {
       return this.mongooseTypeToDropdownField(fieldObject as IMetadataSpecificationDropdownField);
     }
+
+
     throw new Error("Unsupported field type");
   }
 
   private mongooseTypeToTextField(field: IMetadataSpecificationTextField): MetadataSpecificationTextField {
+
     return new MetadataSpecificationTextField(
       field.name,
       field.isRequired,
       field.maxLength,
       field.minLength,
-      new RegExp(field.regex),
       field.placeholder,
     );
   }
@@ -51,7 +57,6 @@ export default class MetadataSpecificationFieldTransformer
       isRequired: field.getIsRequired(),
       maxLength: field.getMaxLength(),
       minLength: field.getMinLength(),
-      regex: field.getRegex().toString(),
       placeholder: field.getPlaceholder(),
       kind: FieldType.Text,
     };

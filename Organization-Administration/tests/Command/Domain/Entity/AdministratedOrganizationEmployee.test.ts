@@ -73,7 +73,7 @@ describe("test AdministratedOrganization Employee", () => {
         .build();
 
       expect(() => {
-        administratedEmployee.setOrganizationEmployeeId(administratedEmployee.getOrganizationEmployeeId());
+        administratedEmployee.setOrganizationEmployeeId(administratedEmployee.getId());
       }).toThrow(EmployeeNotAuthorizedError);
     });
     it("Throw exception when set OrganizationId with failing OrgEmpAuthServ", () => {
