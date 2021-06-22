@@ -12,26 +12,27 @@ export default class DirectQueueNodeAuthorizationService implements QueueNodeAut
 
   async ensureEmployeeCanCreate(employeeId: OrganizationEmployeeId): Promise<void> {
     const permission = Permission.newCreate(ResourceType.QUEUE_NODE);
-    await this.tryGettingPermission(employeeId, permission);
+    await this.ensureHasPermission(employeeId, permission);
   }
 
   async ensureEmployeeCanDelete(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): Promise<void> {
     const permission = Permission.newDelete(ResourceType.QUEUE_NODE, queueNodeId);
-    await this.tryGettingPermission(employeeId, permission);
+    await this.ensureHasPermission(employeeId, permission);
   }
 
   async ensureEmployeeCanUpdate(employeeId: OrganizationEmployeeId, queueNodeId: QueueNodeId): Promise<void> {
     const permission = Permission.newUpdate(ResourceType.QUEUE_NODE, queueNodeId);
-    await this.tryGettingPermission(employeeId, permission);
+    await this.ensureHasPermission(employeeId, permission);
   }
 
-  private async tryGettingPermission(employeeId: OrganizationEmployeeId, permission: Permission): Promise<void> {
+  private async ensureHasPermission(employeeId: OrganizationEmployeeId, permission: Permission): Promise<void> {
     try {
       await this.authRuleRepo.getByEmployeeAndPermission(employeeId, permission);
     } catch (e) {
       if (e instanceof AuthorizationRuleNotFound) {
         throw new EmployeeNotAuthorizedError();
       }
+      throw e;
     }
   }
 }
