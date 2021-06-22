@@ -7,28 +7,28 @@ import OrganizationEndpointAuthorizationService
 export default class FailingOrganizationEndpointAuthorizationService
 implements OrganizationEndpointAuthorizationService {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public ensureEmployeeCanCreate(organizationEmployeeId: OrganizationEmployeeId) {
+  public ensureEmployeeCanCreate(organizationEmployeeId: OrganizationEmployeeId): Promise<void> {
     throw new EmployeeNotAuthorizedError();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public ensureEmployeeCanEdit(organizationEmployeeId: OrganizationEmployeeId,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    endpointId: OrganizationEndpointId): void {
+    endpointId: OrganizationEndpointId):  Promise<void> {
     throw new EmployeeNotAuthorizedError();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public ensureEmployeeCanDelete(organizationEmployeeId: OrganizationEmployeeId,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    endpointId: OrganizationEndpointId): void {
+    endpointId: OrganizationEndpointId):  Promise<void> {
     throw new EmployeeNotAuthorizedError();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public ensureEmployeeCanUpdate(organizationEmployeeId: OrganizationEmployeeId,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    endpointId: OrganizationEndpointId): void {
+    endpointId: OrganizationEndpointId):  Promise<void> {
     throw new EmployeeNotAuthorizedError();
   }
 }

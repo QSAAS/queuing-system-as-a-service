@@ -10,17 +10,15 @@ import OrganizationEndpointCreated from "@app/Command/Domain/Event/OrganizationE
 describe("Organization endpoint creation", () => {
   const admin = new OrganizationEmployeeBuilder().build();
   const location = new GeolocationBuilder().build();
-  it("Raises an exception with the admin doesn't have the permission", () => {
+  it("Raises an exception with the admin doesn't have the permission", async () => {
     const failingAuth = new FailingOrganizationEndpointAuthorizationService();
     const service = new EmployeeCreateNewOrganizationEndpointService(failingAuth);
-    expect(() => {
-      service.execute(admin, "::EndpointName::", location);
-    }).toThrow(EmployeeNotAuthorizedError);
+    await expect(service.execute(admin, "::EndpointName::", location)).rejects.toBeInstanceOf(EmployeeNotAuthorizedError);
   });
-  it("Raises an event on created object", () => {
+  it("Raises an event on created object", async () => {
     const passingAuth = new PassingOrganizationEndpointAuthorizationService();
     const service = new EmployeeCreateNewOrganizationEndpointService(passingAuth);
-    const endpoint = service.execute(admin, "::EndpointName::", location);
+    const endpoint = await service.execute(admin, "::EndpointName::", location);
     expect(
       eventsArrayContains(endpoint.getRaisedEvents(), OrganizationEndpointCreated, (event) =>
         event.getEndpoint().getId().equals(endpoint.getId()),

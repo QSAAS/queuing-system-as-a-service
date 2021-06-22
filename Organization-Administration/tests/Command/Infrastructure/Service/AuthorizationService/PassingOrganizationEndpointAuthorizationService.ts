@@ -7,23 +7,26 @@ export default class PassingOrganizationEndpointAuthorizationService
 implements OrganizationEndpointAuthorizationService {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public ensureEmployeeCanCreate(organizationEmployeeId: OrganizationEmployeeId) {
+    return Promise.resolve();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public ensureEmployeeCanEdit(organizationEmployeeId: OrganizationEmployeeId,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    endpointId: OrganizationEndpointId): void {
+  public ensureEmployeeCanEdit(organizationEmployeeId: OrganizationEmployeeId, endpointId: OrganizationEndpointId) {
+    return Promise.resolve();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public ensureEmployeeCanDelete(organizationEmployeeId: OrganizationEmployeeId,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    endpointId: OrganizationEndpointId): void {
+    endpointId: OrganizationEndpointId) {
+    return Promise.resolve();
+
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public ensureEmployeeCanUpdate(organizationEmployeeId: OrganizationEmployeeId,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    endpointId: OrganizationEndpointId): void {
+    endpointId: OrganizationEndpointId) {
+    return Promise.resolve();
   }
 }
