@@ -44,7 +44,7 @@
     "dev": "nodemon src/index.ts",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "fix-style": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
-    "test": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests --forceExit",
     "prettier-check": "prettier --check ./src",
     "prettier-fix": "prettier --write ./src"
   }
