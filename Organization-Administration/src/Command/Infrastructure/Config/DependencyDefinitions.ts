@@ -25,6 +25,7 @@ import GeolocationMongooseTransformer
 import LoginService from "@app/Command/Application/Service/LoginService";
 import OrganizationEmployeeController from "@app/Command/Presentation/Api/Controller/OrganizationEmployeeController";
 import JwtTokenGenerator from "@app/Command/Presentation/Api/Service/JwtTokenGenerator";
+import BCryptPasswordHashFactory from "@app/Command/Infrastructure/Service/BCryptPasswordHashFactory";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
@@ -44,6 +45,7 @@ export enum DiEntry {
   LoginService,
   OrganizationEmployeeController,
   JwtTokenGenerator,
+  PasswordHashFactory,
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -110,6 +112,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
     container.resolve(DiEntry.JwtTokenGenerator),
   ),
   [DiEntry.JwtTokenGenerator]: (container) => new JwtTokenGenerator(container.resolve(DiEntry.JWT_KEY)),
+  [DiEntry.PasswordHashFactory]: () => new BCryptPasswordHashFactory(),
 }
 
 export default definitions;

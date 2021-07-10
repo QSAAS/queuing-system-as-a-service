@@ -1,5 +1,6 @@
 import { Request } from "express";
 import Joi from "joi";
+import ValidationError from "@app/Command/Application/Error/ValidationError";
 
 export default abstract class Controller {
   protected async validateRequest(request: Request) {
@@ -8,8 +9,7 @@ export default abstract class Controller {
       await schema.validateAsync(request.body);
     } catch (error) {
       if (error instanceof Joi.ValidationError) {
-        // TODO: throw validation error
-        throw new Error(`Validation error occurred ${  error.message}`);
+        throw new ValidationError(error.message);
       }
     }
   }

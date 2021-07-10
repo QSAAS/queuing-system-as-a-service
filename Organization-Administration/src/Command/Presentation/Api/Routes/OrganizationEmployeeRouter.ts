@@ -14,8 +14,8 @@ function createRouter(container: DependencyInjectionContainer<DiEntry>) {
 
   const controller = container.resolve<OrganizationEmployeeController>(DiEntry.OrganizationEmployeeController);
 
-  router.post("/login", (request, response) => {
-    controller.login(request, response);
+  router.post("/login", async (request, response) => {
+    await controller.login(request, response);
   });
 
   // TODO: Internal endpoint for creating employees (NO VALIDATIONS)

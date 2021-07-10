@@ -1,16 +1,23 @@
 import { ErrorRequestHandler } from "express";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
+import ValidationError from "@app/Command/Application/Error/ValidationError";
+import IncorrectCredentialsError from "@app/Command/Application/Error/IncorrectCredentialsError";
 
 const ErrorHandler: ErrorRequestHandler = (err, request, response, next) => {
   if(err instanceof EmployeeNotAuthorizedError){
-    response.status(422).json({
-      error: true,
+    response.status(403).json({
       message: "User is not authorized to carry this action"
+    });
+  } else if (err instanceof ValidationError) {
+    response.status(400).json({
+      message: err.message,
+    });
+  } else if (err instanceof IncorrectCredentialsError) {
+    response.status(401).json({
+      message: err.message,
     })
-  }else{
-    // TODO: Handle all error types
+  } else{
     response.status(500).json({
-      error: true,
       message: err.message
     });
   }

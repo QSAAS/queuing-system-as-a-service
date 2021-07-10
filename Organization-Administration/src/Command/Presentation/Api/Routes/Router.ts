@@ -5,14 +5,22 @@ import createOrganizationEndpointRouter from "@app/Command/Presentation/Api/Rout
 import createOrganizationEmployeeRouter from "@app/Command/Presentation/Api/Routes/OrganizationEmployeeRouter";
 import ErrorHandler from "@app/Command/Presentation/Api/Middleware/ErrorHandler";
 
-function createRouter(){
+let container: DependencyInjectionContainer<DiEntry>;
+
+export async function getDependencyContainer(){
+  if(container === undefined) {
+    container = new DependencyInjectionContainer<DiEntry>();
+    await container.addDefinitions(DependencyDefinitions)
+  }
+  return container;
+}
+
+async function createRouter(){
   const router = express.Router();
-  const container = new DependencyInjectionContainer<DiEntry>();
-  container.addDefinitions(DependencyDefinitions).then(()=>{
-    router.use("/endpoint", createOrganizationEndpointRouter(container));
-    router.use("/accounts", createOrganizationEmployeeRouter(container));
-    router.use(ErrorHandler);
-  })
+  const containerInstance = await getDependencyContainer();
+  router.use("/endpoint", createOrganizationEndpointRouter(containerInstance));
+  router.use("/accounts", createOrganizationEmployeeRouter(containerInstance));
+  router.use(ErrorHandler);
 
   return router;
 }
