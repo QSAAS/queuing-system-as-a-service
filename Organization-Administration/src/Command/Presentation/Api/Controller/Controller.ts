@@ -11,6 +11,7 @@ export default abstract class Controller {
       if (error instanceof Joi.ValidationError) {
         throw new ValidationError(error.message);
       }
+      throw error;
     }
   }
 

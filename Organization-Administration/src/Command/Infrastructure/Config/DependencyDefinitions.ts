@@ -26,6 +26,7 @@ import LoginService from "@app/Command/Application/Service/LoginService";
 import OrganizationEmployeeController from "@app/Command/Presentation/Api/Controller/OrganizationEmployeeController";
 import JwtTokenGenerator from "@app/Command/Presentation/Api/Service/JwtTokenGenerator";
 import BCryptPasswordHashFactory from "@app/Command/Infrastructure/Service/BCryptPasswordHashFactory";
+import RegisterService from "@app/Command/Application/Service/RegisterService";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
@@ -46,6 +47,7 @@ export enum DiEntry {
   OrganizationEmployeeController,
   JwtTokenGenerator,
   PasswordHashFactory,
+  RegisterService,
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -109,10 +111,12 @@ const definitions: DependencyDefinitions<DiEntry> = {
   [DiEntry.LoginService]: (container) => new LoginService(container.resolve(DiEntry.OrganizationEmployeeRepository)),
   [DiEntry.OrganizationEmployeeController]: (container) => new OrganizationEmployeeController(
     container.resolve(DiEntry.LoginService),
+    container.resolve(DiEntry.RegisterService),
     container.resolve(DiEntry.JwtTokenGenerator),
   ),
   [DiEntry.JwtTokenGenerator]: (container) => new JwtTokenGenerator(container.resolve(DiEntry.JWT_KEY)),
   [DiEntry.PasswordHashFactory]: () => new BCryptPasswordHashFactory(),
+  [DiEntry.RegisterService]: (container) => new RegisterService(container.resolve(DiEntry.OrganizationEmployeeRepository))
 }
 
 export default definitions;

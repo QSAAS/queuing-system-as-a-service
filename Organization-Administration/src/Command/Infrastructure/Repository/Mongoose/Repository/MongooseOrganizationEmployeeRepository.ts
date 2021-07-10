@@ -7,6 +7,7 @@ import OrganizationEmployeeMongooseTransformer from "@app/Command/Infrastructure
 import OrganizationEmployeeSchema from "@app/Command/Infrastructure/Repository/Mongoose/Schema/OrganizationEmployeeSchema";
 import OrganizationEmployeeNotFound from "@app/Command/Domain/Error/OrganizationEmployeeNotFound";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
+import DuplicateAttributeError from "@app/Command/Domain/Error/DuplicateAttributeError";
 
 export default class MongooseOrganizationEmployeeRepository implements OrganizationEmployeeRepository {
   private readonly OrganizationEmployeeModel: mongoose.Model<IOrganizationEmployee & mongoose.Document>;
@@ -26,7 +27,14 @@ export default class MongooseOrganizationEmployeeRepository implements Organizat
 
   async save(employee: OrganizationEmployee): Promise<void> {
     const instance = new this.OrganizationEmployeeModel(this.employeeTransformer.mongooseObjectFrom(employee));
-    await instance.save();
+    try {
+      await instance.save();
+    } catch (e) {
+      if (e.name === "MongoError" && e.code === 11000) {
+        throw new DuplicateAttributeError("username already exists");
+      }
+      throw e;
+    }
   }
 
   async getById(id: OrganizationEmployeeId): Promise<OrganizationEmployee> {
