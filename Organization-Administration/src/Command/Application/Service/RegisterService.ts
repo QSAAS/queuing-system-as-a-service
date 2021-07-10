@@ -2,7 +2,6 @@ import OrganizationEmployeeRepository from "@app/Command/Domain/Service/Organiza
 import RegisterRequest from "@app/Command/Application/DataTransferObject/Request/RegisterRequest";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
 import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmployee";
-import ValidationError from "@app/Command/Application/Error/ValidationError";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
 import BCryptPassowrdHash from "@app/Command/Infrastructure/ValueObject/BCryptPassowrdHash";
