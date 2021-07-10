@@ -1,17 +1,9 @@
-import express from "express";
-import dotenv from "dotenv";
-
-dotenv.config();
+import createApp from "@app/app";
 
 const PORT = process.env.SERVER_PORT || "N/A";
 
-const app = express();
-app.use(express.json());
-
-app.get("/", (request, response) => {
-  response.send("Organization Administration");
-});
-
-app.listen(80, () => {
-  console.log(`Server started, forwarding host port ${PORT} to port 80`);
-});
+createApp().then((app) => {
+  app.listen(80, () => {
+    console.log(`Server started, forwarding host port ${PORT} to port 80`);
+  })
+})

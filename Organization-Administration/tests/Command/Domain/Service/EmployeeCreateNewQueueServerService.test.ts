@@ -1,22 +1,17 @@
-import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/OrganizationEmployeeBuilder";
+import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
-import PassingOrganizationEndpointAuthorizationService
-  from "@tests/Command/Infrastructure/PassingOrganizationEndpointAuthorizationService";
+import PassingOrganizationEndpointAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/PassingOrganizationEndpointAuthorizationService";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
 import EmployeeCreateNewQueueServerService from "@app/Command/Domain/Service/EmployeeCreateNewQueueServerService";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
-import FailingQueueServerAuthorizationService
-  from "@tests/Command/Infrastructure/FailingQueueServerAuthorizationService";
+import FailingQueueServerAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/FailingQueueServerAuthorizationService";
 import QueueServerCreated from "@app/Command/Domain/Event/QueueServerCreated";
 
 describe("Queue server creation", () => {
   const admin = new OrganizationEmployeeBuilder().build();
   const endpointId = OrganizationEndpointId.create();
-  const serves = [
-    QueueNodeId.create(),
-    QueueNodeId.create(),
-  ];
+  const serves = [QueueNodeId.create(), QueueNodeId.create()];
   it("Raises an exception with the admin doesn't have the permission", () => {
     const failingAuth = new FailingQueueServerAuthorizationService();
     const service = new EmployeeCreateNewQueueServerService(failingAuth);
@@ -28,8 +23,10 @@ describe("Queue server creation", () => {
     const passingAuth = new PassingOrganizationEndpointAuthorizationService();
     const service = new EmployeeCreateNewQueueServerService(passingAuth);
     const server = service.execute(admin, endpointId, serves);
-    expect(eventsArrayContains(server.getRaisedEvents(), QueueServerCreated, (event) => (
-      event.getQueueServer().getId().equals(server.getId())
-    ))).toBeTruthy();
+    expect(
+      eventsArrayContains(server.getRaisedEvents(), QueueServerCreated, (event) =>
+        event.getQueueServer().getId().equals(server.getId()),
+      ),
+    ).toBeTruthy();
   });
 });

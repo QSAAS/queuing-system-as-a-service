@@ -13,7 +13,7 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
     private organizationEmployeeAuthorizationService: OrganizationEmployeeAuthorizationService,
   ) {
     super(
-      administrated.getOrganizationEmployeeId(),
+      administrated.getId(),
       administrated.getOrganizationId(),
       administrated.getName(),
       administrated.getPasswordHash(),
@@ -27,8 +27,8 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
    */
   public setUsername(username: EmployeeUsername) {
     this.organizationEmployeeAuthorizationService.ensureEmployeeCanUpdate(
-      this.admin.getOrganizationEmployeeId(),
-      this.getOrganizationEmployeeId(),
+      this.admin.getId(),
+      this.getId(),
     );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.username = username;
@@ -40,8 +40,8 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
    */
   public setName(name: string) {
     this.organizationEmployeeAuthorizationService.ensureEmployeeCanUpdate(
-      this.admin.getOrganizationEmployeeId(),
-      this.getOrganizationEmployeeId(),
+      this.admin.getId(),
+      this.getId(),
     );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.name = name;
@@ -53,8 +53,8 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
    */
   public setPasswordHash(passwordHash: PasswordHash) {
     this.organizationEmployeeAuthorizationService.ensureEmployeeCanUpdate(
-      this.admin.getOrganizationEmployeeId(),
-      this.getOrganizationEmployeeId(),
+      this.admin.getId(),
+      this.getId(),
     );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
 
@@ -67,11 +67,11 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
    */
   public setOrganizationEmployeeId(organizationEmployeeId: OrganizationEmployeeId) {
     this.organizationEmployeeAuthorizationService.ensureEmployeeCanUpdate(
-      this.admin.getOrganizationEmployeeId(),
-      this.getOrganizationEmployeeId(),
+      this.admin.getId(),
+      this.getId(),
     );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
-    this.organizationEmployeeId = organizationEmployeeId;
+    this.id = organizationEmployeeId;
   }
 
   /**
@@ -80,8 +80,8 @@ export default class AdministratedOrganizationEmployee extends OrganizationEmplo
    */
   public setOrganizationId(organizationId: OrganizationId) {
     this.organizationEmployeeAuthorizationService.ensureEmployeeCanUpdate(
-      this.admin.getOrganizationEmployeeId(),
-      this.getOrganizationEmployeeId(),
+      this.admin.getId(),
+      this.getId(),
     );
     this.raiseEvent(new OrganizationEmployeeUpdated(this));
     this.organizationId = organizationId;

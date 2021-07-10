@@ -5,20 +5,17 @@ import TimeSpan from "@app/Command/Domain/ValueObject/TimeSpan";
 import MetadataSpecification from "@app/Command/Domain/ValueObject/MetadataSpecification";
 import QueueNode from "@app/Command/Domain/Entity/QueueNode";
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
-import QueueNodeCreated from "@app/Command/Domain/Event/QueueNodeCreated";
 
 export default class EmployeeCreateNewQueueNodeService {
   constructor(private nodeAuthService: QueueNodeAuthorizationService) {}
 
-  execute(
+  async execute(
     admin: OrganizationEmployee,
     endpointId: OrganizationEndpointId,
-    metadataSpecs: MetadataSpecification,
-    operatingTimes: TimeSpan,
-  ): QueueNode {
-    this.nodeAuthService.ensureEmployeeCanCreate(admin.getId());
-    const node = new QueueNode(QueueNodeId.create(), endpointId, metadataSpecs, operatingTimes);
-    node.raiseEvent(new QueueNodeCreated(node));
-    return node;
+    metaSpecs: MetadataSpecification,
+    timeSpan: TimeSpan,
+  ): Promise<QueueNode> {
+    await this.nodeAuthService.ensureEmployeeCanCreate(admin.getId());
+    return QueueNode.create(QueueNodeId.create(), endpointId, metaSpecs, timeSpan);
   }
 }

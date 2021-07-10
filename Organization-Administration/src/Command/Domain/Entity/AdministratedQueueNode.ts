@@ -15,14 +15,14 @@ export default class AdministratedQueueNode extends QueueNode {
     super(queueNode.getId(), queueNode.getEndPointId(), queueNode.getMetaSpecs(), queueNode.getTimeSpan());
   }
 
-  setOperatingTimes(span: TimeSpan): void {
-    this.authService.ensureEmployeeCanUpdate(this.admin.getId(), this.getId());
+  async setOperatingTimes(span: TimeSpan) {
+    await this.authService.ensureEmployeeCanUpdate(this.admin.getId(), this.getId());
     this.timeSpan = span;
     this.raiseEvent(new QueueNodeUpdated(this));
   }
 
-  setMetaDataSpecification(metaSpecs: MetadataSpecification) {
-    this.authService.ensureEmployeeCanUpdate(this.admin.getId(), this.getId());
+  async setMetaDataSpecification(metaSpecs: MetadataSpecification) {
+    await this.authService.ensureEmployeeCanUpdate(this.admin.getId(), this.getId());
     this.metaSpecs = metaSpecs;
     this.raiseEvent(new QueueNodeUpdated(this));
   }

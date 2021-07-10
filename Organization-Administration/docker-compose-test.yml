@@ -11,7 +11,7 @@ services:
     environment:
       DB_URL: mongo-db
       DB_PORT: 27017
-      DB_NAME: "qsaas"
+      DB_NAME: "qsaas_test"
 
     depends_on:
       - mongo-db
@@ -23,5 +23,11 @@ services:
 
   mongo-db:
     image: mongo
+
+    logging:
+      driver: none
+
+    ports:
+      - "27017:27017"
 
     restart: "no"

@@ -19,8 +19,16 @@ export default class TimeSpan extends ValueObject {
   }
 
   contains(time: Clock): boolean {
-    // TODO should we handle cases where start time is greater than end time (night shift)
-    //  e.g. start = 21:00:00, end = 03:00:00
-    return time.greaterThanOrEqual(this.start) && time.lessThanOrEqual(this.end);
+    // Normal case, from 9 to 5
+    if (this.start.lessThanOrEqual(this.end)) {
+      return time.greaterThanOrEqual(this.start) && time.lessThanOrEqual(this.end);
+    }
+    // other case e.g. start = 21:00:00, end = 03:00:00
+    const dayEnd = new Clock(23, 59, 59);
+    const dayStart = new Clock(0, 0, 0);
+    return (
+      (time.greaterThanOrEqual(this.start) && time.lessThanOrEqual(dayEnd)) ||
+      (time.greaterThanOrEqual(dayStart) && time.lessThanOrEqual(this.end))
+    );
   }
 }

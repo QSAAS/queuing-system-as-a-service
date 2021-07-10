@@ -1,14 +1,11 @@
-import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/OrganizationEmployeeBuilder";
+import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 import EmployeeNotAuthorizedError from "@app/Command/Domain/Error/EmployeeNotAuthorizedError";
 import eventsArrayContains from "@tests/Utils/eventsArrayContains";
-import OrganizationEndpointBuilder from "@tests/Command/Domain/Entity/OrganizationEndpointBuilder";
-import MockOrganizationEndpointRepository
-  from "@tests/Command/Infrastructure/Repository/MockOrganizationEndpointRepository";
-import FailingOrganizationEndpointAuthorizationService
-  from "@tests/Command/Infrastructure/FailingOrganizationEndpointAuthorizationService";
+import OrganizationEndpointBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEndpointBuilder";
+import MockOrganizationEndpointRepository from "@tests/Command/Infrastructure/Repository/Mock/MockOrganizationEndpointRepository";
+import FailingOrganizationEndpointAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/FailingOrganizationEndpointAuthorizationService";
 import EmployeeDeleteOrganizationEndpointService from "@app/Command/Domain/Service/EmployeeDeleteOrganizationEndpoint";
-import PassingOrganizationEndpointAuthorizationService
-  from "@tests/Command/Infrastructure/PassingOrganizationEndpointAuthorizationService";
+import PassingOrganizationEndpointAuthorizationService from "@tests/Command/Infrastructure/Service/AuthorizationService/PassingOrganizationEndpointAuthorizationService";
 import OrganizationEndpointNotFound from "@app/Command/Domain/Error/OrganizationEndpointNotFound";
 import OrganizationEndpointDeleted from "@app/Command/Domain/Event/OrganizationEndpointDeleted";
 
@@ -29,7 +26,7 @@ describe("Employee delete endpoint", () => {
     const service = new EmployeeDeleteOrganizationEndpointService(repo, passingAuthService);
     await service.execute(admin, endpoint);
     expect(() => {
-      repo.getById(endpoint.getOrganizationEndpointId());
+      repo.getById(endpoint.getId());
     }).toThrow(OrganizationEndpointNotFound);
   });
 
@@ -39,9 +36,9 @@ describe("Employee delete endpoint", () => {
     const service = new EmployeeDeleteOrganizationEndpointService(repo, passingAuthService);
     await service.execute(admin, endpoint);
     expect(
-      eventsArrayContains(repo.getPublishedEvents(), OrganizationEndpointDeleted,
-        (event) => (
-          event.getOrganizationEndpoint().getOrganizationId().equals(endpoint.getOrganizationId()))),
+      eventsArrayContains(repo.getPublishedEvents(), OrganizationEndpointDeleted, (event) =>
+        event.getOrganizationEndpoint().getOrganizationId().equals(endpoint.getOrganizationId()),
+      ),
     );
   });
 });

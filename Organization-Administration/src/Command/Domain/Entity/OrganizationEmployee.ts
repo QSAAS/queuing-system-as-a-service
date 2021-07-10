@@ -6,17 +6,13 @@ import OrganizationEmployeeId from "../ValueObject/OrganizationEmployeeId";
 
 export default class OrganizationEmployee extends AggregateRoot {
   constructor(
-    protected organizationEmployeeId: OrganizationEmployeeId,
+    protected id: OrganizationEmployeeId,
     protected organizationId: OrganizationId,
     protected name: string,
     protected passwordHash: PasswordHash,
     protected username: EmployeeUsername,
   ) {
     super();
-  }
-
-  public getOrganizationEmployeeId(): OrganizationEmployeeId {
-    return this.organizationEmployeeId;
   }
 
   public getOrganizationId(): OrganizationId {
@@ -36,6 +32,6 @@ export default class OrganizationEmployee extends AggregateRoot {
   }
 
   public getId(): OrganizationEmployeeId {
-    return this.organizationEmployeeId;
+    return this.id;
   }
 }
