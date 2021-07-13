@@ -1,45 +1,43 @@
 import request from "supertest";
 import createApp from "@app/app";
-import createTestingDbConnection from "@tests/Utils/dbUtils";
 import { Express } from "express";
 import { getDependencyContainer } from "@app/Command/Presentation/Api/Routes/Router";
 import { DiEntry } from "@app/Command/Infrastructure/Config/DependencyDefinitions";
 import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 import PasswordHashFactory from "@app/Command/Domain/Service/PasswordHashFactory";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
-import OrganizationEmployeeRepository from "@app/Command/Domain/Service/OrganizationEmployeeRepository";
 import jwt from "jsonwebtoken";
+import DependencyInjectionContainer from "@app/Command/Infrastructure/Config/DependencyInjectionContainer";
+import MongooseOrganizationEmployeeRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseOrganizationEmployeeRepository";
 
-const PATH = "/administration/accounts/login/"
+const PATH = "/administration/accounts/login/";
 
 let app: Express;
-createTestingDbConnection(() => {
+let repo: MongooseOrganizationEmployeeRepository;
+let container: DependencyInjectionContainer<DiEntry>;
 
-})
+beforeAll(async () => {
+  container = await getDependencyContainer();
+  app = await createApp();
+});
 
-describe("/administration/accounts/", () =>{
+beforeEach(async () => {
+  repo = container.resolve<MongooseOrganizationEmployeeRepository>(DiEntry.OrganizationEmployeeRepository);
+  await repo.getModel().deleteMany({});
+});
 
-  beforeEach(async () => {
-    app = await createApp();
-  });
-
+describe("/administration/accounts/", () => {
   describe("POST /login", () => {
-
     it("should return code 400 on empty request body", async () => {
-      await request(app)
-        .post(PATH)
-        .send({})
-        .set("Accept", "application/json")
-        .expect(400);
-      })
+      await request(app).post(PATH).send({}).set("Accept", "application/json").expect(400);
+    });
 
     it("should return a valid JWT token on valid credentials", async () => {
       const containerInstance = await getDependencyContainer();
-      const repo = containerInstance.resolve<OrganizationEmployeeRepository>(DiEntry.OrganizationEmployeeRepository);
       const passwordFactory = containerInstance.resolve<PasswordHashFactory>(DiEntry.PasswordHashFactory);
 
-      const username = "employee_1"
-      const password = "password1234"
+      const username = "employee_1";
+      const password = "password1234";
       const employee = new OrganizationEmployeeBuilder()
         .withUsername(EmployeeUsername.from(username))
         .withPasswordHash(await passwordFactory.create(password))
@@ -55,22 +53,20 @@ describe("/administration/accounts/", () =>{
         })
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
-        .expect(200)
+        .expect(200);
 
-      const {token} = res.body;
+      const { token } = res.body;
 
       expect(() => {
-        jwt.verify(token, containerInstance.resolve(DiEntry.JWT_KEY))
-      } ).not.toThrow();
+        jwt.verify(token, containerInstance.resolve(DiEntry.JWT_KEY));
+      }).not.toThrow();
     });
 
     it("should return code 401 on invalid credentials", async () => {
       const containerInstance = await getDependencyContainer();
-      const repo = containerInstance.resolve<OrganizationEmployeeRepository>(DiEntry.OrganizationEmployeeRepository);
       const passwordFactory = containerInstance.resolve<PasswordHashFactory>(DiEntry.PasswordHashFactory);
-
-      const username = "employee_1"
-      const password = "password1234"
+      const username = "employee_1";
+      const password = "password1234";
       const employee = new OrganizationEmployeeBuilder()
         .withUsername(EmployeeUsername.from(username))
         .withPasswordHash(await passwordFactory.create(password))
@@ -86,7 +82,7 @@ describe("/administration/accounts/", () =>{
         })
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
-        .expect(401)
+        .expect(401);
     });
-  })
+  });
 });

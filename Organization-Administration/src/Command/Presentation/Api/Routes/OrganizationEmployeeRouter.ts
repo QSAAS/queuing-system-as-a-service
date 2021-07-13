@@ -18,6 +18,10 @@ function createRouter(container: DependencyInjectionContainer<DiEntry>) {
     await controller.login(request, response);
   });
 
+  router.post("/register", async (request, response) => {
+    await controller.register(request, response);
+  });
+
   // TODO: Internal endpoint for creating employees (NO VALIDATIONS)
   router.post("/create_organization_admin", async (request, response) => {
     const passwordFactory = new BCryptPasswordHashFactory();
