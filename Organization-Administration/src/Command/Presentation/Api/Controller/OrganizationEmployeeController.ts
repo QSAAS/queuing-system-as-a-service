@@ -16,17 +16,19 @@ const registerSchema = Joi.object({
 });
 
 export default class OrganizationEmployeeController extends Controller {
-  constructor(private appService: LoginService, // TODO rename this to loginService
-              private registerService: RegisterService,
-              private tokenGenerator: JwtTokenGenerator) {
+  constructor(
+    private loginService: LoginService,
+    private registerService: RegisterService,
+    private tokenGenerator: JwtTokenGenerator,
+  ) {
     super();
   }
 
   async login(request: express.Request, response: express.Response) {
     await this.validateRequest(request);
-    const {username, password} = request.body;
+    const { username, password } = request.body;
     const requestDto = new LoginRequest(username, password);
-    const employeeId: string = await this.appService.execute(requestDto);
+    const employeeId: string = await this.loginService.execute(requestDto);
     response.json({
       token: this.tokenGenerator.createToken(employeeId),
     });
@@ -35,33 +37,25 @@ export default class OrganizationEmployeeController extends Controller {
   async register(request: express.Request, response: express.Response) {
     try {
       await registerSchema.validateAsync(request.body);
-    } catch(error) {
+    } catch (error) {
       if (error instanceof Joi.ValidationError) {
         throw new ValidationError(error.message);
       }
       throw error;
     }
-    const {username, password, name, organizationId} = request.body;
-    const requestDto = new RegisterRequest(
-      username,
-      password,
-      organizationId,
-      name,
-    );
+    const { username, password, name, organizationId } = request.body;
+    const requestDto = new RegisterRequest(username, password, organizationId, name);
     const employeeId: string = await this.registerService.execute(requestDto);
     response.json({
       token: this.tokenGenerator.createToken(employeeId),
-    })
+    });
   }
 
   // TODO createSchema function assumes this controller only performs 1 service
   protected createSchema(): Joi.Schema {
-    return Joi.object(
-      {
-        username: Joi.string().required(),
-        password: Joi.string().required(), // TODO validate password
-      }
-    )
+    return Joi.object({
+      username: Joi.string().required(),
+      password: Joi.string().required(),
+    });
   }
-
 }

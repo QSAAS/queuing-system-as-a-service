@@ -1,9 +1,8 @@
 import { Schema } from "mongoose";
 
-// TODO: Add unique indexes
 const OrganizationEmployeeSchema = new Schema({
   id: String,
-  organizationId: String, // TODO make foreign key
+  organizationId: String,
   name: String,
   passwordHash: String,
   passwordHashType: String,
