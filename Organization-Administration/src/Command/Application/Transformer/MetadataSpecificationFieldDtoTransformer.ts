@@ -18,7 +18,7 @@ export default class MetadataSpecificationFieldDtoTransformer implements Transfo
     }
     else if (object instanceof MetadataSpecificationDropdownField) {
       kind = "dropdown";
-      data = JSON.stringify({ options: object.getOptions() });
+      data = JSON.stringify(object.getOptions());
     }
     else {
       throw new Error("Unsupported field type");
@@ -31,6 +31,31 @@ export default class MetadataSpecificationFieldDtoTransformer implements Transfo
       data,
     );
 
+  }
+
+  toDtoFromJson(object: {
+    name: string,
+    isRequired: boolean,
+    kind: string,
+    options?: string[],
+    maxLength?: number,
+    minLength?: number,
+    placeholder?: string,
+  }): MetadataSpecificationFieldDTO {
+    let data: string;
+    if (object.kind === "text") {
+      const {maxLength, minLength, placeholder} = object;
+      data = JSON.stringify({
+        maxLength,
+        minLength,
+        placeholder,
+      });
+    } else if (object.kind === "dropdown") {
+      data = JSON.stringify(object.options)
+    } else {
+      throw new Error(`${object.kind} is an unsupported field type`);
+    }
+    return new MetadataSpecificationFieldDTO(object.name, object.isRequired, object.kind, data);
   }
 
   toObject(dto: MetadataSpecificationFieldDTO): MetadataSpecificationField {

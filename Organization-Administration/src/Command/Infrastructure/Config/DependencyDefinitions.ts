@@ -144,7 +144,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
     ),
   [DiEntry.ClockMongooseTransformer]: () => new ClockMongooseTransformer(),
   [DiEntry.TimespanMongooseTransformer]: (container) => new TimeSpanMongooseTransformer(
-    container.resolve(DiEntry.TimespanMongooseTransformer),
+    container.resolve(DiEntry.ClockMongooseTransformer),
   ),
   [DiEntry.MetadataSpecificationFieldMongooseTransformer]: () => new MetadataSpecificationFieldMongooseTransformer(),
   [DiEntry.QueueNodeMongooseTransformer]: (container) => new QueueNodeMongooseTransformer(
@@ -172,6 +172,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
   ),
   [DiEntry.QueueNodeController]: (container) => new QueueNodeController(
     container.resolve(DiEntry.CreateQueueNodeService),
+    container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
   )
 };
 
