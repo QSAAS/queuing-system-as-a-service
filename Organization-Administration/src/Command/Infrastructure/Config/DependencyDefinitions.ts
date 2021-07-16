@@ -18,6 +18,24 @@ import OrganizationEmployeeController from "@app/Command/Presentation/Api/Contro
 import JwtTokenGenerator from "@app/Command/Presentation/Api/Service/JwtTokenGenerator";
 import BCryptPasswordHashFactory from "@app/Command/Infrastructure/Service/BCryptPasswordHashFactory";
 import RegisterService from "@app/Command/Application/Service/RegisterService";
+import QueueNodeController from "@app/Command/Presentation/Api/Controller/QueueNodeController";
+import CreateQueueNodeService from "@app/Command/Application/Service/CreateQueueNodeService";
+import MongooseQueueNodeRepository
+  from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseQueueNodeRepository";
+import QueueNodeMongooseTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/QueueNodeMongooseTransformer";
+import MetadataSpecificationFieldMongooseTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/MetadataSpecificationFieldMongooseTransformer";
+import TimeSpanMongooseTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/TimeSpanMongooseTransformer";
+import ClockMongooseTransformer
+  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/ClockMongooseTransformer";
+import EmployeeCreateNewQueueNodeService from "@app/Command/Domain/Service/EmployeeCreateNewQueueNodeService";
+import DirectQueueNodeAuthorizationService
+  from "@app/Command/Infrastructure/Service/AuthorizationService/DirectQueueNodeAuthorizationService";
+import MetadataSpecificationFieldDtoTransformer
+  from "@app/Command/Application/Transformer/MetadataSpecificationFieldDtoTransformer";
+import TimeSpanDtoTransformer from "@app/Command/Application/Transformer/TimeSpanDtoTransformer";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
@@ -39,6 +57,19 @@ export enum DiEntry {
   JwtTokenGenerator,
   PasswordHashFactory,
   RegisterService,
+
+  // QueueNode
+  QueueNodeController,
+  CreateQueueNodeService,
+  QueueNodeRepository,
+  QueueNodeMongooseTransformer,
+  MetadataSpecificationFieldMongooseTransformer,
+  TimespanMongooseTransformer,
+  ClockMongooseTransformer,
+  EmployeeCreateNewQueueNodeService,
+  QueueNodeAuthorizationService,
+  MetadataSpecificationFieldDtoTransformer,
+  TimespanDtoTransformer,
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -111,6 +142,38 @@ const definitions: DependencyDefinitions<DiEntry> = {
       container.resolve(DiEntry.OrganizationEmployeeRepository),
       container.resolve(DiEntry.PasswordHashFactory),
     ),
+  [DiEntry.ClockMongooseTransformer]: () => new ClockMongooseTransformer(),
+  [DiEntry.TimespanMongooseTransformer]: (container) => new TimeSpanMongooseTransformer(
+    container.resolve(DiEntry.ClockMongooseTransformer),
+  ),
+  [DiEntry.MetadataSpecificationFieldMongooseTransformer]: () => new MetadataSpecificationFieldMongooseTransformer(),
+  [DiEntry.QueueNodeMongooseTransformer]: (container) => new QueueNodeMongooseTransformer(
+    container.resolve(DiEntry.MetadataSpecificationFieldMongooseTransformer),
+    container.resolve(DiEntry.TimespanMongooseTransformer),
+  ),
+  [DiEntry.QueueNodeRepository]: (container) => new MongooseQueueNodeRepository(
+    container.resolve(DiEntry.MONGOOSE_CONNECTION),
+    container.resolve(DiEntry.QueueNodeMongooseTransformer),
+  ),
+  [DiEntry.QueueNodeAuthorizationService]: (container) => new DirectQueueNodeAuthorizationService(
+    container.resolve(DiEntry.AuthorizationRuleRepository),
+  ),
+  [DiEntry.EmployeeCreateNewQueueNodeService]: (container) => new EmployeeCreateNewQueueNodeService(
+    container.resolve(DiEntry.QueueNodeAuthorizationService),
+  ),
+  [DiEntry.MetadataSpecificationFieldDtoTransformer]: () => new MetadataSpecificationFieldDtoTransformer(),
+  [DiEntry.TimespanDtoTransformer]: () => new TimeSpanDtoTransformer(),
+  [DiEntry.CreateQueueNodeService]: (container) => new CreateQueueNodeService(
+    container.resolve(DiEntry.OrganizationEmployeeRepository),
+    container.resolve(DiEntry.QueueNodeRepository),
+    container.resolve(DiEntry.EmployeeCreateNewQueueNodeService),
+    container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
+    container.resolve(DiEntry.TimespanDtoTransformer),
+  ),
+  [DiEntry.QueueNodeController]: (container) => new QueueNodeController(
+    container.resolve(DiEntry.CreateQueueNodeService),
+    container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
+  )
 };
 
 export default definitions;
