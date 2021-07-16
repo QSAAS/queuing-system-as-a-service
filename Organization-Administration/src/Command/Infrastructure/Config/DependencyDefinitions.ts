@@ -23,6 +23,11 @@ import CreateAuthorizationRuleService from "@app/Command/Application/Service/Cre
 import EmployeeCreateNewAuthorizationRuleService from "@app/Command/Domain/Service/EmployeeCreateNewAuthorizationRuleService";
 import DirectAuthorizationRuleAuthorizationService from "@app/Command/Infrastructure/Service/AuthorizationService/DirectAuthorizationRuleAuthorizationService";
 import PermissionDtoTransformer from "@app/Command/Application/Transformer/PermissionDtoTransformer";
+import QueueServerController from "@app/Command/Presentation/Api/Controller/QueueServerController";
+import CreateQueueServerService from "@app/Command/Application/Service/CreateQueueServerService";
+import EmployeeCreateNewQueueServerService from "@app/Command/Domain/Service/EmployeeCreateNewQueueServerService";
+import MongooseQueueServerRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseQueueServerRepository";
+import QueueServerMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/QueueServerMongooseTransformer";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
@@ -49,6 +54,12 @@ export enum DiEntry {
   EmployeeCreateNewAuthorizationRuleService,
   AuthorizationRuleAuthorizationService,
   PermissionDtoTransformer,
+  QueueServerController,
+  CreateQueueServerService,
+  QueueServerRepository,
+  EmployeeCreateNewQueueServerService,
+  QueueServerMongooseTransformer,
+  QueueServerAuthorizationService,
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -134,7 +145,25 @@ const definitions: DependencyDefinitions<DiEntry> = {
     new EmployeeCreateNewAuthorizationRuleService(container.resolve(DiEntry.AuthorizationRuleAuthorizationService)),
   [DiEntry.AuthorizationRuleAuthorizationService]: (container) =>
     new DirectAuthorizationRuleAuthorizationService(container.resolve(DiEntry.AuthorizationRuleRepository)),
-  [DiEntry.PermissionDtoTransformer]: (container) => new PermissionDtoTransformer(),
+  [DiEntry.PermissionDtoTransformer]: () => new PermissionDtoTransformer(),
+  [DiEntry.QueueServerController]: (container) =>
+    new QueueServerController(container.resolve(DiEntry.CreateQueueServerService)),
+  [DiEntry.CreateQueueServerService]: (container) =>
+    new CreateQueueServerService(
+      container.resolve(DiEntry.OrganizationEmployeeRepository),
+      container.resolve(DiEntry.QueueServerRepository),
+      container.resolve(DiEntry.EmployeeCreateNewQueueServerService),
+    ),
+  [DiEntry.QueueServerRepository]: (container) =>
+    new MongooseQueueServerRepository(
+      container.resolve(DiEntry.MONGOOSE_CONNECTION),
+      container.resolve(DiEntry.QueueServerMongooseTransformer),
+    ),
+  [DiEntry.QueueServerMongooseTransformer]: () => new QueueServerMongooseTransformer(),
+  [DiEntry.EmployeeCreateNewQueueServerService]: (container) =>
+    new EmployeeCreateNewQueueServerService(container.resolve(DiEntry.QueueServerAuthorizationService)),
+  [DiEntry.QueueServerAuthorizationService]: (container) =>
+    new DirectAuthorizationRuleAuthorizationService(container.resolve(DiEntry.AuthorizationRuleRepository)),
 };
 
 export default definitions;
