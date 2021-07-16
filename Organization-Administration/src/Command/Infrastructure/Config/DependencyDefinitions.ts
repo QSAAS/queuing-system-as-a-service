@@ -18,6 +18,11 @@ import OrganizationEmployeeController from "@app/Command/Presentation/Api/Contro
 import JwtTokenGenerator from "@app/Command/Presentation/Api/Service/JwtTokenGenerator";
 import BCryptPasswordHashFactory from "@app/Command/Infrastructure/Service/BCryptPasswordHashFactory";
 import RegisterService from "@app/Command/Application/Service/RegisterService";
+import AuthorizationRuleController from "@app/Command/Presentation/Api/Controller/AuthorizationRuleController";
+import CreateAuthorizationRuleService from "@app/Command/Application/Service/CreateAuthorizationRuleService";
+import EmployeeCreateNewAuthorizationRuleService from "@app/Command/Domain/Service/EmployeeCreateNewAuthorizationRuleService";
+import DirectAuthorizationRuleAuthorizationService from "@app/Command/Infrastructure/Service/AuthorizationService/DirectAuthorizationRuleAuthorizationService";
+import PermissionDtoTransformer from "@app/Command/Application/Transformer/PermissionDtoTransformer";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
@@ -39,6 +44,11 @@ export enum DiEntry {
   JwtTokenGenerator,
   PasswordHashFactory,
   RegisterService,
+  AuthorizationRuleController,
+  CreateAuthorizationRuleService,
+  EmployeeCreateNewAuthorizationRuleService,
+  AuthorizationRuleAuthorizationService,
+  PermissionDtoTransformer,
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -111,6 +121,20 @@ const definitions: DependencyDefinitions<DiEntry> = {
       container.resolve(DiEntry.OrganizationEmployeeRepository),
       container.resolve(DiEntry.PasswordHashFactory),
     ),
+  [DiEntry.AuthorizationRuleController]: (container) =>
+    new AuthorizationRuleController(container.resolve(DiEntry.CreateAuthorizationRuleService)),
+  [DiEntry.CreateAuthorizationRuleService]: (container) =>
+    new CreateAuthorizationRuleService(
+      container.resolve(DiEntry.OrganizationEmployeeRepository),
+      container.resolve(DiEntry.AuthorizationRuleRepository),
+      container.resolve(DiEntry.EmployeeCreateNewAuthorizationRuleService),
+      container.resolve(DiEntry.PermissionDtoTransformer),
+    ),
+  [DiEntry.EmployeeCreateNewAuthorizationRuleService]: (container) =>
+    new EmployeeCreateNewAuthorizationRuleService(container.resolve(DiEntry.AuthorizationRuleAuthorizationService)),
+  [DiEntry.AuthorizationRuleAuthorizationService]: (container) =>
+    new DirectAuthorizationRuleAuthorizationService(container.resolve(DiEntry.AuthorizationRuleRepository)),
+  [DiEntry.PermissionDtoTransformer]: (container) => new PermissionDtoTransformer(),
 };
 
 export default definitions;
