@@ -15,11 +15,30 @@ export default class PermissionDtoTransformer implements Transformer<Permission,
   }
 
   toObject(dto: PermissionDTO): Permission {
-    if (dto.type === "ORGANIZATION_EMPLOYEE")
-      return new Permission(
-        dto.resourceId === null ? null : EntityId.from(dto.resourceId!),
-        ResourceType[dto.resourceType],
-        AuthorizedAction[dto.type],
-      );
+    let type: ResourceType = ResourceType.ENDPOINT;
+    let action: AuthorizedAction = AuthorizedAction.CREATE;
+    if (dto.resourceType === "ORGANIZATION_EMPLOYEE") {
+      type = ResourceType.ORGANIZATION_EMPLOYEE;
+    } else if (dto.resourceType === "ENDPOINT") {
+      type = ResourceType.ENDPOINT;
+    } else if (dto.resourceType === "QUEUE_NODE") {
+      type = ResourceType.QUEUE_NODE;
+    } else if (dto.resourceType === "QUEUE_SERVER") {
+      type = ResourceType.QUEUE_SERVER;
+    } else if (dto.resourceType === "AUTHORIZATION_RULE") {
+      type = ResourceType.AUTHORIZATION_RULE;
+    }
+
+    if (dto.type === "CREATE") {
+      action = AuthorizedAction.CREATE;
+    } else if (dto.type === "UPDATE") {
+      action = AuthorizedAction.UPDATE;
+    } else if (dto.type === "DELETE") {
+      action = AuthorizedAction.DELETE;
+    } else if (dto.type === "MANAGE") {
+      action = AuthorizedAction.MANAGE;
+    }
+
+    return new Permission(dto.resourceId === null ? null : EntityId.from(dto.resourceId!), type, action);
   }
 }

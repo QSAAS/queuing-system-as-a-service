@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run docker
-        run: docker-compose -f docker-compose-test.yml up --build  --exit-code-from node_and_jest
+        run: docker-compose -f docker-compose-test.yml up --build --exit-code-from node_and_jest
 
   linting:
     runs-on: ubuntu-latest
