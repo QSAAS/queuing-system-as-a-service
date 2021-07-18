@@ -6,18 +6,10 @@ services:
 
     ports:
       - 5672:5672
-      - 15672:15672 # HTTP management port
+      - 15672:15672 # HTTP management port, use guest/guest for logging in
 
     volumes:
       - "rabbitmq-data:/var/lib/rabbitmq"
 
-    networks:
-      - rabbitmq-net
-
 volumes:
   rabbitmq-data:
-
-networks:
-  rabbitmq-net:
-    driver: bridge
-    name: rabbitmq-net
