@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/qsaas/organization-administration
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "devops-deployment"
 #cmd equal entrypoint in docker
