@@ -11,7 +11,6 @@ COPY .env ./.env
 COPY nodemon.json ./nodemon.json
 
 RUN npm ci
-COPY ./src /app/src
 
-
+VOLUME /home/node/app/src
 
