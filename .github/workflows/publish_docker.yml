@@ -8,13 +8,13 @@ name: Build and Publish docker images
 on:
   push:
     branches:
-      - 'master'
+      - 'development'
       - 'devops/*'
     tags:
       - 'v*'
   pull_request:
     branches:
-      - 'master'
+      - 'development'
 
 jobs:
   docker-organization-administration:
@@ -28,7 +28,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: name/app
+          images: ghcr.io/a4w/Organization-administration
       -
         name: Login to registry [github for now]
         if: github.event_name != 'pull_request'
