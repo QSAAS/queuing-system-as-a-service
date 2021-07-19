@@ -6,6 +6,7 @@ services:
 
     build:
       context: .
+      dockerfile: test.Dockerfile
       target: testing
 
     environment:
