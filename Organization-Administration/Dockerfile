@@ -8,10 +8,10 @@ COPY tsconfig.json ./
 
 COPY .env ./.env
 
-COPY nodemon.json ./nodemon.json
+RUN apk add --no-cache bash
 
 RUN npm ci
-COPY ./src /app/src
+COPY ./src ./src
 
 
 
