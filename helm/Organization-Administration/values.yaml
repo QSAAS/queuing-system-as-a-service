@@ -5,10 +5,16 @@
 replicaCount: 1
 
 image:
-  repository: docker.pkg.github.com/a4w/queuing-system-as-a-service/org-admin
+  repository: ghcr.io/qsaas/organization-administration
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "stretch-slim"
+  tag: "devops-deployment"
+#cmd equal entrypoint in docker
+#args equal CMD in docker
+#containerCMD:
+#  cmd: npm
+#  args:
+
 
 
 imagePullSecrets:
