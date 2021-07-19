@@ -28,7 +28,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ghcr.io/a4w/Organization-administration
+          images: ghcr.io/QSAAS/Organization-administration
       -
         name: Login to registry [github for now]
         if: github.event_name != 'pull_request'
