@@ -1,4 +1,4 @@
-name: Build and Publish organization Administration docker image
+name: Build and Publish docker images
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -17,7 +17,7 @@ on:
       - 'master'
 
 jobs:
-  docker:
+  docker-organization-administration:
     runs-on: ubuntu-latest
     steps:
       -
@@ -41,7 +41,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          file:  ./Organization-Administration/Dockerfile
+          context:  ./Organization-Administration/
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
