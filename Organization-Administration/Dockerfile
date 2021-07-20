@@ -11,6 +11,7 @@ COPY .env ./.env
 RUN apk add --no-cache bash
 
 RUN npm ci
+EXPOSE 80
 COPY ./src ./src
 
 
