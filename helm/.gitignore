@@ -1,1 +1,2 @@
-/Organization-Administration/templates/registry-secret.yaml
+/*/templates/*.secret.yaml
+/*/*.secret.yaml
