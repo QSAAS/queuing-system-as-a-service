@@ -176,7 +176,11 @@ const definitions: DependencyDefinitions<DiEntry> = {
       container.resolve(DiEntry.CreateQueueNodeService),
       container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
     ),
-  [DiEntry.EventBus]: (container) => new RabbitMQEventBus(container.resolve(DiEntry.RABBIT_MQ_URL)),
+  [DiEntry.EventBus]: async (container) => {
+    const bus = new RabbitMQEventBus(container.resolve(DiEntry.RABBIT_MQ_URL));
+    await bus.waitForConnection();
+    return bus;
+  },
   [DiEntry.EventHandler]: (container) => new EventHandler(container.resolve(DiEntry.EventBus), EventMap),
 };
 

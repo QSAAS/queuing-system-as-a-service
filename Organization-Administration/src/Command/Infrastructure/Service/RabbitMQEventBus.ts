@@ -26,20 +26,27 @@ export default class RabbitMQEventBus implements EventBus {
 
   private QUEUE_NAME = "EventQueue";
 
-  constructor(url: string) {
-    this.connection = new Rabbit(url, {
+  constructor(private url: string) {
+    this.connection = new Rabbit(this.url, {
       prefetch: 1,
       replyPattern: true,
       scheduledPublish: false,
       prefix: "",
       socketOptions: {},
     });
-    this.connection.on("connected", () => {
-      console.log("RMQ connected");
-    });
-    this.connection.on("disconnected", () => {
-      console.log("RMQ disconnected");
-      setTimeout(() => this.connection.reconnect(), 5000);
+  }
+
+  async waitForConnection(): Promise<void> {
+    return new Promise((resolve) => {
+      this.connection.on("connected", () => {
+        console.log("RMQ connected");
+        resolve();
+      });
+
+      this.connection.on("disconnected", () => {
+        console.log("RMQ disconnected");
+        setTimeout(() => this.connection.reconnect(), 5000);
+      });
     });
   }
 
