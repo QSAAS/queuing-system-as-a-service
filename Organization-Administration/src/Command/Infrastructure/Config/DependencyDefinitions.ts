@@ -30,6 +30,8 @@ import DirectQueueNodeAuthorizationService from "@app/Command/Infrastructure/Ser
 import MetadataSpecificationFieldDtoTransformer from "@app/Command/Application/Transformer/MetadataSpecificationFieldDtoTransformer";
 import TimeSpanDtoTransformer from "@app/Command/Application/Transformer/TimeSpanDtoTransformer";
 import RabbitMQEventBus from "@app/Command/Infrastructure/Service/RabbitMQEventBus";
+import EventHandler from "@app/Command/Infrastructure/Service/EventHandler";
+import EventMap from "@app/Command/Infrastructure/Service/EventHandler/EventMap";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
@@ -66,6 +68,7 @@ export enum DiEntry {
   MetadataSpecificationFieldDtoTransformer,
   TimespanDtoTransformer,
   EventBus,
+  EventHandler,
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -174,6 +177,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
       container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
     ),
   [DiEntry.EventBus]: (container) => new RabbitMQEventBus(container.resolve(DiEntry.RABBIT_MQ_URL)),
+  [DiEntry.EventHandler]: (container) => new EventHandler(container.resolve(DiEntry.EventBus), EventMap),
 };
 
 export default definitions;
