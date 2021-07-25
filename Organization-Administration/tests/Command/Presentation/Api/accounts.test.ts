@@ -17,6 +17,7 @@ let repo: MongooseOrganizationEmployeeRepository;
 let container: DependencyInjectionContainer<DiEntry>;
 
 beforeAll(async () => {
+  console.log("ENVIRONMENT", process.env.ENV);
   container = await getDependencyContainer();
   app = await createApp();
 });

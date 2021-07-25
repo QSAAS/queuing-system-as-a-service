@@ -1,86 +1,58 @@
-// eslint-disable-next-line max-classes-per-file
 import EventBus, { IncomingEvent } from "@app/Command/Domain/Service/EventBus";
 import DomainEvent from "@app/Command/Domain/Event/DomainEvent";
-import { BaseQueueHandler, Rabbit } from "rabbit-queue";
 import "json-circular-stringify";
-
-type RabbitMqMessage = {
-  msg: object;
-  event: string;
-  correlationId: string;
-  startTime: number;
-};
-
-class DemoHandler extends BaseQueueHandler {
-  constructor(queueName: string, connection: Rabbit, props: object, private handler: Function) {
-    super(queueName, connection, props);
-  }
-
-  handle(message: RabbitMqMessage) {
-    this.handler(message);
-  }
-}
+import * as Amqp from "amqp-ts";
 
 export default class RabbitMQEventBus implements EventBus {
-  private connection: Rabbit;
+  private connection: Amqp.Connection;
 
-  private QUEUE_NAME = "EventQueue";
+  private exchange: Amqp.Exchange;
+
+  private QUEUE_NAME = "EventQueue_OrganizationAdministration";
+  private EXCHANGE_NAME = "EventQueueExchange";
 
   constructor(private url: string) {
-    this.connection = new Rabbit(this.url, {
-      prefetch: 1,
-      replyPattern: true,
-      scheduledPublish: false,
-      prefix: "",
-      socketOptions: {},
-    });
+    this.connection = new Amqp.Connection(this.url);
+    this.exchange = this.connection.declareExchange(this.EXCHANGE_NAME, "fanout");
   }
 
   async waitForConnection(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.connection.on("connected", () => {
+      this.connection.completeConfiguration().then(() => {
         console.log("RMQ connected");
         resolve();
       });
 
       setTimeout(() => reject(), 15000); // Timeout after a while
 
-      this.connection.on("disconnected", () => {
+      this.connection.on("lost_connection", () => {
         console.log("RMQ disconnected");
-        setTimeout(() => this.connection.reconnect(), 5000);
+      });
+      this.connection.on("error_connection", () => {
+        console.log("RMQ disconnected (error)");
       });
     });
   }
 
   async publishEvent(event: DomainEvent): Promise<void> {
-    await this.connection.publish(this.QUEUE_NAME, JSON.stringify(event));
+    const message = new Amqp.Message(JSON.stringify(event));
+    await this.exchange.send(message);
   }
 
   async publishEvents(events: DomainEvent[]): Promise<void> {
     await Promise.all(events.map((event) => this.publishEvent(event)));
   }
 
-  async getNextEvent(): Promise<IncomingEvent> {
-    return new Promise((resolve) => {
-      // eslint-disable-next-line no-new
-      new DemoHandler(
-        this.QUEUE_NAME,
-        this.connection,
-        {
-          retries: 3,
-          retryDelay: 1000,
-          logEnabled: true, // log queue processing time
-          scope: "SINGLETON", // can also be 'PROTOTYPE' to create a new instance every time
-          createAndSubscribeToQueue: true, // used internally no need to overwriteÏÏ
-        },
-        ({ event }: RabbitMqMessage) => {
-          const data = JSON.parse(event);
-          resolve({
-            type: data.eventName,
-            data,
-          });
-        },
-      );
+  async onNextEvent(callback: (message: IncomingEvent) => void): Promise<void> {
+    const queue = this.connection.declareQueue(this.QUEUE_NAME);
+    await queue.bind(this.exchange);
+    await queue.activateConsumer((message) => {
+      console.log("GOT_MESSAGE", message.getContent());
+      const data = JSON.parse(message.getContent());
+      callback({
+        type: data.eventName,
+        data,
+      });
     });
   }
 }

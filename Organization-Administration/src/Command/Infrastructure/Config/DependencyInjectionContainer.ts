@@ -1,3 +1,6 @@
+// eslint-disable-next-line max-classes-per-file
+class KeyNotFound extends Error {}
+
 export default class DependencyInjectionContainer<T extends number | string> {
   private container: Map<string, object>;
 
@@ -11,7 +14,7 @@ export default class DependencyInjectionContainer<T extends number | string> {
 
   resolve<U>(key: T): U {
     if (!this.container.has(key.toString())) {
-      throw new Error(`Class type with T value "${key}" not set inside container`);
+      throw new KeyNotFound(`Class type with T value "${key}" not set inside container`);
     }
     return this.container.get(key.toString()) as any;
   }
@@ -32,9 +35,13 @@ export default class DependencyInjectionContainer<T extends number | string> {
         notInitializedKeys.shift();
         iterations = 0;
       } catch (error) {
-        const elem = notInitializedKeys.shift()!;
-        notInitializedKeys.push(elem);
-        iterations += 1;
+        if (error instanceof KeyNotFound) {
+          const elem = notInitializedKeys.shift()!;
+          notInitializedKeys.push(elem);
+          iterations += 1;
+        } else {
+          throw error;
+        }
       }
     }
   }
