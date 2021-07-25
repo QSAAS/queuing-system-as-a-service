@@ -32,8 +32,6 @@ import TimeSpanDtoTransformer from "@app/Command/Application/Transformer/TimeSpa
 import RabbitMQEventBus from "@app/Command/Infrastructure/Service/RabbitMQEventBus";
 import EventHandler from "@app/Command/Infrastructure/Service/EventHandler";
 import EventMap from "@app/Command/Infrastructure/Service/EventHandler/EventMap";
-import EventBus, { IncomingEvent } from "@app/Command/Domain/Service/EventBus";
-import DomainEvent from "@app/Command/Domain/Event/DomainEvent";
 import DummyEventBus from "@app/Command/Infrastructure/Service/DummyEventBus";
 
 export enum DiEntry {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import EventBus, { IncomingEvent } from "@app/Command/Domain/Service/EventBus";
 import DomainEvent from "@app/Command/Domain/Event/DomainEvent";
 
