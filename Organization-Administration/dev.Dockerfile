@@ -6,7 +6,7 @@ COPY package*.json ./
 
 COPY tsconfig.json ./
 
-COPY .env ./.env
+RUN touch .env
 
 COPY nodemon.json ./nodemon.json
 
