@@ -5,6 +5,7 @@ import createOrganizationEndpointRouter from "@app/Command/Presentation/Api/Rout
 import createOrganizationEmployeeRouter from "@app/Command/Presentation/Api/Routes/OrganizationEmployeeRouter";
 import createAuthorizationRuleRouter from "@app/Command/Presentation/Api/Routes/AuthorizationRuleRouter";
 import createQueueNodeRouter from "@app/Command/Presentation/Api/Routes/QueueNodeRouter";
+import createQueueServerRouter from "@app/Command/Presentation/Api/Routes/QueueServerRouter";
 import ErrorHandler from "@app/Command/Presentation/Api/Middleware/ErrorHandler";
 
 let container: DependencyInjectionContainer<DiEntry>;
@@ -24,6 +25,7 @@ async function createRouter() {
   router.use("/accounts", createOrganizationEmployeeRouter(containerInstance));
   router.use("/authorization-rule", createAuthorizationRuleRouter(containerInstance));
   router.use("/queue_node", createQueueNodeRouter(containerInstance));
+  router.use("/queue_server", createQueueServerRouter(containerInstance));
   router.use(ErrorHandler);
 
   return router;
