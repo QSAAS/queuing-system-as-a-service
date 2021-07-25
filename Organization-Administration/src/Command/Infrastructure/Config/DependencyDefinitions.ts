@@ -39,9 +39,14 @@ import EmployeeCreateNewQueueNodeService from "@app/Command/Domain/Service/Emplo
 import DirectQueueNodeAuthorizationService from "@app/Command/Infrastructure/Service/AuthorizationService/DirectQueueNodeAuthorizationService";
 import MetadataSpecificationFieldDtoTransformer from "@app/Command/Application/Transformer/MetadataSpecificationFieldDtoTransformer";
 import TimeSpanDtoTransformer from "@app/Command/Application/Transformer/TimeSpanDtoTransformer";
+import RabbitMQEventBus from "@app/Command/Infrastructure/Service/RabbitMQEventBus";
+import EventHandler from "@app/Command/Infrastructure/Service/EventHandler";
+import EventMap from "@app/Command/Infrastructure/Service/EventHandler/EventMap";
+import DummyEventBus from "@app/Command/Infrastructure/Service/DummyEventBus";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
+  RABBIT_MQ_URL,
   JWT_KEY,
   AuthorizationRuleRepository,
   AuthorizationRuleMongooseTransformer,
@@ -82,6 +87,8 @@ export enum DiEntry {
   QueueNodeAuthorizationService,
   MetadataSpecificationFieldDtoTransformer,
   TimespanDtoTransformer,
+  EventBus,
+  EventHandler,
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -94,11 +101,13 @@ const definitions: DependencyDefinitions<DiEntry> = {
       poolSize: 100,
     });
   },
+  [DiEntry.RABBIT_MQ_URL]: () => process.env.RABBIT_MQ_URL,
   [DiEntry.AuthorizationRuleMongooseTransformer]: () => new AuthorizationRuleMongooseTransformer(),
   [DiEntry.OrganizationEmployeeRepository]: (container) =>
     new MongooseOrganizationEmployeeRepository(
       container.resolve(DiEntry.MONGOOSE_CONNECTION),
       container.resolve(DiEntry.OrganizationEmployeeMongooseTransformer),
+      container.resolve(DiEntry.EventBus),
     ),
   [DiEntry.AuthorizationRuleRepository]: (container) =>
     new MongooseAuthorizationRuleRepository(
@@ -219,6 +228,20 @@ const definitions: DependencyDefinitions<DiEntry> = {
       container.resolve(DiEntry.CreateQueueNodeService),
       container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
     ),
+  [DiEntry.EventBus]: async (container) => {
+    if (process.env.ENV === "testing") {
+      return new DummyEventBus();
+    }
+    const bus = new RabbitMQEventBus(container.resolve(DiEntry.RABBIT_MQ_URL));
+    try {
+      await bus.waitForConnection();
+    } catch (e) {
+      console.error("EventBus is not available (Timeout)");
+      return null;
+    }
+    return bus;
+  },
+  [DiEntry.EventHandler]: (container) => new EventHandler(container.resolve(DiEntry.EventBus), EventMap),
 };
 
 export default definitions;
