@@ -37,11 +37,13 @@ export default class RabbitMQEventBus implements EventBus {
   }
 
   async waitForConnection(): Promise<void> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       this.connection.on("connected", () => {
         console.log("RMQ connected");
         resolve();
       });
+
+      setTimeout(() => reject(), 15000); // Timeout after a while
 
       this.connection.on("disconnected", () => {
         console.log("RMQ disconnected");

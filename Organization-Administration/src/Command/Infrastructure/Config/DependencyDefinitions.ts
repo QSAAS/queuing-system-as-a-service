@@ -178,7 +178,12 @@ const definitions: DependencyDefinitions<DiEntry> = {
     ),
   [DiEntry.EventBus]: async (container) => {
     const bus = new RabbitMQEventBus(container.resolve(DiEntry.RABBIT_MQ_URL));
-    await bus.waitForConnection();
+    try {
+      await bus.waitForConnection();
+    } catch (e) {
+      console.error("EventBus is not available (Timeout)");
+      return null;
+    }
     return bus;
   },
   [DiEntry.EventHandler]: (container) => new EventHandler(container.resolve(DiEntry.EventBus), EventMap),
