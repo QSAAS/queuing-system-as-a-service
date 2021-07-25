@@ -4,6 +4,7 @@ import express from "express";
 import createOrganizationEndpointRouter from "@app/Command/Presentation/Api/Routes/OrganizationEndpointRouter";
 import createOrganizationEmployeeRouter from "@app/Command/Presentation/Api/Routes/OrganizationEmployeeRouter";
 import createAuthorizationRuleRouter from "@app/Command/Presentation/Api/Routes/AuthorizationRuleRouter";
+import createQueueNodeRouter from "@app/Command/Presentation/Api/Routes/QueueNodeRouter";
 import ErrorHandler from "@app/Command/Presentation/Api/Middleware/ErrorHandler";
 
 let container: DependencyInjectionContainer<DiEntry>;
@@ -22,6 +23,7 @@ async function createRouter() {
   router.use("/endpoint", createOrganizationEndpointRouter(containerInstance));
   router.use("/accounts", createOrganizationEmployeeRouter(containerInstance));
   router.use("/authorization-rule", createAuthorizationRuleRouter(containerInstance));
+  router.use("/queue_node", createQueueNodeRouter(containerInstance));
   router.use(ErrorHandler);
 
   return router;

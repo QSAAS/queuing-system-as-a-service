@@ -1,3 +1,3 @@
 export default class CreateOrganizationEndpointResponse {
-  constructor(public organizationId: string) {}
+  constructor(public endpointId: string) {}
 }
