@@ -9,9 +9,12 @@ services:
       dockerfile: test.Dockerfile
 
     environment:
-      DB_URL: mongo-db
-      DB_PORT: 27017
-      DB_NAME: "qsaas_test"
+      - DB_URL=mongo-db
+      - DB_PORT=27017
+      - DB_NAME=qsaas_test
+      - JWT_KEY=key
+      - RABBIT_MQ_URL=amqp://myrabbitmq:5672
+      - ENV
 
     depends_on:
       - mongo-db

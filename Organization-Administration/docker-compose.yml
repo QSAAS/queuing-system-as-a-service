@@ -12,10 +12,12 @@ services:
       - "./src:/home/node/app/src"
 
     environment:
-      DB_URL: mongo-db
-      DB_PORT: 27017
-      DB_NAME: "qsaas"
-      RABBIT_MQ_URL: amqp://myrabbitmq:5672
+      - DB_URL=mongo-db
+      - DB_PORT=27017
+      - DB_NAME=qsaas_test
+      - RABBIT_MQ_URL=amqp://myrabbitmq:5672
+      - JWT_KEY=key
+      - ENV
 
     depends_on:
       - mongo-db
@@ -33,13 +35,13 @@ services:
       - "27017:27017"
 
     restart: always
-    
+
     volumes:
       - "mongodb:/data/db"
 
     logging:
       driver: none
-      
+
   myrabbitmq:
     image: rabbitmq:3-management-alpine
 
