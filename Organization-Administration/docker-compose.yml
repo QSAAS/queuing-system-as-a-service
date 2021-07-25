@@ -33,13 +33,13 @@ services:
       - "27017:27017"
 
     restart: always
-
+    
     volumes:
       - "mongodb:/data/db"
 
     logging:
       driver: none
-
+      
   myrabbitmq:
     image: rabbitmq:3-management-alpine
 
