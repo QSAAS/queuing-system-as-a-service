@@ -34,6 +34,7 @@ import EventHandler from "@app/Command/Infrastructure/Service/EventHandler";
 import EventMap from "@app/Command/Infrastructure/Service/EventHandler/EventMap";
 import EventBus, { IncomingEvent } from "@app/Command/Domain/Service/EventBus";
 import DomainEvent from "@app/Command/Domain/Event/DomainEvent";
+import DummyEventBus from "@app/Command/Infrastructure/Service/DummyEventBus";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
@@ -71,20 +72,6 @@ export enum DiEntry {
   TimespanDtoTransformer,
   EventBus,
   EventHandler,
-}
-
-class DummyEventBus implements EventBus {
-  getNextEvent(): Promise<IncomingEvent> {
-    return new Promise<IncomingEvent>((resolve) => {});
-  }
-
-  publishEvent(event: DomainEvent): Promise<void> {
-    return Promise.resolve(undefined);
-  }
-
-  publishEvents(events: DomainEvent[]): Promise<void> {
-    return Promise.resolve(undefined);
-  }
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
