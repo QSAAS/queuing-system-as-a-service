@@ -8,7 +8,7 @@ export default class RabbitMQEventBus implements EventBus {
 
   private exchange: Amqp.Exchange;
 
-  private QUEUE_NAME = "EventQueue";
+  private QUEUE_NAME = "EventQueue_OrganizationAdministration";
   private EXCHANGE_NAME = "EventQueueExchange";
 
   constructor(private url: string) {
