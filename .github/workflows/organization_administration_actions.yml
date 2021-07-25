@@ -15,7 +15,10 @@ jobs:
       run:
         working-directory: ./Organization-Administration
     env:
-      ENV: testing
+      SERVER_PORT: 4041
+      JWT_KEY: custom_key_secret_forget_now
+      ENV: 'testing'
+
     steps:
       - uses: actions/checkout@v2
       - name: Run docker
