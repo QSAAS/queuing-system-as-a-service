@@ -237,10 +237,11 @@ const definitions: DependencyDefinitions<DiEntry> = {
       await bus.waitForConnection();
     } catch (e) {
       console.error("EventBus is not available (Timeout)");
-      return null;
+      return new DummyEventBus();
     }
     return bus;
   },
+
   [DiEntry.EventHandler]: (container) => new EventHandler(container.resolve(DiEntry.EventBus), EventMap),
 };
 
