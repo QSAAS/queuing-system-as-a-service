@@ -5,6 +5,7 @@ import OrganizationEmployee from "@app/Command/Domain/Entity/OrganizationEmploye
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import OrganizationId from "@app/Command/Domain/ValueObject/OrganizationId";
 import PasswordHashFactory from "@app/Command/Domain/Service/PasswordHashFactory";
+import OrganizationEmployeeCreated from "@app/Command/Domain/Event/OrganizationEmployeeCreated";
 
 export default class RegisterService {
   constructor(private repo: OrganizationEmployeeRepository, private passwordFactory: PasswordHashFactory) {}
@@ -22,6 +23,7 @@ export default class RegisterService {
       passwordHash,
       EmployeeUsername.from(request.username),
     );
+    employee.raiseEvent(new OrganizationEmployeeCreated(employee));
     await this.repo.save(employee);
     return employee.getId().toString();
   }

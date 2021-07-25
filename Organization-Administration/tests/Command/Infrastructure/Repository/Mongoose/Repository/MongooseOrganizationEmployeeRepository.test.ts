@@ -5,13 +5,14 @@ import IOrganizationEmployee from "@app/Command/Infrastructure/Repository/Mongoo
 import OrganizationEmployeeBuilder from "@tests/Command/Domain/Entity/Builder/OrganizationEmployeeBuilder";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import OrganizationEmployeeNotFound from "@app/Command/Domain/Error/OrganizationEmployeeNotFound";
+import DummyEventBus from "@app/Command/Infrastructure/Service/DummyEventBus";
 
 const employeeTransformer = new OrganizationEmployeeMongooseTransformer();
 
 let repo: MongooseOrganizationEmployeeRepository;
 
 createTestingDbConnection((connection) => {
-  repo = new MongooseOrganizationEmployeeRepository(connection, employeeTransformer);
+  repo = new MongooseOrganizationEmployeeRepository(connection, employeeTransformer, new DummyEventBus());
 });
 
 it("Should save Organization Employee instance", async () => {

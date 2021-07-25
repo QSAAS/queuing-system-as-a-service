@@ -20,25 +20,23 @@ import BCryptPasswordHashFactory from "@app/Command/Infrastructure/Service/BCryp
 import RegisterService from "@app/Command/Application/Service/RegisterService";
 import QueueNodeController from "@app/Command/Presentation/Api/Controller/QueueNodeController";
 import CreateQueueNodeService from "@app/Command/Application/Service/CreateQueueNodeService";
-import MongooseQueueNodeRepository
-  from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseQueueNodeRepository";
-import QueueNodeMongooseTransformer
-  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/QueueNodeMongooseTransformer";
-import MetadataSpecificationFieldMongooseTransformer
-  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/MetadataSpecificationFieldMongooseTransformer";
-import TimeSpanMongooseTransformer
-  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/TimeSpanMongooseTransformer";
-import ClockMongooseTransformer
-  from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/ClockMongooseTransformer";
+import MongooseQueueNodeRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseQueueNodeRepository";
+import QueueNodeMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/QueueNodeMongooseTransformer";
+import MetadataSpecificationFieldMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/MetadataSpecificationFieldMongooseTransformer";
+import TimeSpanMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/TimeSpanMongooseTransformer";
+import ClockMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/ClockMongooseTransformer";
 import EmployeeCreateNewQueueNodeService from "@app/Command/Domain/Service/EmployeeCreateNewQueueNodeService";
-import DirectQueueNodeAuthorizationService
-  from "@app/Command/Infrastructure/Service/AuthorizationService/DirectQueueNodeAuthorizationService";
-import MetadataSpecificationFieldDtoTransformer
-  from "@app/Command/Application/Transformer/MetadataSpecificationFieldDtoTransformer";
+import DirectQueueNodeAuthorizationService from "@app/Command/Infrastructure/Service/AuthorizationService/DirectQueueNodeAuthorizationService";
+import MetadataSpecificationFieldDtoTransformer from "@app/Command/Application/Transformer/MetadataSpecificationFieldDtoTransformer";
 import TimeSpanDtoTransformer from "@app/Command/Application/Transformer/TimeSpanDtoTransformer";
+import RabbitMQEventBus from "@app/Command/Infrastructure/Service/RabbitMQEventBus";
+import EventHandler from "@app/Command/Infrastructure/Service/EventHandler";
+import EventMap from "@app/Command/Infrastructure/Service/EventHandler/EventMap";
+import DummyEventBus from "@app/Command/Infrastructure/Service/DummyEventBus";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
+  RABBIT_MQ_URL,
   JWT_KEY,
   AuthorizationRuleRepository,
   AuthorizationRuleMongooseTransformer,
@@ -70,6 +68,8 @@ export enum DiEntry {
   QueueNodeAuthorizationService,
   MetadataSpecificationFieldDtoTransformer,
   TimespanDtoTransformer,
+  EventBus,
+  EventHandler,
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -82,11 +82,13 @@ const definitions: DependencyDefinitions<DiEntry> = {
       poolSize: 100,
     });
   },
+  [DiEntry.RABBIT_MQ_URL]: () => process.env.RABBIT_MQ_URL,
   [DiEntry.AuthorizationRuleMongooseTransformer]: () => new AuthorizationRuleMongooseTransformer(),
   [DiEntry.OrganizationEmployeeRepository]: (container) =>
     new MongooseOrganizationEmployeeRepository(
       container.resolve(DiEntry.MONGOOSE_CONNECTION),
       container.resolve(DiEntry.OrganizationEmployeeMongooseTransformer),
+      container.resolve(DiEntry.EventBus),
     ),
   [DiEntry.AuthorizationRuleRepository]: (container) =>
     new MongooseAuthorizationRuleRepository(
@@ -143,37 +145,52 @@ const definitions: DependencyDefinitions<DiEntry> = {
       container.resolve(DiEntry.PasswordHashFactory),
     ),
   [DiEntry.ClockMongooseTransformer]: () => new ClockMongooseTransformer(),
-  [DiEntry.TimespanMongooseTransformer]: (container) => new TimeSpanMongooseTransformer(
-    container.resolve(DiEntry.ClockMongooseTransformer),
-  ),
+  [DiEntry.TimespanMongooseTransformer]: (container) =>
+    new TimeSpanMongooseTransformer(container.resolve(DiEntry.ClockMongooseTransformer)),
   [DiEntry.MetadataSpecificationFieldMongooseTransformer]: () => new MetadataSpecificationFieldMongooseTransformer(),
-  [DiEntry.QueueNodeMongooseTransformer]: (container) => new QueueNodeMongooseTransformer(
-    container.resolve(DiEntry.MetadataSpecificationFieldMongooseTransformer),
-    container.resolve(DiEntry.TimespanMongooseTransformer),
-  ),
-  [DiEntry.QueueNodeRepository]: (container) => new MongooseQueueNodeRepository(
-    container.resolve(DiEntry.MONGOOSE_CONNECTION),
-    container.resolve(DiEntry.QueueNodeMongooseTransformer),
-  ),
-  [DiEntry.QueueNodeAuthorizationService]: (container) => new DirectQueueNodeAuthorizationService(
-    container.resolve(DiEntry.AuthorizationRuleRepository),
-  ),
-  [DiEntry.EmployeeCreateNewQueueNodeService]: (container) => new EmployeeCreateNewQueueNodeService(
-    container.resolve(DiEntry.QueueNodeAuthorizationService),
-  ),
+  [DiEntry.QueueNodeMongooseTransformer]: (container) =>
+    new QueueNodeMongooseTransformer(
+      container.resolve(DiEntry.MetadataSpecificationFieldMongooseTransformer),
+      container.resolve(DiEntry.TimespanMongooseTransformer),
+    ),
+  [DiEntry.QueueNodeRepository]: (container) =>
+    new MongooseQueueNodeRepository(
+      container.resolve(DiEntry.MONGOOSE_CONNECTION),
+      container.resolve(DiEntry.QueueNodeMongooseTransformer),
+    ),
+  [DiEntry.QueueNodeAuthorizationService]: (container) =>
+    new DirectQueueNodeAuthorizationService(container.resolve(DiEntry.AuthorizationRuleRepository)),
+  [DiEntry.EmployeeCreateNewQueueNodeService]: (container) =>
+    new EmployeeCreateNewQueueNodeService(container.resolve(DiEntry.QueueNodeAuthorizationService)),
   [DiEntry.MetadataSpecificationFieldDtoTransformer]: () => new MetadataSpecificationFieldDtoTransformer(),
   [DiEntry.TimespanDtoTransformer]: () => new TimeSpanDtoTransformer(),
-  [DiEntry.CreateQueueNodeService]: (container) => new CreateQueueNodeService(
-    container.resolve(DiEntry.OrganizationEmployeeRepository),
-    container.resolve(DiEntry.QueueNodeRepository),
-    container.resolve(DiEntry.EmployeeCreateNewQueueNodeService),
-    container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
-    container.resolve(DiEntry.TimespanDtoTransformer),
-  ),
-  [DiEntry.QueueNodeController]: (container) => new QueueNodeController(
-    container.resolve(DiEntry.CreateQueueNodeService),
-    container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
-  )
+  [DiEntry.CreateQueueNodeService]: (container) =>
+    new CreateQueueNodeService(
+      container.resolve(DiEntry.OrganizationEmployeeRepository),
+      container.resolve(DiEntry.QueueNodeRepository),
+      container.resolve(DiEntry.EmployeeCreateNewQueueNodeService),
+      container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
+      container.resolve(DiEntry.TimespanDtoTransformer),
+    ),
+  [DiEntry.QueueNodeController]: (container) =>
+    new QueueNodeController(
+      container.resolve(DiEntry.CreateQueueNodeService),
+      container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
+    ),
+  [DiEntry.EventBus]: async (container) => {
+    if (process.env.ENV === "testing") {
+      return new DummyEventBus();
+    }
+    const bus = new RabbitMQEventBus(container.resolve(DiEntry.RABBIT_MQ_URL));
+    try {
+      await bus.waitForConnection();
+    } catch (e) {
+      console.error("EventBus is not available (Timeout)");
+      return null;
+    }
+    return bus;
+  },
+  [DiEntry.EventHandler]: (container) => new EventHandler(container.resolve(DiEntry.EventBus), EventMap),
 };
 
 export default definitions;

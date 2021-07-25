@@ -8,12 +8,17 @@ import OrganizationEmployeeSchema from "@app/Command/Infrastructure/Repository/M
 import OrganizationEmployeeNotFound from "@app/Command/Domain/Error/OrganizationEmployeeNotFound";
 import EmployeeUsername from "@app/Command/Domain/ValueObject/EmployeeUsername";
 import DuplicateAttributeError from "@app/Command/Domain/Error/DuplicateAttributeError";
+import EventBus from "@app/Command/Domain/Service/EventBus";
 
 export default class MongooseOrganizationEmployeeRepository implements OrganizationEmployeeRepository {
   private readonly OrganizationEmployeeModel: mongoose.Model<IOrganizationEmployee & mongoose.Document>;
   private readonly employeeTransformer: OrganizationEmployeeMongooseTransformer;
 
-  constructor(connection: mongoose.Connection, employeeTransformer: OrganizationEmployeeMongooseTransformer) {
+  constructor(
+    connection: mongoose.Connection,
+    employeeTransformer: OrganizationEmployeeMongooseTransformer,
+    private eventBus: EventBus,
+  ) {
     this.OrganizationEmployeeModel = connection.model<IOrganizationEmployee & mongoose.Document>(
       "OrganizationEmployee",
       OrganizationEmployeeSchema,
@@ -29,6 +34,7 @@ export default class MongooseOrganizationEmployeeRepository implements Organizat
     const instance = new this.OrganizationEmployeeModel(this.employeeTransformer.mongooseObjectFrom(employee));
     try {
       await instance.save();
+      await this.eventBus.publishEvents(employee.getRaisedEvents());
     } catch (e) {
       if (e.name === "MongoError" && e.code === 11000) {
         throw new DuplicateAttributeError("username already exists");
@@ -47,11 +53,11 @@ export default class MongooseOrganizationEmployeeRepository implements Organizat
   }
 
   async getByUsername(username: EmployeeUsername): Promise<OrganizationEmployee> {
-    const object = await this.OrganizationEmployeeModel.findOne({username: username.toString()});
+    const object = await this.OrganizationEmployeeModel.findOne({ username: username.toString() });
     return this.instanceOrThrowEmployeeNotFound(object);
   }
 
-  private instanceOrThrowEmployeeNotFound(object: IOrganizationEmployee|null): OrganizationEmployee {
+  private instanceOrThrowEmployeeNotFound(object: IOrganizationEmployee | null): OrganizationEmployee {
     if (!object) {
       throw new OrganizationEmployeeNotFound();
     }
