@@ -32,6 +32,8 @@ import TimeSpanDtoTransformer from "@app/Command/Application/Transformer/TimeSpa
 import RabbitMQEventBus from "@app/Command/Infrastructure/Service/RabbitMQEventBus";
 import EventHandler from "@app/Command/Infrastructure/Service/EventHandler";
 import EventMap from "@app/Command/Infrastructure/Service/EventHandler/EventMap";
+import EventBus, { IncomingEvent } from "@app/Command/Domain/Service/EventBus";
+import DomainEvent from "@app/Command/Domain/Event/DomainEvent";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
@@ -69,6 +71,20 @@ export enum DiEntry {
   TimespanDtoTransformer,
   EventBus,
   EventHandler,
+}
+
+class DummyEventBus implements EventBus {
+  getNextEvent(): Promise<IncomingEvent> {
+    return new Promise<IncomingEvent>((resolve) => {});
+  }
+
+  publishEvent(event: DomainEvent): Promise<void> {
+    return Promise.resolve(undefined);
+  }
+
+  publishEvents(events: DomainEvent[]): Promise<void> {
+    return Promise.resolve(undefined);
+  }
 }
 
 const definitions: DependencyDefinitions<DiEntry> = {
@@ -177,6 +193,9 @@ const definitions: DependencyDefinitions<DiEntry> = {
       container.resolve(DiEntry.MetadataSpecificationFieldDtoTransformer),
     ),
   [DiEntry.EventBus]: async (container) => {
+    if (process.env.ENV === "testing") {
+      return new DummyEventBus();
+    }
     const bus = new RabbitMQEventBus(container.resolve(DiEntry.RABBIT_MQ_URL));
     try {
       await bus.waitForConnection();

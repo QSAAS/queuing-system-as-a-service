@@ -13,5 +13,8 @@ COPY nodemon.json ./nodemon.json
 RUN npm ci
 
 COPY jest.config.js ./jest.config.js
+
+COPY jest.setup.js ./jest.setup.js
+
 COPY ./src ./src
 COPY ./tests ./tests
