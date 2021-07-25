@@ -5,4 +5,6 @@ metadata:
 data:
   DB_URL: "organization-administration-mongodb"
   DB_PORT: "27017"
+  RABBIT_MQ_URL: "amqp://user:4SkOd6m5Bo@r1-rabbitmq.rabbitmq:5672/"
+  ENV: staging
 {{/*  DB_NAME: qsaas*/}}
