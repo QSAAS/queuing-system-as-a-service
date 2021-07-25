@@ -5,7 +5,7 @@ export default interface EventBus {
 
   publishEvents(events: DomainEvent[]): Promise<void>;
 
-  getNextEvent(): Promise<IncomingEvent>;
+  onNextEvent(callback: (message: IncomingEvent) => void): Promise<void>;
 }
 
 export interface IncomingEvent {

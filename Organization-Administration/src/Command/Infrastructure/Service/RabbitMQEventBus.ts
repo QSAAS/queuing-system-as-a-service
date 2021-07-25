@@ -43,12 +43,15 @@ export default class RabbitMQEventBus implements EventBus {
     await Promise.all(events.map((event) => this.publishEvent(event)));
   }
 
-  async getNextEvent(): Promise<IncomingEvent> {
-    return new Promise((resolve) => {
-      const queue = this.connection.declareQueue(this.QUEUE_NAME);
-      queue.bind(this.exchange);
-      queue.activateConsumer((message) => {
-        resolve(message.getContent());
+  async onNextEvent(callback: (message: IncomingEvent) => void): Promise<void> {
+    const queue = this.connection.declareQueue(this.QUEUE_NAME);
+    await queue.bind(this.exchange);
+    await queue.activateConsumer((message) => {
+      console.log("GOT_MESSAGE", message.getContent());
+      const data = JSON.parse(message.getContent());
+      callback({
+        type: data.eventName,
+        data,
       });
     });
   }
