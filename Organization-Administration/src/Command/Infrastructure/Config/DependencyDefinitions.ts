@@ -18,6 +18,16 @@ import OrganizationEmployeeController from "@app/Command/Presentation/Api/Contro
 import JwtTokenGenerator from "@app/Command/Presentation/Api/Service/JwtTokenGenerator";
 import BCryptPasswordHashFactory from "@app/Command/Infrastructure/Service/BCryptPasswordHashFactory";
 import RegisterService from "@app/Command/Application/Service/RegisterService";
+import AuthorizationRuleController from "@app/Command/Presentation/Api/Controller/AuthorizationRuleController";
+import CreateAuthorizationRuleService from "@app/Command/Application/Service/CreateAuthorizationRuleService";
+import EmployeeCreateNewAuthorizationRuleService from "@app/Command/Domain/Service/EmployeeCreateNewAuthorizationRuleService";
+import DirectAuthorizationRuleAuthorizationService from "@app/Command/Infrastructure/Service/AuthorizationService/DirectAuthorizationRuleAuthorizationService";
+import PermissionDtoTransformer from "@app/Command/Application/Transformer/PermissionDtoTransformer";
+import QueueServerController from "@app/Command/Presentation/Api/Controller/QueueServerController";
+import CreateQueueServerService from "@app/Command/Application/Service/CreateQueueServerService";
+import EmployeeCreateNewQueueServerService from "@app/Command/Domain/Service/EmployeeCreateNewQueueServerService";
+import MongooseQueueServerRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseQueueServerRepository";
+import QueueServerMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/QueueServerMongooseTransformer";
 import QueueNodeController from "@app/Command/Presentation/Api/Controller/QueueNodeController";
 import CreateQueueNodeService from "@app/Command/Application/Service/CreateQueueNodeService";
 import MongooseQueueNodeRepository from "@app/Command/Infrastructure/Repository/Mongoose/Repository/MongooseQueueNodeRepository";
@@ -55,8 +65,17 @@ export enum DiEntry {
   JwtTokenGenerator,
   PasswordHashFactory,
   RegisterService,
-
-  // QueueNode
+  AuthorizationRuleController,
+  CreateAuthorizationRuleService,
+  EmployeeCreateNewAuthorizationRuleService,
+  AuthorizationRuleAuthorizationService,
+  PermissionDtoTransformer,
+  QueueServerController,
+  CreateQueueServerService,
+  QueueServerRepository,
+  EmployeeCreateNewQueueServerService,
+  QueueServerMongooseTransformer,
+  QueueServerAuthorizationService,
   QueueNodeController,
   CreateQueueNodeService,
   QueueNodeRepository,
@@ -144,6 +163,38 @@ const definitions: DependencyDefinitions<DiEntry> = {
       container.resolve(DiEntry.OrganizationEmployeeRepository),
       container.resolve(DiEntry.PasswordHashFactory),
     ),
+  [DiEntry.AuthorizationRuleController]: (container) =>
+    new AuthorizationRuleController(container.resolve(DiEntry.CreateAuthorizationRuleService)),
+  [DiEntry.CreateAuthorizationRuleService]: (container) =>
+    new CreateAuthorizationRuleService(
+      container.resolve(DiEntry.OrganizationEmployeeRepository),
+      container.resolve(DiEntry.AuthorizationRuleRepository),
+      container.resolve(DiEntry.EmployeeCreateNewAuthorizationRuleService),
+      container.resolve(DiEntry.PermissionDtoTransformer),
+    ),
+  [DiEntry.EmployeeCreateNewAuthorizationRuleService]: (container) =>
+    new EmployeeCreateNewAuthorizationRuleService(container.resolve(DiEntry.AuthorizationRuleAuthorizationService)),
+  [DiEntry.AuthorizationRuleAuthorizationService]: (container) =>
+    new DirectAuthorizationRuleAuthorizationService(container.resolve(DiEntry.AuthorizationRuleRepository)),
+  [DiEntry.PermissionDtoTransformer]: () => new PermissionDtoTransformer(),
+  [DiEntry.QueueServerController]: (container) =>
+    new QueueServerController(container.resolve(DiEntry.CreateQueueServerService)),
+  [DiEntry.CreateQueueServerService]: (container) =>
+    new CreateQueueServerService(
+      container.resolve(DiEntry.OrganizationEmployeeRepository),
+      container.resolve(DiEntry.QueueServerRepository),
+      container.resolve(DiEntry.EmployeeCreateNewQueueServerService),
+    ),
+  [DiEntry.QueueServerRepository]: (container) =>
+    new MongooseQueueServerRepository(
+      container.resolve(DiEntry.MONGOOSE_CONNECTION),
+      container.resolve(DiEntry.QueueServerMongooseTransformer),
+    ),
+  [DiEntry.QueueServerMongooseTransformer]: () => new QueueServerMongooseTransformer(),
+  [DiEntry.EmployeeCreateNewQueueServerService]: (container) =>
+    new EmployeeCreateNewQueueServerService(container.resolve(DiEntry.QueueServerAuthorizationService)),
+  [DiEntry.QueueServerAuthorizationService]: (container) =>
+    new DirectAuthorizationRuleAuthorizationService(container.resolve(DiEntry.AuthorizationRuleRepository)),
   [DiEntry.ClockMongooseTransformer]: () => new ClockMongooseTransformer(),
   [DiEntry.TimespanMongooseTransformer]: (container) =>
     new TimeSpanMongooseTransformer(container.resolve(DiEntry.ClockMongooseTransformer)),
