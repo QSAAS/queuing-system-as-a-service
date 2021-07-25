@@ -6,7 +6,7 @@ services:
 
     build:
       context: .
-      target: testing
+      dockerfile: test.Dockerfile
 
     environment:
       DB_URL: mongo-db

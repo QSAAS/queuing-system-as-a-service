@@ -6,7 +6,7 @@ services:
 
     build:
       context: .
-      target: development
+      dockerfile: dev.Dockerfile
 
     volumes:
       - "./src:/home/node/app/src"
