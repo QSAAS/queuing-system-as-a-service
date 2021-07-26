@@ -192,6 +192,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
     new MongooseQueueServerRepository(
       container.resolve(DiEntry.MONGOOSE_CONNECTION),
       container.resolve(DiEntry.QueueServerMongooseTransformer),
+      container.resolve(DiEntry.EventBus),
     ),
   [DiEntry.QueueServerMongooseTransformer]: () => new QueueServerMongooseTransformer(),
   [DiEntry.EmployeeCreateNewQueueServerService]: (container) =>
