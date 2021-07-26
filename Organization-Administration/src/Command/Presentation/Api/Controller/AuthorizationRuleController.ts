@@ -28,8 +28,8 @@ export default class AuthorizationRuleController extends Controller {
       access_token: EmployeeAccessTokenSchema,
       employeeId: Joi.string().required(),
       resourceId: Joi.string(),
-      resourceType: Joi.valid(Object.values(ResourceType)).required(),
-      accessType: Joi.valid(Object.values(AuthorizedAction)),
+      resourceType: Joi.allow(Object.values(ResourceType)).required(),
+      accessType: Joi.allow(Object.values(AuthorizedAction)),
     });
   }
 }
