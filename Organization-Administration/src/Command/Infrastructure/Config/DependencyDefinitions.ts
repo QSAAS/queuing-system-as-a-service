@@ -113,6 +113,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
     new MongooseAuthorizationRuleRepository(
       container.resolve(DiEntry.MONGOOSE_CONNECTION),
       container.resolve(DiEntry.AuthorizationRuleMongooseTransformer),
+      container.resolve(DiEntry.EventBus)
     ),
   [DiEntry.CreateOrganizationEndpoint]: (container) =>
     new CreateOrganizationEndpoint(
@@ -136,6 +137,8 @@ const definitions: DependencyDefinitions<DiEntry> = {
     return new MongooseOrganizationEndpointRepository(
       container.resolve(DiEntry.MONGOOSE_CONNECTION),
       container.resolve(DiEntry.OrganizationEndPointMongooseTransformer),
+      container.resolve(DiEntry.EventBus),
+
     );
   },
   [DiEntry.OrganizationEmployeeMongooseTransformer]: () => new OrganizationEmployeeMongooseTransformer(),
@@ -208,6 +211,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
     new MongooseQueueNodeRepository(
       container.resolve(DiEntry.MONGOOSE_CONNECTION),
       container.resolve(DiEntry.QueueNodeMongooseTransformer),
+      container.resolve(DiEntry.EventBus),
     ),
   [DiEntry.QueueNodeAuthorizationService]: (container) =>
     new DirectQueueNodeAuthorizationService(container.resolve(DiEntry.AuthorizationRuleRepository)),

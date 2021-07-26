@@ -6,6 +6,7 @@ import PermissionMother from "@tests/Command/Domain/ValueObject/Mother/Permissio
 import IAuthorizationRule from "@app/Command/Infrastructure/Repository/Mongoose/Types/IAuthorizationRule";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import createTestingDbConnection from "@tests/Utils/dbUtils";
+import DummyEventBus from "@app/Command/Infrastructure/Service/DummyEventBus";
 
 let repo: MongooseAuthorizationRuleRepository;
 let model: mongoose.Model<IAuthorizationRule & mongoose.Document>;
@@ -13,7 +14,8 @@ let model: mongoose.Model<IAuthorizationRule & mongoose.Document>;
 const authorizationTransformer = new AuthorizationRuleMongooseTransformer();
 
 createTestingDbConnection((connection) => {
-  repo = new MongooseAuthorizationRuleRepository(connection, authorizationTransformer);
+  repo = new MongooseAuthorizationRuleRepository(connection, authorizationTransformer,
+    new DummyEventBus());
   model = repo.getModel();
 });
 
