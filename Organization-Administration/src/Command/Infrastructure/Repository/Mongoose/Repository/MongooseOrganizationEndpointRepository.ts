@@ -43,4 +43,9 @@ export default class MongooseOrganizationEndpointRepository implements Organizat
   getModel() {
     return this.OrganizationEndpointModel;
   }
+
+  public async getAll() {
+    const objects = await this.OrganizationEndpointModel.find({});
+    return objects.map(o => this.endpointTransformer.domainInstanceFrom(o));
+  }
 }
