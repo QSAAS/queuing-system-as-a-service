@@ -7,6 +7,7 @@ import createAuthorizationRuleRouter from "@app/Command/Presentation/Api/Routes/
 import createQueueNodeRouter from "@app/Command/Presentation/Api/Routes/QueueNodeRouter";
 import createQueueServerRouter from "@app/Command/Presentation/Api/Routes/QueueServerRouter";
 import ErrorHandler from "@app/Command/Presentation/Api/Middleware/ErrorHandler";
+import createQueryRouter from "@app/Query/QueryRouter";
 
 let container: DependencyInjectionContainer<DiEntry>;
 
@@ -26,6 +27,7 @@ async function createRouter() {
   router.use("/authorization-rule", createAuthorizationRuleRouter(containerInstance));
   router.use("/queue_node", createQueueNodeRouter(containerInstance));
   router.use("/queue_server", createQueueServerRouter(containerInstance));
+  router.use("/query", createQueryRouter(containerInstance));
   router.use(ErrorHandler);
 
   return router;

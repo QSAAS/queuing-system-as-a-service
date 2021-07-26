@@ -4,6 +4,8 @@ import QueueServer from "@app/Command/Domain/Entity/QueueServer";
 import IQueueServer from "@app/Command/Infrastructure/Repository/Mongoose/Types/IQueueServer";
 import QueueServerMongooseTransformer from "@app/Command/Infrastructure/Repository/Mongoose/Transformer/QueueServerMongooseTransformer";
 import QueueServerSchema from "@app/Command/Infrastructure/Repository/Mongoose/Schema/QueueServerSchema";
+import QueueServerId from "@app/Command/Domain/ValueObject/QueueServerId";
+import QueueServerNotFound from "@app/Command/Domain/Error/QueueServerNotFound";
 
 export default class MongooseQueueServerRepository implements QueueServerRepository {
   private readonly QueueServerModel: mongoose.Model<IQueueServer & mongoose.Document>;
@@ -25,5 +27,23 @@ export default class MongooseQueueServerRepository implements QueueServerReposit
 
   getModel() {
     return this.QueueServerModel;
+  }
+
+  getTransformer() {
+    return this.queueServerTransformer;
+  }
+
+  async getById(id: QueueServerId) {
+    const object = await this.QueueServerModel.findOne({id: id.toString()});
+
+    if (!object)
+      throw new QueueServerNotFound();
+
+    return this.queueServerTransformer.domainInstanceFrom(object);
+  }
+
+  async getAll() {
+    const objects = await this.QueueServerModel.find({});
+    return objects.map(o => this.queueServerTransformer.domainInstanceFrom(o));
   }
 }

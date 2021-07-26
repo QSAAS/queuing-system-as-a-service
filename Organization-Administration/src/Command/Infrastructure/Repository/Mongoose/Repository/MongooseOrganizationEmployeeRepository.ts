@@ -63,4 +63,13 @@ export default class MongooseOrganizationEmployeeRepository implements Organizat
     }
     return this.employeeTransformer.domainInstanceFrom(object);
   }
+
+  public getTransformer() {
+    return this.employeeTransformer;
+  }
+
+  public async getAll() {
+    const objects = await this.OrganizationEmployeeModel.find({});
+    return objects.map(o => this.employeeTransformer.domainInstanceFrom(o));
+  }
 }

@@ -43,4 +43,13 @@ export default class MongooseQueueNodeRepository implements QueueNodeRepository 
   getModel() {
     return this.QueueNodeModel;
   }
+
+  getTransformer() {
+    return this.queueNodeTransformer;
+  }
+
+  async getAll() {
+    const objects = await this.QueueNodeModel.find({});
+    return objects.map(o => this.queueNodeTransformer.domainInstanceFrom(o));
+  }
 }
