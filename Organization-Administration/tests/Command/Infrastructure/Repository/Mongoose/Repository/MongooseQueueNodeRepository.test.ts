@@ -8,6 +8,7 @@ import IQueueNode from "@app/Command/Infrastructure/Repository/Mongoose/Types/IQ
 import QueueNodeId from "@app/Command/Domain/ValueObject/QueueNodeId";
 import createTestingDbConnection from "@tests/Utils/dbUtils";
 import QueueNodeNotFound from "@app/Command/Domain/Error/QueueNodeNotFound";
+import DummyEventBus from "@app/Command/Infrastructure/Service/DummyEventBus";
 
 const clockTransformer = new ClockMongooseTransformer();
 const timeSpanTransformer = new TimeSpanMongooseTransformer(clockTransformer);
@@ -17,7 +18,7 @@ const nodeTransformer = new QueueNodeMongooseTransformer(metadataSpecificationFi
 let repo: MongooseQueueNodeRepository;
 
 createTestingDbConnection((connection) => {
-  repo = new MongooseQueueNodeRepository(connection, nodeTransformer);
+  repo = new MongooseQueueNodeRepository(connection, nodeTransformer, new DummyEventBus());
 });
 
 it("Should save QueueNode instance", async () => {

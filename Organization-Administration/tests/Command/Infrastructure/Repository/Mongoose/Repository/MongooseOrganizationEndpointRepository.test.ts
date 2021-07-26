@@ -6,13 +6,15 @@ import OrganizationEndpointBuilder from "@tests/Command/Domain/Entity/Builder/Or
 import IOrganizationEndpoint from "@app/Command/Infrastructure/Repository/Mongoose/Types/IOrganizationEndpoint";
 import OrganizationEndpointId from "@app/Command/Domain/ValueObject/OrganizationEndpointId";
 import OrganizationEndpointNotFound from "@app/Command/Domain/Error/OrganizationEndpointNotFound";
+import DummyEventBus from "@app/Command/Infrastructure/Service/DummyEventBus";
 
 const endpointTransformer = new OrganizationEndpointMongooseTransformer(new GeolocationMongooseTransformer());
 
 let repo: MongooseOrganizationEndpointRepository;
 
 createTestingDbConnection((connection) => {
-  repo = new MongooseOrganizationEndpointRepository(connection, endpointTransformer);
+  repo = new MongooseOrganizationEndpointRepository(connection, endpointTransformer,
+    new DummyEventBus());
 });
 
 it("Should save Organization Endpoint instance", async () => {

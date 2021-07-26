@@ -8,12 +8,15 @@ import Permission from "@app/Command/Domain/ValueObject/Permission";
 import OrganizationEmployeeId from "@app/Command/Domain/ValueObject/OrganizationEmployeeId";
 import AuthorizationRuleAlreadyExists from "@app/Command/Domain/Error/AuthorizationRuleAlreadyExists";
 import AuthorizationRuleNotFound from "@app/Command/Domain/Error/AuthorizationRuleNotFound";
+import EventBus from "@app/Command/Domain/Service/EventBus";
 
 export default class MongooseAuthorizationRuleRepository implements AuthorizationRuleRepository {
   private readonly AuthorizationRuleModel: mongoose.Model<IAuthorizationRule & mongoose.Document>;
   private readonly authorizationTransformer: AuthorizationRuleMongooseTransformer;
 
-  constructor(connection: mongoose.Connection, authorizationTransformer: AuthorizationRuleMongooseTransformer) {
+  constructor(connection: mongoose.Connection,
+              authorizationTransformer: AuthorizationRuleMongooseTransformer,
+                private eventBus: EventBus,) {
     this.AuthorizationRuleModel = connection.model<IAuthorizationRule & mongoose.Document>(
       "authorization_rule",
       AuthorizationRuleSchema,
@@ -25,6 +28,7 @@ export default class MongooseAuthorizationRuleRepository implements Authorizatio
     try {
       const instance = new this.AuthorizationRuleModel(this.authorizationTransformer.mongooseObjectFrom(rule));
       await instance.save();
+      await this.eventBus.publishEvents(rule.getRaisedEvents());
     } catch (error) {
       if (error.name === "MongoError" && error.code === 11000) {
         throw new AuthorizationRuleAlreadyExists();
@@ -36,6 +40,7 @@ export default class MongooseAuthorizationRuleRepository implements Authorizatio
 
   async delete(rule: AuthorizationRule): Promise<void> {
     await this.AuthorizationRuleModel.findOneAndDelete(this.authorizationTransformer.mongooseObjectFrom(rule));
+    await this.eventBus.publishEvents(rule.getRaisedEvents());
   }
 
   /**
