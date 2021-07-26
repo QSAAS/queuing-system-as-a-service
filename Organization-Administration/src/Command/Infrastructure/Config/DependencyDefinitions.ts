@@ -43,6 +43,7 @@ import RabbitMQEventBus from "@app/Command/Infrastructure/Service/RabbitMQEventB
 import EventHandler from "@app/Command/Infrastructure/Service/EventHandler";
 import EventMap from "@app/Command/Infrastructure/Service/EventHandler/EventMap";
 import DummyEventBus from "@app/Command/Infrastructure/Service/DummyEventBus";
+import DirectQueueServereAuthorizationService from "@app/Command/Infrastructure/Service/AuthorizationService/DirectQueueServereAuthorizationService";
 
 export enum DiEntry {
   MONGOOSE_CONNECTION,
@@ -113,7 +114,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
     new MongooseAuthorizationRuleRepository(
       container.resolve(DiEntry.MONGOOSE_CONNECTION),
       container.resolve(DiEntry.AuthorizationRuleMongooseTransformer),
-      container.resolve(DiEntry.EventBus)
+      container.resolve(DiEntry.EventBus),
     ),
   [DiEntry.CreateOrganizationEndpoint]: (container) =>
     new CreateOrganizationEndpoint(
@@ -138,7 +139,6 @@ const definitions: DependencyDefinitions<DiEntry> = {
       container.resolve(DiEntry.MONGOOSE_CONNECTION),
       container.resolve(DiEntry.OrganizationEndPointMongooseTransformer),
       container.resolve(DiEntry.EventBus),
-
     );
   },
   [DiEntry.OrganizationEmployeeMongooseTransformer]: () => new OrganizationEmployeeMongooseTransformer(),
@@ -197,7 +197,7 @@ const definitions: DependencyDefinitions<DiEntry> = {
   [DiEntry.EmployeeCreateNewQueueServerService]: (container) =>
     new EmployeeCreateNewQueueServerService(container.resolve(DiEntry.QueueServerAuthorizationService)),
   [DiEntry.QueueServerAuthorizationService]: (container) =>
-    new DirectAuthorizationRuleAuthorizationService(container.resolve(DiEntry.AuthorizationRuleRepository)),
+    new DirectQueueServereAuthorizationService(container.resolve(DiEntry.AuthorizationRuleRepository)),
   [DiEntry.ClockMongooseTransformer]: () => new ClockMongooseTransformer(),
   [DiEntry.TimespanMongooseTransformer]: (container) =>
     new TimeSpanMongooseTransformer(container.resolve(DiEntry.ClockMongooseTransformer)),
