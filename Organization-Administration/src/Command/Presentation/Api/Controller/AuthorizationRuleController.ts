@@ -3,8 +3,6 @@ import Joi from "joi";
 import EmployeeAccessTokenSchema from "@app/Command/Presentation/Api/ValidationSchema/EmployeeAccessTokenSchema";
 import Controller from "@app/Command/Presentation/Api/Controller/Controller";
 import CreateAuthorizationRuleService from "@app/Command/Application/Service/CreateAuthorizationRuleService";
-import ResourceType from "@app/Command/Domain/Enum/ResourceType";
-import AuthorizedAction from "@app/Command/Domain/Enum/AuthorizedAction";
 import PermissionDTO from "@app/Command/Application/DataTransferObject/Object/PermissionDTO";
 import CreateAuthorizationRuleRequest from "@app/Command/Application/DataTransferObject/Request/CreateAuthorizationRuleRequest";
 
@@ -28,8 +26,8 @@ export default class AuthorizationRuleController extends Controller {
       access_token: EmployeeAccessTokenSchema,
       employeeId: Joi.string().required(),
       resourceId: Joi.string(),
-      resourceType: Joi.allow(Object.values(ResourceType)).required(),
-      accessType: Joi.allow(Object.values(AuthorizedAction)),
+      resourceType: Joi.string().required(),
+      accessType: Joi.string(),
     });
   }
 }
